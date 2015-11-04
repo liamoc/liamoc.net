@@ -17,7 +17,7 @@ cabal-version:       >=1.10
 
 executable Website
   main-is:             site.hs
-  other-modules:       AgdaSnippets
+  other-modules:       
   other-extensions:    ViewPatterns, Arrows, NamedFieldPuns, DeriveDataTypeable, GeneralizedNewtypeDeriving
   build-depends:       base >=4.6
                      , containers >=0.5
@@ -26,7 +26,6 @@ executable Website
                      , binary >= 0.5
                      , hakyll>=4.5
                      , pandoc>=1.13
-                     , Agda >= 2.4.2
                      , xhtml
                      , mtl
                      , transformers
@@ -34,7 +33,7 @@ executable Website
                      , base64-bytestring
                      , temporary
                      , process
-                     , tagsoup
+                     , agda-snippets
                      , pandoc-citeproc
                      , latex-formulae-image
                      , latex-formulae-pandoc

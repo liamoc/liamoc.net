@@ -26,13 +26,12 @@ import System.IO.Unsafe
 import System.Directory
 import qualified Data.Set as S
 import System.FilePath
-import Agda.Interaction.Options (CommandLineOptions(..), defaultOptions)
 import Image.LaTeX.Render.Pandoc
 import Image.LaTeX.Render
 import Data.Maybe
 import Control.Exception (bracket)
 import Network.URI
-import AgdaSnippets
+import Agda.Contrib.Snippets
 
 agdaOpts :: CommandLineOptions
 agdaOpts = defaultOptions

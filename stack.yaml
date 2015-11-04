@@ -7,11 +7,13 @@ resolver: lts-3.11
 packages:
 - '.'
 - '../langs/agda'
+- '../Development/Projects/agda-snippets'
 
 # Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
 extra-deps:
 - latex-formulae-image-0.1.0.1
 - latex-formulae-pandoc-0.1.0.1
+- agda-snippets-2.4.3
 - regex-tdfa-text-1.0.0.3
 
 # Override default flag values for local packages and extra-deps
