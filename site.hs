@@ -26,11 +26,13 @@ import System.IO.Unsafe
 import System.Directory
 import qualified Data.Set as S
 import System.FilePath
-import Agda
 import Agda.Interaction.Options (CommandLineOptions(..), defaultOptions)
 import Image.LaTeX.Render.Pandoc
 import Image.LaTeX.Render
 import Data.Maybe
+import Control.Exception (bracket)
+import Network.URI
+import AgdaSnippets
 
 agdaOpts :: CommandLineOptions
 agdaOpts = defaultOptions
@@ -53,10 +55,6 @@ feedConfiguration = FeedConfiguration
     , feedRoot        = "http://liamoc.net"
     }
 
-texCompiler :: String -> Item Pandoc -> Compiler (Item Pandoc)
-texCompiler pre = withItemBody (unsafeCompiler . convertAllFormulaeDataURI 2 defaultEnv fopts)
-     where fopts InlineMath = math { preamble = pre }
-           fopts _          = displaymath { preamble = pre }
 --------------------------------------------------------------------------------
 main :: IO ()
 main =
@@ -207,3 +205,28 @@ tagsCtx :: Tags -> Context String
 tagsCtx tags =
     tagsField "taglinks" tags <>
     postCtx
+
+---
+isAgda :: Item a -> Bool
+isAgda i = ex == ".lagda"
+  where ex = snd . splitExtension . toFilePath . itemIdentifier $ i
+
+agdaCompiler :: CommandLineOptions -> Item String -> Compiler (Item String)
+agdaCompiler aopt i =
+     if isAgda i
+          then cached cacheName $
+               do fp <- getResourceFilePath
+                  unsafeCompiler $ bracket getCurrentDirectory setCurrentDirectory $ const $
+                      do abfp <- canonicalizePath fp
+                         setCurrentDirectory (dropFileName abfp)
+                         s <- renderAgdaSnippets aopt "Agda" (fromJust $ parseURIReference "/agda-lib/")  abfp
+                         return $ i {itemBody = s}
+          else return i
+  where
+    cacheName = "LiterateAgda.agdaCompiler"
+
+---------
+texCompiler :: String -> Item Pandoc -> Compiler (Item Pandoc)
+texCompiler pre = withItemBody (unsafeCompiler . convertAllFormulaeDataURI 2 defaultEnv fopts)
+     where fopts InlineMath = math { preamble = pre }
+           fopts _          = displaymath { preamble = pre }

@@ -17,7 +17,7 @@ cabal-version:       >=1.10
 
 executable Website
   main-is:             site.hs
-  other-modules:       Agda
+  other-modules:       AgdaSnippets
   other-extensions:    ViewPatterns, Arrows, NamedFieldPuns, DeriveDataTypeable, GeneralizedNewtypeDeriving
   build-depends:       base >=4.6
                      , containers >=0.5
@@ -38,4 +38,5 @@ executable Website
                      , pandoc-citeproc
                      , latex-formulae-image
                      , latex-formulae-pandoc
+                     , network-uri
   default-language:    Haskell2010

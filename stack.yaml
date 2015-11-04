@@ -12,6 +12,7 @@ packages:
 extra-deps:
 - latex-formulae-image-0.1.0.1
 - latex-formulae-pandoc-0.1.0.1
+- regex-tdfa-text-1.0.0.3
 
 # Override default flag values for local packages and extra-deps
 flags: {}

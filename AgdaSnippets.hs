@@ -1,20 +1,18 @@
 {-# LANGUAGE ViewPatterns #-}
-module Agda
-    ( markdownAgda
-    , agdaCompiler
+module AgdaSnippets
+    ( renderAgdaSnippets
     ) where
 
+import           Control.Monad.Except
+import           Control.Monad.State (get)
 import           Data.Char
 import           Data.Function
 import           Data.List
 import           Data.Maybe
-import           Control.Monad.Except
-import           Control.Monad.State (get)
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
-import           System.Directory
+import           Network.URI
 import           System.Exit (exitFailure)
-import           System.FilePath
 import           Text.XHtml.Strict
 
 import           Agda.Interaction.Highlighting.Precise
@@ -30,10 +28,6 @@ import           Agda.Utils.FileName
 import qualified Agda.Utils.IO.UTF8 as UTF8
 import           Agda.Utils.Lens
 
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import Control.Exception (bracket)
 
 checkFile :: AbsolutePath -> TCM TopLevelModuleName
 checkFile file =
@@ -95,8 +89,8 @@ groupLiterate contents =
 
     notCode f (_, s, _) = not (f s)
 
-annotate :: TopLevelModuleName -> Int -> Aspects -> Html -> Html
-annotate m pos mi = anchor ! attributes
+annotate :: URI -> TopLevelModuleName -> Int -> Aspects -> Html -> Html
+annotate libs m pos mi = anchor ! attributes
   where
     attributes = [name (show pos)] ++
                  fromMaybe [] (definitionSite mi >>= link) ++
@@ -124,57 +118,38 @@ annotate m pos mi = anchor ! attributes
 
     link (m', pos') =  if m == m'
                       then Just [href ("#" ++ show pos')]
-                      else Just [href (tostdliblink m' ++ "#" ++ show pos')]
-    tostdliblink mn = "/agda-lib/" ++ intercalate "." (moduleNameParts mn ++ ["html"])
+                      else Just [href (show (tostdliblink m') ++ "#" ++ show pos')]
+    tostdliblink mn = fromMaybe nullURI (parseURIReference (intercalate "." (moduleNameParts mn ++ ["html"])))
+                       `nonStrictRelativeTo`  libs
 
-toMarkdown :: String
+renderFragments :: URI -> String
            -> TopLevelModuleName -> [Either String [(Int, String, Aspects)]]
            -> String
-toMarkdown classpr m contents =
+renderFragments libs classpr m contents =
     concat [ case c of
                   Left s   -> s
                   Right cs ->
                       let h = pre . tag "code" . mconcat $
-                              [ annotate m pos mi (stringToHtml s)
+                              [ annotate libs m pos mi (stringToHtml s)
                               | (pos, s, mi) <- cs ]
                       in  renderHtmlFragment (h ! [theclass classpr])
            | c <- contents ]
 
-convert :: String -> TopLevelModuleName -> TCM String
-convert classpr m =
+convert :: URI -> String -> TopLevelModuleName -> TCM String
+convert libs classpr m =
     do (info, contents) <- getModule m
-       return . toMarkdown classpr m . groupLiterate . pairPositions info $ contents
+       return . renderFragments libs classpr m . groupLiterate . pairPositions info $ contents
 
-markdownAgda :: CommandLineOptions -> String -> FilePath -> IO String
-markdownAgda opts classpr fp =
-    do r <- TCM.runTCMTop $ catchError (TCM.setCommandLineOptions opts >>
-                                           checkFile (mkAbsolute fp) >>= convert classpr)
+
+renderAgdaSnippets :: CommandLineOptions -> String -> URI -> FilePath -> IO String
+renderAgdaSnippets opts classpr libs fp  =
+    do afp <- absolute fp
+       r <- TCM.runTCMTop $ catchError (TCM.setCommandLineOptions opts >>
+                                           checkFile afp >>= convert libs classpr)
                           $ \err -> do s <- prettyError err
                                        liftIO (putStrLn s)
                                        throwError err
        case r of
            Right s -> return (dropWhile isSpace s)
            Left _  -> exitFailure
-
-isAgda :: Item a -> Bool
-isAgda i = ex == ".lagda"
-  where ex = snd . splitExtension . toFilePath . itemIdentifier $ i
-
-agdaCompiler :: CommandLineOptions -> Item String -> Compiler (Item String)
-agdaCompiler aopt i =
-     if isAgda i
-          then cached cacheName $
-               do fp <- getResourceFilePath
-                  unsafeCompiler $ bracket getCurrentDirectory setCurrentDirectory $ const $
-                      do -- We set to the directory of the file, we assume that
-                         -- the agda files are in one flat directory which might
-                         -- not be not the one where Hakyll is ran in.
-                         abfp <- canonicalizePath fp
-                         setCurrentDirectory (dropFileName abfp)
-                         s <- markdownAgda aopt "Agda" abfp
-                         let i' = i {itemBody = s}
-                         return i'
-          else return i
-  where
-    cacheName = "LiterateAgda.agdaCompiler"
 
