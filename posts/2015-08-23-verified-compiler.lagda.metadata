@@ -1,0 +1,3 @@
+title: Write Your Compiler by Proving It Correct
+tags: agda, term-representation, verification, types, semantics, compilers, theorem-proving
+preamble: \usepackage{amsmath}\usepackage{amssymb}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}

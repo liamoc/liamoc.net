@@ -1,0 +1,164 @@
+details { display: block }
+summary { display: block; border: 1px solid #666; padding: 0.5em; }
+/* Apply a pointer cursor and style the background upon hover to indicate <summary> is a clickable element. */
+/* These styles can be applied regardless of whether the fallback is needed */
+summary { cursor: pointer; }
+summary:hover, summary:focus { background: #ddd; }
+/* The following styles are not really needed, since the jQuery script takes care of hiding/displaying the elements. */
+/* However, we’re still gonna use CSS as well to prevent FOUC in browsers that understand these selectors. */
+/* Remember: by default (and probably most of the time), the contents of the <details> element are hidden. */
+.no-details details > * { display: none; }
+/* This doesn’t work very well in Firefox 3.6.x */
+/* .no-details details[open] > * { display: block; } */
+/* The following doesn’t toggle correctly in WebKit:
+.no-details details > summary:before { content: '► '; }
+.no-details details[open] > summary:before { content: '▼ '; }
+*/
+/* And yes, it should really be ::before, but that doesn’t work in IE8 */
+.no-details details > summary:before { float: left; width: 20px; content: '► '; }
+.no-details details.open > summary:before { content: '▼ '; }
+/* For IE6 and IE7, who don’t support generated content, you could use padding-left + a background image instead */
+/* I really couldn’t be bothered though. */
+/*
+.no-details details > summary { padding-left: 20px; background: url(img/arrow-sprite.png) no-repeat 0 0; }
+.no-details details.open > summary { background-position: 0 -20px; }
+*/
+/* Make sure summary remains visible */
+.no-details details summary { display: block; }
+
+body {
+    color: black;
+    font-size: 16px;
+    margin: 0px auto 0px auto;
+    width: 600px;
+    font-family: 'PT Serif', serif;
+}
+
+div#header {
+    border-bottom: 2px solid black;
+    margin-bottom: 30px;
+    padding: 12px 0px 12px 0px;
+}
+
+div#logo a {
+    color: black;
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+div#header #navigation {
+    text-align: right;
+}
+
+div#header #navigation a {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+div#footer {
+    border-top: solid 2px black;
+    color: #555;
+    font-size: 12px;
+    margin-top: 30px;
+    padding: 12px 0px 12px 0px;
+    text-align: right;
+}                                          
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+div.info {
+    color: #555;
+    font-size: 14px;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Envy Code R';
+    src: url('/images/envy_code_r-webfont.eot');
+    src: url('/images/envy_code_r-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/images/envy_code_r-webfont.woff') format('woff'),
+         url('/images/envy_code_r-webfont.ttf') format('truetype'),
+         url('/images/envy_code_r-webfont.svg#envy_code_rregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.math { }
+
+.display-math {
+    display:block;
+    margin:auto !important;
+}
+.hyphenate {
+  text-align:justify;
+}
+code{white-space: pre;}
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }       
+pre, code { background-color: #f8f8f8; font-family: 'Envy Code R', monospace; font-size:11pt }
+code > span.kw { color: #204a87; font-weight: bold; }
+code > span.dt { color: #204a87; }
+code > span.dv { color: #0000cf; }
+code > span.bn { color: #0000cf; }
+code > span.fl { color: #0000cf; }
+code > span.ch { color: #4e9a06; }
+code > span.st { color: #4e9a06; }
+code > span.co { color: #8f5902; font-style: italic; }
+code > span.ot { color: #8f5902; }
+code > span.al { color: #ef2929; }
+code > span.fu { color: #000000; }
+code > span.er { font-weight: bold; }
+/* Aspects. */
+pre.Agda a.Comment       { color: #B22222 }
+pre.Agda a.Keyword       { color: #CD6600 }
+pre.Agda a.String        { color: #B22222 }
+pre.Agda a.Number        { color: #A020F0 }
+pre.Agda a.Symbol        { color: #404040 }
+pre.Agda a.PrimitiveType { color: #0000CD }
+pre.Agda a.Operator      {}
+
+/* NameKinds. */
+pre.Agda a.Bound                  { color: black   }
+pre.Agda a.InductiveConstructor   { color: #008B00 }
+pre.Agda a.CoinductiveConstructor { color: #8B7500 }
+pre.Agda a.Datatype               { color: #0000CD }
+pre.Agda a.Field                  { color: #EE1289 }
+pre.Agda a.Function               { color: #0000CD }
+pre.Agda a.Module                 { color: #A020F0 }
+pre.Agda a.Postulate              { color: #0000CD }
+pre.Agda a.Primitive              { color: #0000CD }
+pre.Agda a.Record                 { color: #0000CD }
+
+/* OtherAspects. */
+pre.Agda a.DottedPattern      {}
+pre.Agda a.UnsolvedMeta       { color: black; background: yellow         }
+pre.Agda a.UnsolvedConstraint { color: black; background: yellow         }
+pre.Agda a.TerminationProblem { color: black; background: #FFA07A        }
+pre.Agda a.IncompletePattern  { color: black; background: #F5DEB3        }
+pre.Agda a.Error              { color: red;   text-decoration: underline }
+pre.Agda a.TypeChecks         { color: black; background: #ADD8E6        }
+
+/* Standard attributes. */
+pre.Agda a { text-decoration: none }
+pre.Agda a[href]:hover { background-color: #B4EEB4 }
+
+.hidden { display : none }
+table {border-collapse: collapse;}
+td {border: 1px solid black; padding: 3px; vertical-align: top;}
+th{text-align: left;}

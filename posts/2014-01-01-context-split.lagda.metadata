@@ -1,0 +1,3 @@
+title: Context splitting and substructural terms
+tags: agda, term-representation, verification, types, semantics, linear-types, cdsl
+preamble: \usepackage{amsmath}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}

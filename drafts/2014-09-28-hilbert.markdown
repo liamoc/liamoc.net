@@ -1,0 +1,184 @@
+----
+title: Hilbert: Two graphical theorem provers
+preamble: \usepackage{amsmath}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}
+----
+
+> "I tried reading Hilbert. Only his papers published in mathematical
+> periodicals were available at the time. Anybody who has tried those knows they
+> are very hard reading."
+> -- _Alonzo Church_
+
+Logic, proofs, and proof techniques form the foundation for a variety of topics in Computer Science.
+In particular, simple, inductively defined structures and proofs about them are pervasive in fields such as
+programming language theory and formal methods. They are the foundation on which we build our Programming
+Languages course at UNSW, [COMP3161](http://www.cse.unsw.edu.au/~cs3161).
+
+From an instructor's perspective, the assumption that any given student has the necessary mathematical
+maturity to understand such material has proven to be highly tenuous. In particular, students often
+lack the ability to read and write proofs at the level we would expect of a third or fourth year undergraduate student.
+
+This leaves us with three possible course teaching styles, all problematic:
+
+1. We could simply assume the necessary mathematical maturity anyway,
+   and suffer from perpetually low enrollments as a result [^1].
+
+2. We could adopt a curriculum that attempts to _hide_ the mathematical
+   underpinnings of the field, instead focusing on more
+   so-called "practical" considerations; an approach which Edsger @Dijkstra rightly
+   decried as "[lacking] the courage
+   to teach hard science" and "misguiding students". Moreover, his prediction
+   that "each next stage of infantilization of the
+   curriculum will be hailed as educational progress" was sadly correct. In the world of PLs, 
+   this usually takes the form of a programming language _menagerie_, where students are exposed 
+   to a variety of languages without being equipped with the necessary mental tools to 
+   evaluate them, and without sufficient exposure to each language to make the experience worthwhile.
+
+3. Rejecting these other two options, we are forced to reduce the amount of relevant course content so that
+   preliminary mathematical skills can be taught first. 
+
+When investigating this problem for his own course based on [Software
+Foundations](http://www.cis.upenn.edu/~bcpierce/sf/current/index.html), [Benjamin Pierce](http://www.cis.upenn.edu/~bcpierce/) advocated the use of a proof assistant, to enable students to
+work with proofs and check them without requiring intensive training and a fast feedback loop with
+teachers (see @Pierce09). This approach yielded promising results, enabling his syllabus to be significantly
+expanded with no substantial effect on student exam scores.
+
+### The problem with Coq
+
+Pierce chose [Coq](http://coq.inria.fr/), a
+dependently-typed theorem prover based on the calculus of constructions (@Coquand86ananalysis), as the
+proof assistant for his course. While we seriously considered this option, we ultimately decided against it. 
+
+For someone who is already experienced in formal reasoning, a Coq proof script is not difficult to follow, but for
+those who have little experience in mathematics [^2], it presents a rather daunting user interface and proof language
+that requires significant study and the absorbtion of a nontrivial amount of folklore to properly use. 
+
+In addition, the choice of a type theoretic foundation certainly makes Coq an elegant system in the eyes of PL theorists, 
+but it also introduces problems for a course that _begins_ with natural deduction and logic and _ends_ with type theory
+and the formulae-as-types correspondence (@Howard). Coq's interface is intentionally designed to hide a lot of that type-theoretic 
+detail, but this just makes Coq's reasoning, syntax and design more opaque to beginners. It remains unclear how much 
+_mathematical insight_ a beginner would gain by writing a proof in Coq: a proof, to the beginner's mind, would exist 
+to convince Coq of the truth of a proposition, rather than the reader. 
+
+In short, we were concerned that the teaching of _Coq_ would overshadow the teaching of the theory of _programming languages_
+if we were to use it to supplement our course. Right now, we only need to spend a week or two on natural deduction and rule 
+induction before moving on to more important concepts like static and dynamic semantics.
+
+Nevertheless, the argument that Pierce makes that _proof assistants_ can be used to assist in teaching theoretical courses
+still seems rather convincing. For this reason, I decided to introduce tooling to the course _only when it introduced minimal
+pedagogical overhead_ --- that is, any tool used in the course shouldn't require significant teaching time, nor dramatic
+changes to the course curriculum.
+
+## Enter Hilbert
+
+To address this need, I began writing the [Hilbert](https://github.com/liamoc/hilbert) theorem prover in late 2012 [^3]. This first version was basically just a toy; a sketch of the design that would form later versions. Nevertheless, some of the initial exercises from the first week of COMP3161 can be encoded within it; for example the language of matching parentheses, which is written as a file that looks like this:
+
+~~~{.haskell}
+------- EMPTY
+   OK
+
+
+ ?p OK  ?q OK
+-------------- JUXT
+   ?p?q OK
+
+
+     ?p OK
+-------------- PAREN
+    (?p) OK
+~~~
+
+Comparing this to the presentation of the same language in our course notes:
+
+$$\dfrac{}{\epsilon\ \textsf{OK}}\textsc{Empty} \quad \dfrac{p\ \textsf{OK}\quad q\ \textsf{OK}}{pq\ \textsf{OK}}\textsc{Juxt} \quad \dfrac{p\ \textsf{OK}}{(p)\ \textsf{OK}}\textsc{Paren}$$
+
+We can immediately see that there is virtually no pedagogical gap between my prover Hilbert and the Natural Deduction of @Gentzen.
+
+In this version of Hilbert, judgements take the form of strings interposed with (schematic) variables. Proofs of concrete goals using these rules can be derived in the tree style of @Gentzen:
+
+![](/images/hilbert1.png)
+
+As judgements are simply strings, complex syntactic structure becomes tedious and error-prone to specify, and rules (such as `JUXT` above) can have multiple interpretations -- ambiguity is permitted.
+
+This makes all but the most trivial of examples rather difficult to formalise, and also makes it difficult to accomodate techniques often used in pen and paper proofs.
+
+A simple example would be the language of addition on unary natural numbers:
+
+~~~{.haskell}
+------------- ADD_1
+ 0 + ?b = ?b
+
+  ?a + ?b = ?c
+------------------- ADD_2
+ s(?a) + ?b = s(?c)
+~~~
+
+With rules that are directed entirely by a subset of the variables (as in this example, where it is always clear which rule to choose based on the first operand), a very common technique when working on pen and paper would be to derive the proof tree all the way _up_ to axioms and then fill in the result of the addition descending down the proof tree to the original goal. This can be very helpful for teaching how rule systems can describe an algorithm.
+
+To do this with Hilbert, one might be tempted to insert a schematic variable into the _goal_, e.g `s(s(0)) + s(0) = ?r`, and try and apply the rules until reaching axioms. Sadly, this string-based version of Hilbert does not allow rules to be applied while schematic variables exist in the goal. The reason for this restriction has to do with _unification_.
+
+## Unification and matching
+
+Unification is a common problem in theorem prover implementation, type checker implementation, and logic language implementation [^4]. Given two terms $a$ and $b$, we must find a substitution $\theta$ for schematic variables inside $a$ and $b$ such that $\theta a = \theta b$. Such a substitution is called a _unifier_. In addition, a common requirement is that the unifier $\theta$ is the _most general unifier_ for those two terms. That is, there must not exist another unifier $\theta'$ where $\theta' \subset \theta$.
+
+The problem of _matching_ is a special case of unification where $a$ contains no schematic variables -- in other words, the substitution only applies to $b$. In the case of string terms with interpolant schematic variables, the matching problem is quite easy to solve using a finite state machine. _Unification_ on the other hand seems intractable to solve. Certainly, I was not able to think of a solution.
+
+The string-based version of Hilbert simply rules out the general unification case and restricts the problem to matching cases, by only allowing concrete terms with no schematic variables in the goal. When applying a rule, its conclusion is matched against the goal and the resulting substitution is applied to the rule's premises to provide the new subgoals.
+
+This solution works but it rules out legimate use cases for schematic variables in goals, which is highly unsatisfactory. So, I wrote a new version of Hilbert that uses s-expressions for terms rather than strings:
+
+~~~{.haskell}
+ data Term = List [Term]
+           | Atom String
+           | Schematic Value
+~~~
+
+These first-order terms have a simple unification algorithm, first presented by @Robinson.
+
+~~~{.haskell}
+mgu :: Term -> Term -> Maybe Substitution
+mgu (Schematic v) (Schematic v') | v == v' = return mempty
+mgu (Atom t)      (Atom t')      | t == t' = return mempty
+mgu (List [])     (List [])                = return mempty
+mgu (List (x:xs)) (List (y:ys))  = do sigma1 <- x `mgu` y
+                                      sigma2 <- map (substitute sigma1) xs 
+                                          `mgu` map (substitute sigma1) ys
+                                      return $ sigma1 <> sigma2
+mgu (Schematic v) t 
+  | v `notElem` freeVariables t  = return $ subst v t
+mgu t (Schematic v)
+  | v `notElem` freeVariables t  = return $ subst v t
+mgu _ _                          = Nothing
+~~~
+
+As suggested by the name `mgu`, the unifier returned by this function is the _most general unifier_, and the algorithm is guaranteed to return such a unifier if one exists. See @Robinson for details.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+~~~{.haskell}
+main = foo 23
+~~~
+
+
+[^1]: Recently [another excellent course](http://www.cse.unsw.edu.au/~cs3151) at UNSW was cancelled due to this problem
+[^2]: Many of these students will only have done proofs by induction on natural numbers in one semester of discrete mathematics that is quickly forgotten.
+[^3]: Despite being named after [David Hilbert](http://en.wikipedia.org/wiki/David_Hilbert), most of the foundations of the system are based on the work of [Gerhard Gentzen](http://en.wikipedia.org/wiki/Gerhard_Gentzen), but I didn't want to name something I made after a strong supporter of the NSDAP. 
+[^4]: Of course, due to Curry and Howard, we know these are all the same thing.

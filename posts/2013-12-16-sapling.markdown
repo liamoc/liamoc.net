@@ -1,0 +1,25 @@
+---
+title: SAPLING 2013
+tags: sapling, conference, publication, file-systems, linear-types, haskell, functional, slides
+---
+
+<br> ![](/images/mq.jpg)
+
+Today was SAPLING 2013, the Sydney Area Programming Languages Interest Group. This year it was hosted
+at Macquarie University.
+
+There were many talks of interest to functional programmers, in particular a keynote from Phil Wadler
+on a compositional language-integrated query system, talks on flow fusion optimisation and a FFI for
+Accelerate respectively from fellow PLSers Amos Robinson and Robert Clifton-Everest, a talk from
+Ben Lippmeier on capabilities and coeffects for his new DDC core calculus, and Fritz Henglein's 
+[APLAS](/posts/2013-12-13-aplascpp.html) talk on generic sorting and searching. 
+
+I also presented our trustworthy filesystems work, loosely based on Gabriele Keller's presentation
+at PLOS of our [recent paper](/posts/2013-10-07-plospaper.html).
+
+Further afield, there were also some interesting talks from ANU students on their practical work on
+managed runtimes, and some talks from the Victoria University of Wellington on some more conventional
+imperative and object oriented language designs.
+
+Many thanks to Phil Wadler for his characteristically soul-destroying questions, and to Tony Sloane for
+organising the event, which I think all would agree was a great success.
