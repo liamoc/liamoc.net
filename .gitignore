@@ -1,0 +1,6 @@
+*.swn
+*.swo
+_cache
+_site
+agda-lib
+.stack-work
