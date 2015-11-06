@@ -86,7 +86,7 @@ So, one might be tempted to simply set $\text{Assertion}_L = \llbracket x = \fra
 
 $$ \left\llbracket x = \frac{K(K+1)}{2}\right\rrbracket (\llbracket x,i := 1 \rrbracket\ \sigma)$$
 
-as $1 \neq  \frac{K(K+1)}{2} $ for any $K > 1$. So, the assertion must be the only other sensible option:  set $\text{Assertion}_L = \llbracket x = \frac{i(i+1)}{2}\rrbracket$.
+as $1 \neq \frac{K(K+1)}{2}$ for any $K > 1$. So, the assertion must be the only other sensible option:  set $\text{Assertion}_L = \llbracket x = \frac{i(i+1)}{2}\rrbracket$.
 This satisfies all the requirements, and easily prescribes an assertion for $A$ as well:
 
 $$ \xymatrix@C+2em{ *++[F-:<5em>]{\scriptstyle\text{True}} \ar[r]^{\!\!\!\!x,i := 1} &*++[F-:<5em>]{ \scriptstyle x = \frac{i(i + 1)}{2} } \ar[d]^{i = K} \ar@/^/^{i < K;\ i := i + 1}[r]  &*++[F-:<5em>]{\scriptstyle x = \frac{i(i - 1)}{2}}  \ar@/^/^{x := x + i}[l]  \\

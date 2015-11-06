@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, LambdaCase, ViewPatterns #-}
 import           Data.Monoid         ((<>))
 import           Hakyll.Core.Compiler
 import           Hakyll.Core.File
@@ -25,13 +25,14 @@ import Text.Pandoc
 import System.Directory
 import qualified Data.Set as S
 import System.FilePath
-import Image.LaTeX.Render.Pandoc
-import Image.LaTeX.Render
 import Data.Maybe
 import Control.Exception (bracket)
 import Network.URI
 import Agda.Contrib.Snippets
-
+import Control.Memoization.Utils
+import Image.LaTeX.Render.Pandoc
+import Image.LaTeX.Render
+import Data.Char(isSpace)
 agdaOpts :: CommandLineOptions
 agdaOpts = defaultOptions
 
@@ -44,9 +45,12 @@ writerSettings = def { writerHighlight = True }
 defaultPreamble :: String
 defaultPreamble = ""
 
-formulaOptions :: String -> MathType -> FormulaOptions
-formulaOptions pre InlineMath = math { preamble = pre }
-formulaOptions pre  _         = displaymath { preamble = pre }
+formulaSettings :: String -> PandocFormulaOptions
+formulaSettings pre
+  = defaultPandocFormulaOptions
+      { formulaOptions = \case DisplayMath -> displaymath { preamble = pre }
+                               _           -> math        { preamble = pre }
+      }
 
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
@@ -57,9 +61,28 @@ feedConfiguration = FeedConfiguration
     , feedRoot        = "http://liamoc.net"
     }
 
+type CacheSize = Integer
+
+initFormulaRendererDataURI :: CacheSize -> EnvironmentOptions
+                           -> IO (PandocFormulaOptions -> Item Pandoc -> Compiler (Item Pandoc))
+initFormulaRendererDataURI cs eo = do
+    mImageForFormula <- curry <$> memoizeLru (Just cs) (uncurry drawFormula)
+    let eachFormula x y = do
+          putStrLn $ "    formula (" ++ environment x ++ ") \"" ++ equationPreview y ++ "\""
+          mImageForFormula x y
+    return $ \fo -> withItemBody $ unsafeCompiler . convertAllFormulaeDataURIWith eachFormula fo
+  where
+    drawFormula x y = do
+      putStrLn "      drawing..."
+      imageForFormula eo x y
+    equationPreview (dropWhile isSpace -> x)
+      | length x <= 16 = x
+      | otherwise      = take 16 $ filter (/= '\n') x ++ "..."
+
 --------------------------------------------------------------------------------
 main :: IO ()
-main =
+main = do
+  renderEquations <- initFormulaRendererDataURI 1000 defaultEnv
   hakyll $ do
     tags <- buildTags ("posts/*.markdown" .||. "posts/*.lagda" .||. "posts/*.org") (fromCapture "tags/*.html")
 
@@ -115,7 +138,7 @@ main =
             getResourceBody
               >>= agdaCompiler agdaOpts
               >>= changeItemExtension readPandoc'
-              >>= texCompiler pr
+              >>= renderEquations (formulaSettings pr)
               >>= writePandoc'
               >>= loadAndApplyTemplate "templates/post.html"    (tagsCtx tags)
               >>= saveSnapshot "content"
@@ -228,8 +251,3 @@ changeItemExtension :: (Item a -> Compiler (Item b)) -> Item a -> Compiler (Item
 changeItemExtension f i = let fn = toFilePath $ itemIdentifier i
                            in do x <- f (i {itemIdentifier = fromFilePath $ fn -<.> "markdown" })
                                  return $ x {itemIdentifier = fromFilePath fn }
----------
-
-texCompiler :: String -> Item Pandoc -> Compiler (Item Pandoc)
-texCompiler pre =
-  withItemBody $ unsafeCompiler . convertAllFormulaeDataURI 2 defaultEnv (formulaOptions pre)

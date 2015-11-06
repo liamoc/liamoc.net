@@ -33,9 +33,10 @@ executable Website
                      , base64-bytestring
                      , temporary
                      , process
-                     , agda-snippets
+                     , agda-snippets 
                      , pandoc-citeproc
-                     , latex-formulae-image
-                     , latex-formulae-pandoc
+                     , latex-formulae-image >= 0.1.1.0 && <0.2
+                     , latex-formulae-pandoc >= 0.2.0.0 && <0.3
                      , network-uri
+                     , memoization-utils >= 0.1 && <0.2
   default-language:    Haskell2010
