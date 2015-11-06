@@ -29,10 +29,10 @@ import Data.Maybe
 import Control.Exception (bracket)
 import Network.URI
 import Agda.Contrib.Snippets
-import Control.Memoization.Utils
 import Image.LaTeX.Render.Pandoc
 import Image.LaTeX.Render
-import Data.Char(isSpace)
+import Hakyll.Contrib.LaTeX
+
 agdaOpts :: CommandLineOptions
 agdaOpts = defaultOptions
 
@@ -61,28 +61,10 @@ feedConfiguration = FeedConfiguration
     , feedRoot        = "http://liamoc.net"
     }
 
-type CacheSize = Integer
-
-initFormulaRendererDataURI :: CacheSize -> EnvironmentOptions
-                           -> IO (PandocFormulaOptions -> Item Pandoc -> Compiler (Item Pandoc))
-initFormulaRendererDataURI cs eo = do
-    mImageForFormula <- curry <$> memoizeLru (Just cs) (uncurry drawFormula)
-    let eachFormula x y = do
-          putStrLn $ "    formula (" ++ environment x ++ ") \"" ++ equationPreview y ++ "\""
-          mImageForFormula x y
-    return $ \fo -> withItemBody $ unsafeCompiler . convertAllFormulaeDataURIWith eachFormula fo
-  where
-    drawFormula x y = do
-      putStrLn "      drawing..."
-      imageForFormula eo x y
-    equationPreview (dropWhile isSpace -> x)
-      | length x <= 16 = x
-      | otherwise      = take 16 $ filter (/= '\n') x ++ "..."
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = do
-  renderEquations <- initFormulaRendererDataURI 1000 defaultEnv
+  renderEquations <- initFormulaCompilerDataURI 1000 defaultEnv
   hakyll $ do
     tags <- buildTags ("posts/*.markdown" .||. "posts/*.lagda" .||. "posts/*.org") (fromCapture "tags/*.html")
 

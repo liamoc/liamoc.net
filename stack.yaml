@@ -10,11 +10,13 @@ packages:
 - '../Development/Projects/agda-snippets'
 - '../Development/Projects/latex-formulae/latex-formulae-pandoc'
 - '../Development/Projects/latex-formulae/latex-formulae-image'
+- '../Development/Projects/latex-formulae/latex-formulae-hakyll'
 
 # Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
 extra-deps:
 - latex-formulae-image-0.1.1.0
 - latex-formulae-pandoc-0.2.0.0
+- latex-formulae-hakyll-0.1.0.0
 - agda-snippets-2.4.3
 - regex-tdfa-text-1.0.0.3
 - memoization-utils-0.1.0.0
