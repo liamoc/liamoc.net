@@ -22,7 +22,6 @@ import           Hakyll.Web.Template.List
 import qualified Data.Map as M
 import Text.Pandoc.Options
 import Text.Pandoc
-import System.IO.Unsafe
 import System.Directory
 import qualified Data.Set as S
 import System.FilePath
@@ -44,6 +43,10 @@ writerSettings = def { writerHighlight = True }
 
 defaultPreamble :: String
 defaultPreamble = ""
+
+formulaOptions :: String -> MathType -> FormulaOptions
+formulaOptions pre InlineMath = math { preamble = pre }
+formulaOptions pre  _         = displaymath { preamble = pre }
 
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
@@ -89,33 +92,30 @@ main =
     match "cites/*.bib" $ compile biblioCompiler
     match "association-for-computing-machinery.csl" $ compile cslCompiler
 
-    let changeItemExtension :: (Item a -> Compiler (Item b)) -> Item a -> Compiler (Item b)
-        changeItemExtension f i = let fn = toFilePath $ itemIdentifier i
-                                   in do x <- f (i {itemIdentifier = fromFilePath $ fn -<.> "markdown" })
-                                         return $ x {itemIdentifier = fromFilePath fn }
 
     match ("posts/*.markdown" .||. "posts/*.lagda" .||. "posts/*.org") $ do
         route $ setExtension "html"
 
         compile $ do
 
-            m <- getMetadata =<< getUnderlying
-            let latexPreamble = fromMaybe defaultPreamble $ M.lookup "preamble" m
+            pr <- fmap (fromMaybe defaultPreamble . M.lookup "preamble") (getMetadata =<< getUnderlying)
+            fp <- flip replaceExtension "bib" . flip replaceDirectory "cites/" <$> getResourceFilePath
 
-            fp <-  flip replaceExtension "bib" . flip replaceDirectory "cites/" <$> getResourceFilePath
-            readPandoc' <- if unsafePerformIO $ doesFileExist fp then do
-                csl <- load "association-for-computing-machinery.csl"
-                bib <- load (fromFilePath fp)
-                return $ readPandocBiblio readerSettings csl bib
-              else
-                return $ readPandocWith readerSettings
+            let readPandoc' i = do
+                  exists <- unsafeCompiler $ doesFileExist fp
+                  if exists then do
+                    csl <- load "association-for-computing-machinery.csl"
+                    bib <- load (fromFilePath fp)
+                    readPandocBiblio readerSettings csl bib i
+                  else
+                    readPandocWith readerSettings i
 
-            let writePandoc' = return . writePandocWith writerSettings
+                writePandoc' = return . writePandocWith writerSettings
 
-            i <- getResourceBody
-            agdaCompiler agdaOpts i
+            getResourceBody
+              >>= agdaCompiler agdaOpts
               >>= changeItemExtension readPandoc'
-              >>= texCompiler latexPreamble
+              >>= texCompiler pr
               >>= writePandoc'
               >>= loadAndApplyTemplate "templates/post.html"    (tagsCtx tags)
               >>= saveSnapshot "content"
@@ -224,8 +224,12 @@ agdaCompiler aopt i =
   where
     cacheName = "LiterateAgda.agdaCompiler"
 
+changeItemExtension :: (Item a -> Compiler (Item b)) -> Item a -> Compiler (Item b)
+changeItemExtension f i = let fn = toFilePath $ itemIdentifier i
+                           in do x <- f (i {itemIdentifier = fromFilePath $ fn -<.> "markdown" })
+                                 return $ x {itemIdentifier = fromFilePath fn }
 ---------
+
 texCompiler :: String -> Item Pandoc -> Compiler (Item Pandoc)
-texCompiler pre = withItemBody (unsafeCompiler . convertAllFormulaeDataURI 2 defaultEnv fopts)
-     where fopts InlineMath = math { preamble = pre }
-           fopts _          = displaymath { preamble = pre }
+texCompiler pre =
+  withItemBody $ unsafeCompiler . convertAllFormulaeDataURI 2 defaultEnv (formulaOptions pre)

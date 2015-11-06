@@ -15,7 +15,8 @@ extra-deps:
 - latex-formulae-pandoc-0.1.0.1
 - agda-snippets-2.4.3
 - regex-tdfa-text-1.0.0.3
-
+- memoization-utils-0.1.0.0
+- time-units-1.0.0
 # Override default flag values for local packages and extra-deps
 flags: {}
 
