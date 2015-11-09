@@ -1,43 +1,36 @@
---------------------------------------------------------------------------------
-{-# LANGUAGE OverloadedStrings, LambdaCase, ViewPatterns #-}
-import           Data.Monoid         ((<>))
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.File
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Item
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Routes
-import           Hakyll.Core.Rules
-import           Hakyll.Main
-import           Hakyll.Web.CompressCss
-import           Hakyll.Web.Feed
-import           Hakyll.Web.Html.RelativizeUrls
-import           Hakyll.Web.Pandoc
-import           Hakyll.Web.Pandoc.Biblio -- BiblioWorkaround
-import           Hakyll.Web.Tags
-import           Hakyll.Web.Template
-import           Hakyll.Web.Template.Context
-import           Hakyll.Web.Template.List
-import qualified Data.Map as M
-import Text.Pandoc.Options
-import Text.Pandoc
-import System.Directory
-import qualified Data.Set as S
-import System.FilePath
+{-# LANGUAGE OverloadedStrings, LambdaCase #-}
+
 import Data.Maybe
-import Control.Exception (bracket)
-import Network.URI
-import Agda.Contrib.Snippets
-import Image.LaTeX.Render.Pandoc
+import Data.Monoid
+
 import Image.LaTeX.Render
+import Image.LaTeX.Render.Pandoc
+
+import Network.URI
+
+import System.Directory
+import System.FilePath
+
+import Text.Pandoc
+
+import Hakyll
+import Hakyll.Contrib.Agda
 import Hakyll.Contrib.LaTeX
+
+import qualified Data.Map as M
+import qualified Data.Set as S
 
 agdaOpts :: CommandLineOptions
 agdaOpts = defaultOptions
 
+agdaLibraryURI :: URI
+Just agdaLibraryURI = parseURIReference "/agda-lib/"
+
 readerSettings :: ReaderOptions
-readerSettings = def { readerSmart = True, readerOldDashes = True, readerExtensions = S.insert Ext_pipe_tables pandocExtensions  }
+readerSettings = def { readerSmart = True
+                     , readerOldDashes = True
+                     , readerExtensions = S.insert Ext_pipe_tables pandocExtensions
+                     }
 
 writerSettings :: WriterOptions
 writerSettings = def { writerHighlight = True }
@@ -69,28 +62,28 @@ main = do
     tags <- buildTags ("posts/*.markdown" .||. "posts/*.lagda" .||. "posts/*.org") (fromCapture "tags/*.html")
 
     match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+      route   idRoute
+      compile copyFileCompiler
 
     match "agda-lib/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+      route   idRoute
+      compile copyFileCompiler
 
     match "js/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+      route   idRoute
+      compile copyFileCompiler
 
     match "js/patterns/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+      route   idRoute
+      compile copyFileCompiler
 
     match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+      route   idRoute
+      compile compressCssCompiler
 
     match (fromList ["about.rst", "contact.markdown"]) $ do
-        route   $ setExtension "html"
-        compile $ pandocCompiler
+      route   $ setExtension "html"
+      compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
@@ -99,137 +92,99 @@ main = do
 
 
     match ("posts/*.markdown" .||. "posts/*.lagda" .||. "posts/*.org") $ do
-        route $ setExtension "html"
+      route $ setExtension "html"
 
-        compile $ do
+      compile $ do
+        pr <- fmap (fromMaybe defaultPreamble . M.lookup "preamble") (getMetadata =<< getUnderlying)
+        fp <- flip replaceExtension "bib" . flip replaceDirectory "cites/" <$> getResourceFilePath
 
-            pr <- fmap (fromMaybe defaultPreamble . M.lookup "preamble") (getMetadata =<< getUnderlying)
-            fp <- flip replaceExtension "bib" . flip replaceDirectory "cites/" <$> getResourceFilePath
+        let readPandoc' i = do
+              exists <- unsafeCompiler $ doesFileExist fp
+              if exists then do
+                csl <- load "association-for-computing-machinery.csl"
+                bib <- load (fromFilePath fp)
+                readPandocBiblio readerSettings csl bib i
+              else
+                readPandocWith readerSettings i
 
-            let readPandoc' i = do
-                  exists <- unsafeCompiler $ doesFileExist fp
-                  if exists then do
-                    csl <- load "association-for-computing-machinery.csl"
-                    bib <- load (fromFilePath fp)
-                    readPandocBiblio readerSettings csl bib i
-                  else
-                    readPandocWith readerSettings i
+            writePandoc' = return . writePandocWith writerSettings
 
-                writePandoc' = return . writePandocWith writerSettings
-
-            getResourceBody
-              >>= agdaCompiler agdaOpts
-              >>= changeItemExtension readPandoc'
-              >>= renderEquations (formulaSettings pr)
-              >>= writePandoc'
-              >>= loadAndApplyTemplate "templates/post.html"    (tagsCtx tags)
-              >>= saveSnapshot "content"
-              >>= loadAndApplyTemplate "templates/disqus.html"  (tagsCtx tags)
-              >>= loadAndApplyTemplate "templates/default.html" (tagsCtx tags)
-              >>= relativizeUrls
+        getResourceBody
+          >>= readLiterateAgda agdaOpts agdaLibraryURI
+          >>= defaultFileType Markdown readPandoc'
+          >>= renderEquations (formulaSettings pr)
+          >>= writePandoc'
+          >>= loadAndApplyTemplate "templates/post.html"    (tagsCtx tags)
+          >>= saveSnapshot "content"
+          >>= loadAndApplyTemplate "templates/disqus.html"  (tagsCtx tags)
+          >>= loadAndApplyTemplate "templates/default.html" (tagsCtx tags)
+          >>= relativizeUrls
 
     create ["archive.html"] $ do
-        route idRoute
-        compile $ do
-            let archiveCtx = field "posts" (\_ -> postList' recentFirst)
-                           <> constField "title" "Archives"
-                           <> defaultContext
+      route idRoute
+      compile $ do
+        let archiveCtx = mconcat [ field "posts" $ const $ postList' recentFirst
+                                 , constField "title" "Archives"
+                                 , defaultContext
+                                 ]
 
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-                >>= relativizeUrls
+        makeItem ""
+          >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
+          >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+          >>= relativizeUrls
 
     tagsRules tags $ \tag pattern -> do
-        let title = "Posts tagged " ++ tag
-        route idRoute
-        compile $ do
-            list <- postList tags pattern recentFirst
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html"
-                        (constField "title" title <>
-                            constField "posts" list <>
-                            defaultContext)
-                >>= loadAndApplyTemplate "templates/default.html"
-                        (constField "title" title <>
-                            defaultContext)
-                >>= relativizeUrls
+      route idRoute
+      compile $ do
+        list <- postList (tagsCtx tags) pattern recentFirst
+        let title    = "Posts tagged " ++ tag
+            titleCtx = constField "title" title <> defaultContext
+            tagCtx   = mconcat [ constField "title" title
+                               , constField "posts" list
+                               , defaultContext
+                               ]
+        makeItem ""
+          >>= loadAndApplyTemplate "templates/archive.html" tagCtx
+          >>= loadAndApplyTemplate "templates/default.html" titleCtx
+          >>= relativizeUrls
 
     match "index.html" $ do
-        route idRoute
-        compile $ do
-            let indexCtx = field "posts" (const $ postList' (\x -> take 3 <$> recentFirst x))
-                         <> field "tagcloud" (const $ renderTagCloud 75 150 tags)
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" postCtx
-                >>= relativizeUrls
+      route idRoute
+      compile $ do
+        let indexCtx = mconcat [ field "posts"    $ const $ postList' $ fmap (take 3) . recentFirst
+                               , field "tagcloud" $ const $ renderTagCloud 75 150 tags
+                               ]
+        getResourceBody
+          >>= applyAsTemplate indexCtx
+          >>= loadAndApplyTemplate "templates/default.html" postCtx
+          >>= relativizeUrls
 
     create ["atom.xml"] $ do
-        route idRoute
-        compile $ do
-            posts <- take 10  <$> (recentFirst =<< loadAllSnapshots "posts/*" "content")
-            renderAtom feedConfiguration feedCtx posts
+      route idRoute
+      compile $ do
+        posts <- take 10  <$> (recentFirst =<< loadAllSnapshots "posts/*" "content")
+        renderAtom feedConfiguration feedCtx posts
 
     create ["rss.xml"] $ do
-        route idRoute
-        compile $ do
-            posts <- take 10 <$> (recentFirst =<< loadAllSnapshots "posts/*" "content")
-            renderRss feedConfiguration feedCtx posts
+      route idRoute
+      compile $ do
+        posts <- take 10 <$> (recentFirst =<< loadAllSnapshots "posts/*" "content")
+        renderRss feedConfiguration feedCtx posts
 
     match "templates/*" $ compile templateCompiler
-
-
-
-
---------------------------------------------------------------------------------
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" <>
-    defaultContext
-
-feedCtx :: Context String
-feedCtx = postCtx <> bodyField "description"
-
---------------------------------------------------------------------------------
-postList' :: ([Item String] -> Compiler [Item String]) -> Compiler String
-postList' sortFilter = do
-    posts   <- sortFilter =<< loadAll "posts/*"
-    itemTpl <- loadBody "templates/post-item.html"
-    applyTemplateList itemTpl postCtx posts
-
-postList :: Tags -> Pattern -> ([Item String] -> Compiler [Item String])
-         -> Compiler String
-postList tags pattern preprocess' = do
-    postItemTpl <- loadBody "templates/post-item.html"
-    posts <- preprocess' =<< loadAll pattern
-    applyTemplateList postItemTpl (tagsCtx tags) posts
-
-tagsCtx :: Tags -> Context String
-tagsCtx tags =
-    tagsField "taglinks" tags <>
-    postCtx
-
----
-isAgda :: Item a -> Bool
-isAgda i = ex == ".lagda"
-  where ex = snd . splitExtension . toFilePath . itemIdentifier $ i
-
-agdaCompiler :: CommandLineOptions -> Item String -> Compiler (Item String)
-agdaCompiler aopt i =
-     if isAgda i
-          then cached cacheName $
-               do fp <- getResourceFilePath
-                  unsafeCompiler $ bracket getCurrentDirectory setCurrentDirectory $ const $
-                      do abfp <- canonicalizePath fp
-                         setCurrentDirectory (dropFileName abfp)
-                         s <- renderAgdaSnippets aopt "Agda" (fromJust $ parseURIReference "/agda-lib/")  abfp
-                         return $ i {itemBody = s}
-          else return i
   where
-    cacheName = "LiterateAgda.agdaCompiler"
+    tagsCtx tags = tagsField "taglinks" tags <> postCtx
 
-changeItemExtension :: (Item a -> Compiler (Item b)) -> Item a -> Compiler (Item b)
-changeItemExtension f i = let fn = toFilePath $ itemIdentifier i
-                           in do x <- f (i {itemIdentifier = fromFilePath $ fn -<.> "markdown" })
-                                 return $ x {itemIdentifier = fromFilePath fn }
+    postCtx = dateField "date" "%B %e, %Y" <> defaultContext
+    feedCtx = postCtx <> bodyField "description"
+
+    postList' = postList postCtx "posts/*"
+
+    postList ctx pattern prep = do
+      posts <- prep =<< loadAll pattern
+      itemTpl <- loadBody "templates/post-item.html"
+      applyTemplateList itemTpl ctx posts
+
+
+
+

@@ -24,19 +24,19 @@ executable Website
                      , directory >=1.2
                      , filepath >=1.3
                      , binary >= 0.5
-                     , hakyll>=4.5
-                     , pandoc>=1.13
-                     , xhtml
+                     , hakyll                >= 4.7  && < 4.8
+                     , pandoc                >= 1.15 && < 1.16
                      , mtl
                      , transformers
                      , bytestring
                      , base64-bytestring
                      , temporary
                      , process
-                     , agda-snippets 
+                     , agda-snippets         >= 2.4.3
+                     , agda-snippets-hakyll  >= 0.1.1 && <0.2
                      , pandoc-citeproc
-                     , latex-formulae-image >= 0.1.1.0 && <0.2
-                     , latex-formulae-pandoc >= 0.2.0.0 && <0.3
-                     , latex-formulae-hakyll >= 0.1.0.0 && <0.2
+                     , latex-formulae-image  >= 0.1.1 && <0.2
+                     , latex-formulae-pandoc >= 0.2   && <0.3
+                     , latex-formulae-hakyll >= 0.1   && <0.2
                      , network-uri
   default-language:    Haskell2010

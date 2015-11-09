@@ -7,7 +7,8 @@ resolver: lts-3.11
 packages:
 - '.'
 - '../langs/agda'
-- '../Development/Projects/agda-snippets'
+- '../Development/Projects/agda-snippets/agda-snippets'
+- '../Development/Projects/agda-snippets/agda-snippets-hakyll'
 - '../Development/Projects/latex-formulae/latex-formulae-pandoc'
 - '../Development/Projects/latex-formulae/latex-formulae-image'
 - '../Development/Projects/latex-formulae/latex-formulae-hakyll'
@@ -18,9 +19,8 @@ extra-deps:
 - latex-formulae-pandoc-0.2.0.0
 - latex-formulae-hakyll-0.1.0.0
 - agda-snippets-2.4.3
+- agda-snippets-hakyll-0.1.1
 - regex-tdfa-text-1.0.0.3
-- memoization-utils-0.1.0.0
-- time-units-1.0.0
 
 # Override default flag values for local packages and extra-deps
 flags: {}
