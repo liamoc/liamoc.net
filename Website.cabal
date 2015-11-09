@@ -18,7 +18,7 @@ cabal-version:       >=1.10
 executable Website
   main-is:             site.hs
   other-modules:       
-  other-extensions:    ViewPatterns, Arrows, NamedFieldPuns, DeriveDataTypeable, GeneralizedNewtypeDeriving
+  other-extensions:   
   build-depends:       base                  >= 4.8   && < 4.9
                      , containers            >= 0.5   && < 0.6
                      , directory             >= 1.2   && < 1.3
