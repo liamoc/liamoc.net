@@ -37,7 +37,7 @@ $$
 ** Documents and patches form a category
 
 To define further operations, we must first note that patches and documents form a /category/. A /category/ is made up of a class of
-/objects/ (in this case documents), and a class of arrows or /morphisms/ (in this case pathes). For each object $X$, there must be an 
+/objects/ (in this case documents), and a class of arrows or /morphisms/ (in this case patches). For each object $X$, there must be an 
 /identity morphism/ $id_X : X \rightarrow X$, and for each pair of morphisms $p : A \rightarrow B$ and $q : B \rightarrow C$ there must 
 be a composed morphism $p \circ q : A \rightarrow C$. They must satisfy the following laws:
 
