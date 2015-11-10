@@ -122,7 +122,7 @@ code > span.st { color: #4e9a06; }
 code > span.co { color: #8f5902; font-style: italic; }
 code > span.ot { color: #8f5902; }
 code > span.al { color: #ef2929; }
-code > span.fu { color: #000000; }
+code > span.fu { color: #116677; }
 code > span.er { font-weight: bold; }
 /* Aspects. */
 pre.Agda a.Comment       { color: #B22222 }
