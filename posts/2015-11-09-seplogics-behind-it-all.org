@@ -1,0 +1,174 @@
+---
+title: Ad-hoc Frame Conditions are Logical, Separately
+tags: verification, types, semantics, linear-types, cdsl, separation-logic, imperative, functional
+preamble: \usepackage{amsmath}\usepackage{amssymb}\usepackage{graphicx}\newcommand{\bigast}{\mathop{\!\,\scalebox{2}{$\ast$}}}
+...
+
+
+The main direction of my research thus far has been to exploit linear types to make purely functional,
+equational reasoning possible for systems programming. I've talked about the [[http:/posts/2013-11-13-imperativereasoning.html][difficulty of verifying]] imperative
+programs before, but my past entries about [[http:/posts/2014-01-01-context-split.html][linear types]] did not discuss the advantages that they can bring
+to such a domain.
+
+Chiefly, they allow us to reason about our program as if all data structures are immutable, with all of the 
+benefits that implies, while the actual implementation performs efficient destructive updates to mutable
+data structures. This is achieved simply by statically ruling out every program where the difference between
+the immutable and the mutable interpretations can be observed, by requiring that every 
+variable that refers, directly or indirectly, to a heap data structure, must be used exactly once.
+As variables cannot be used multiple times, this implies that for any allocated heap object, there is exactly
+one live, usable reference that exists at any one time. This is called the /uniqueness/ property of linear types.
+
+This is a very simple restriction, but it proves a considerable burden when trying to actually write programs.
+For example, a naïve definition of a linear array would become unusable after just one element was accessed! 
+Other data structures, with complex reference layouts that involve multiple aliasing references and sharing, simply
+cannot be expressed.
+
+For this reason, when designing the linear systems language Cogent for my research, I allowed parts of the program
+to be written in unsafe, imperative C, and those C snippets are able to manipulate opaque types that are /abstract/
+in the purely functional portion. The author of the code would then have to prove that the C code doesn't do anything
+too unsafe, that would violate the invariants of the linear type system. 
+
+Specifically, Cogent extends the (dynamic) typing relation for values to include /sets of locations/ which can be accessed from a value[fn:1]. For example,
+the typing rule of for tuple values is:
+
+$$ \dfrac{ x : \tau_1\ \langle p \rangle \quad
+               y : \tau_2\ \langle q \rangle \quad
+               p \cap q = \emptyset 
+             }{ (x, y) : \tau_1 \times \tau_2\ \langle p \cup q \rangle } $$
+
+Observe how we have used these pointer sets to enforce that there is no internal aliasing in the structure. It also gives us
+the information necessary to precisely state the conditions under which a C program is safe to execute. We define /stores/, denoted
+$\sigma$, as a partial mapping from a location or pointer $\ell$ to a value $v$.
+
+Assuming a C-implemented function $f : \tau \rightarrow \rho$ is evaluated with an input value $v : \tau\ \langle p \rangle$ 
+and an input store $\sigma$, the return value $f\ v : \rho\ \langle p' \rangle$ and output store $\sigma'$
+must satisfy the following three properties for all locations $\ell$:
+
+ - *Leak freedom* - $\ell \in p \land \ell \notin p' \Rightarrow \ell \notin \text{dom}(\sigma')$, that is
+                    any input reference that wasn't returned was freed.
+ - *Fresh allocation* - $\ell \notin p \land \ell \in p' \Rightarrow \ell \notin \text{dom}(\sigma)$, that is
+                        every new output reference, not in the input, was allocated in prevously-free space.
+ - *Inertia* - $\ell \notin p \land \ell \notin p' \Rightarrow \sigma(\ell) = \sigma'(\ell)$, that is, 
+               every reference not in either the input or the output of the function has not been touched in any way. 
+
+Assuming these three things, it's possible to show that the two semantic interpretations of linear typed programs are equivalent, even 
+if they depend on unsafe, imperative C code. I called these three conditions together the /frame conditions/, named after the /frame problem/,
+from the field of knowledge representation. The frame problem is a common issue that comes up in many formalisations of stateful processes. 
+Specifically, it refers to the difficulty of /local reasoning/ for many of these formalisations. The state or store is typically represented 
+(as in our Cogent formalisation above) as a large, monolithic blob. Therefore, whenever any part of the state is updated, every invariant
+about the state must be re-established, even if it has nothing to do with the part of the state that was updated. The above conditions allow
+us to state that the C program does not affect any part of the state except those it is permitted (by virtue of the linear references it recieved) 
+to modify, thus allowing us to enforce the type system invariants across the whole program.
+
+# As I've [[/posts/2015-06-16-semantic-lattice.html][mentioned before]], using C as the only fall-back if linear types are unsuitable is a heavy-handed and problematic approach, so it's my
+# goal to explore ways by which various flavours of imperative programming and linear, functional programming can be more closely integrated
+# into the same language. 
+# 
+# My current thinking is to embed a monadic imperative language, like Haskell's ~IO~ monad, inside a suitable linear lambda calculus, along with
+# $\textbf{ref}$ types supporting the following operations:
+# 
+# - $\mathit{new} : \tau \rightarrow \textbf{io}\ (\textbf{ref}\ \tau)$
+# - $\mathit{read} : \textbf{ref}\ \tau \rightarrow \textbf{io}\ \tau$
+# - $\mathit{write} : \textbf{ref}\ \tau \rightarrow \tau \rightarrow \textbf{io}\ ()$
+# - $\mathit{free} : \textbf{ref}\ \tau \rightarrow \textbf{io}\ ()$
+# 
+# References are nonlinear, but entirely contained within the monadic language. We also add a linear $\textbf{box}$ type, with the following operations:
+# 
+# - $\mathit{seal} : \textbf{ref}\ \tau \rightarrow \textbf{io}\ (\textbf{box}\ \tau)$
+# - $\mathit{open} : \textbf{box}\ \tau \rightarrow \textbf{io}\ (\textbf{ref}\ \tau)$
+# 
+# Dynamically, both $\textbf{ref}$ and $\textbf{box}$ are represented as a pointer. This means that it's quite possible to create a program like the
+# the following, which creates two linear-typed pointers to the same heap object, violating the uniqueness property:
+# 
+# $$ \begin{array}{l}
+#    f : \textbf{io}\ (\textbf{box}\ \mathbb{N} \times \textbf{box}\ \mathbb{N})\\
+#    f = \textbf{do} \\
+#    \quad x \leftarrow \mathit{new}\ 10 \\
+#    \quad r_1 \leftarrow \mathit{seal}\ x \\
+#    \quad r_2 \leftarrow \mathit{seal}\ x \\
+#    \quad return\ (r_1, r_2)
+#    \end{array}
+# $$
+# 
+# This may seem bad, but it's actually what we want -- the embedded $\textbf{io}$ language must be able to violate the properties of the linear
+# type system; that's the point of having it! What we must make sure of is that such ill-behaved programs do not escape the $\textbf{io}$ sin-bin.
+# We could demand, as Haskell does, that all such unsafe programs live on the outer periphery of the user's program, and that no "pure" program
+# may call an $\textbf{io}$ program, but this is the exact opposite of the kinds of architecture we saw in Cogent -- purely functional high level 
+# code using imperative modules for the nitty-gritty details. To make it possible to use our $\textbf{io}$ language from pure code, we add a new
+#  construct to our language, $\mathit{performIO}$:
+# 
+# $$
+#  \mathit{performIO} : \textbf{io}\ \tau \rightarrow \tau
+# $$
+# 
+# This $\mathit{performIO}$ operation, however, is quite safe. Each usage will generate a /proof obligation/ for the user, to show that their
+# $\textbf{io}$ program, at least extensionally, observes the invariants of the linear type system: that is, that there is no internal
+# aliasing in the return value, and that the frame conditions are satisfied.
+
+Presenting such proof obligations in terms of stores and references as described above, however, is extremely tedious and difficult to work
+with when formally reasoning about imperative programs, particularly if the invariants we are trying to show are initially broken 
+and only later re-established. Typically, imperative programs lend themselves to axiomatic semantics for verification, the most obvious
+example being Hoare Logic [@Hoare], which provides a proof calculus for a judgement written $\mu \models \{ \phi \} P \{ \psi \}$, which states that, assuming
+the initial state $\mu$ (which maps variables to values) satisfies an assertion $\phi$, then the resultant state of running 
+$P$ on $\mu$, satisfies $\psi$.
+
+When our assertions involve references and aliasing, however, Hoare Logic doesn't buy us much over just reasoning about the operational semantics
+ directly. A variety of ad-hoc operators have to be added to the logic, for example to say that references do not alias, 
+references point to free space, or that references point to valid values. To make this cleaner, we turn instead to the 
+/Separation Logic/ [@Reynolds]. Separation logic is a variant of Hoare Logic that is specifically designed to accommodate
+ programming with references and aliasing. It augments the state of Hoare Logic with a mutable store $\sigma$, and the following additional assertions:
+
+- A special assertion $\mathbf{emp}$, which states that the store is empty, i.e $\mu, \sigma \models \mathbf{emp}$ if and only if $\text{dom}(\sigma) = \emptyset$.
+- A binary operator $\mapsto\ : \ell \times v$, which states that the store is defined at /exactly one/ location, i.e $\mu, \sigma \models \ell \mapsto v$ if and only if $\text{dom}(\sigma) = \{ \ell \} \land \sigma(\ell) = v$.
+- A /separating conjunction/ connective $\phi \ast \psi$, which says that the store $\sigma$ can be split into two disjoint parts $\sigma_1$ and $\sigma_2$ where $\mu, \sigma_1 \models \phi$ and $\mu, \sigma_2 \models \psi$.
+- A /separating implication/ connective $\phi -\!\!\!\ast\ \psi$, which says that extending the store with a disjoint part that satisfies $\phi$ results in a store that satisfies $\psi$.
+
+Crucially, Separation Logic includes the /frame rule/, its own solution to the frame problem, where an unrelated assertion $\phi_r$ can be added to
+both the pre- and the post-condition of a given program in a separating conjunction:
+
+$$
+\dfrac{ \{\phi\}\ P\ \{\psi\} }{ \{\phi \ast \phi_r\}\ P\ \{\psi \ast \phi_r\} }
+$$
+
+This allows much the same local reasoning that we desired before: The program $P$ can be verified to work for a store that satisfies $\phi$, but 
+otherwise contains /no other values/. Then that program may be freely used with a /larger/ state and we automatically learn, from the frame
+rule, that any unrelated bit of state cannot affect, and is not affected by the program $P$.
+
+Separation logic makes expressing these obligations substantially simpler. For example, given
+ a program $P$ with an input pointers $p$ and and output pointers $p'$, we can express all three frame conditions as a single triple:
+
+$$
+  \left \{ \bigast_{\scriptstyle \ell \in p} \exists v.\ \ell \mapsto v \right \} P \left \{ \bigast_{\ell \in p'} \exists v.\ \ell \mapsto v \right \} $$
+
+Here is a sketch of a proof that this implies the frame conditions listed above. Assume an input store $\sigma$. Split $\sigma$ into disjoint
+stores $\sigma_1$ and $\sigma_2$ such that $\sigma_1 \models  \mathop{\!\,\scalebox{1.5}{\begin{math}\ast\end{math}}}_{\ell \in p} \exists v.\ \ell \mapsto v\ \ (*)$. 
+Let the output store of running $P$ with $\sigma_1$ be $\sigma_1'$. Note that by the triple above, we have that $\sigma_1' \models  \mathop{\!\,\scalebox{1.5}{\begin{math}\ast\end{math}}}_{\ell \in p'} \exists v.\ \ell \mapsto v\ \ (*\!*)$. 
+
+We have by the frame rule that the output of running $P$ with the full store $\sigma$ is $\sigma' = \sigma_1' \cup \sigma_2$ where $\text{dom}(\sigma_1') \cap \text{dom}(\sigma_2) = \emptyset$.
+
+- *Leak freedom* - For any arbitrary location $\ell$, if $\ell \in p$ but $\ell \notin p'$ then we must show that $\ell \notin \text{dom}(\sigma')$. As $\ell \in p$, we know
+  from $(*)$ that $\ell \in \text{dom}(\sigma_1)$ and, as they are disjoint, $\ell \notin \text{dom}(\sigma_2)$. Therefore, the only way for $\ell \in \text{dom}(\sigma')$ 
+  to be true is if $\ell \in \text{dom}(\sigma_1')$, but as $\text{dom}(\sigma_1') = p'$ from $(*\!*)$, we can conclude that $\ell \notin \text{dom}(\sigma')$.
+- *Fresh allocation* - If $\ell \notin p$ but $\ell \in p'$ then we must show that $\ell \notin \text{dom}(\sigma)$. We have from $(*\!*)$ that $p' = \text{dom}(\sigma_1')$, and hence $\ell \in \text{dom}(\sigma_1')$. As they
+  are disjoint, $\ell \notin \text{dom}(\sigma_2)$ so the only way for $\ell \in \text{dom}(\sigma)$ to be true is if $\ell \in \text{dom}(\sigma_1)$. But, as we know
+  that $\text{dom}(\sigma_1) = p$ from $(*)$ and $\ell \notin p$, we can conclude that $\ell \notin \text{dom}(\sigma)$.
+- *Inertia* - If $\ell \notin p$ and $\ell \notin p'$, then we can conclude from $(*)$ that $\ell \notin \text{dom}(\sigma_1)$ and from $(*\!*)$ that $\ell \notin \text{dom}(\sigma_1')$.
+  If $\ell \in \text{dom}(\sigma_2)$, then $\sigma(l) = \sigma_2(l) = \sigma'(l)$, thanks to the frame rule as shown above. If $\ell \notin \text{dom}(\sigma_2)$, then
+  $\ell \notin \text{dom}(\sigma)$ and $\ell \notin \text{dom}(\sigma')$ and therefore we can say that $\sigma(\ell) = \sigma'(\ell)$ as they're both undefined.
+
+I think this is a much cleaner and easier way to state the frame conditions.
+
+My next item to investigate is how I might integrate this into a seamless language and verification framework. My current thinking is to take a lambda calculus
+with linear types and refinement types, and augment it with an imperative embedded language, which allows several of the guarantees of the linear type system to
+be suspended. The imperative embedded language might resemble the Hoare-state monad [@Swierstra], only using Separation Logic rather than Hoare Logic, but I am 
+still figuring out all the details.
+
+**** References
+
+[fn:1] The real formalisation is a bit more complicated, allowing nonlinear /read-only/ pointers as well as linear, writable ones.
+
+# Γ ⊢ a : IO { ∀ p ∈ ptrs(Γ). p valid } τ {r. (∀ p ∈ ptrs(r). p valid) }
+# ----------------------------------------------------------------------
+# Γ ⊢ linear a : τ
+
+
