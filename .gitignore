@@ -5,3 +5,4 @@ _site
 agda-lib
 .stack-work
 *.agdai
+cites/auto

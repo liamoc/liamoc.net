@@ -1,0 +1,217 @@
+---
+title: The Theory of <tt>patches-vector</tt>
+tags: category-theory, patch-theory, haskell, version-control, quickcheck
+preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}
+---
+
+Recently I released the Haskell library [[https://github.com/liamoc/patches-vector#readme][patches-vector]], a library for simple, but theoretically-sound manipulation of /patches/, or diffs, on a
+"document", which in this case just consists of a ~Vector~ of arbitrary elements. 
+
+I approached the development of this library from a formal perspective, devising laws for all the operations and rigorously checking them with
+QuickCheck. I defined a patch as a series of /edits/ to a document, where an /edit/ is simply an insertion, deletion, or replacement of a particular
+vector element.
+
+#+BEGIN_SRC haskell
+newtype Patch a = Patch [Edit a] deriving (Eq)
+
+data Edit a = Insert  Int a
+            | Delete  Int a
+            | Replace Int a a
+            deriving (Show, Read, Eq)
+#+END_SRC
+
+We have a function, ~apply~, that takes a patch and applies it to a document:
+
+#+BEGIN_SRC haskell
+apply :: Patch a -> Vector a -> Vector a
+#+END_SRC
+
+Patches may be structurally different, but accomplish the same thing. For example, a patch that consists of ~Delete~ and an ~Insert~ may
+extensionally be equivalent to a patch that does a single ~Replace~, but they are structurally different. To simplify the mathematical presentation
+here, we define an equivalence relation $(\simeq)$ that captures this /extensional/ patch-equivalence:
+
+$$
+  p \simeq q \stackrel{\text{def}}{=} (\mathit{apply}\ p\ d = \mathit{apply}\ q\ d)
+$$
+
+** Documents and patches form a category
+
+To define further operations, we must first note that patches and documents form a /category/. A /category/ is made up of a class of
+/objects/ (in this case documents), and a class of arrows or /morphisms/ (in this case pathes). For each object $X$, there must be an 
+/identity morphism/ $id_X : X \rightarrow X$, and for each pair of morphisms $p : A \rightarrow B$ and $q : B \rightarrow C$ there must 
+be a composed morphism $p \circ q : A \rightarrow C$. They must satisfy the following laws:
+
+- Left-identity: for any morphism $p : X \rightarrow Y$, 
+
+    $$\mathit{id}_X \circ p \simeq p$$
+
+- Right-identity: for any morphism $p : X \rightarrow Y$,
+
+    $$p \circ \mathit{id}_Y \simeq p$$
+  
+- Associativity: for any three morphisms $p : W \rightarrow X$, $q : X \rightarrow Y$, $r : Y \rightarrow Z$, 
+
+  $$p \circ (q \circ r) \simeq (p \circ q) \circ r$$
+
+The category laws laws comprise the first part of our specification. Translating it into Haskell, 
+I made ~Patch a~ an instance of ~Monoid~, just for convenience, even though the composition operator is not defined for any arbitrary patches,
+and therefore patches technically are not a monoid in the algebraic sense.
+
+Then, the above laws become the following QuickCheck properties:
+
+#+BEGIN_SRC haskell
+forAll (patchesFrom d) $ \a -> a <> mempty == a
+
+forAll (patchesFrom d) $ \a -> mempty <> a == a
+
+forAll (historyFrom d 3) $ \[a, b, c] ->
+  apply (a <> (b <> c)) d == apply ((a <> b) <> c) d
+#+END_SRC
+
+Here, ~patchesFrom d~ is a generator of patches with domain document ~d~, and ~historyFrom d 3~ produces a sequence of patches, one after
+the other, starting at ~d~.
+
+** Our category is indiscrete
+
+In the case of patches and documents, they form what's called /indiscrete category/ or a /chaotic category/, as there exists a single, unique[fn:1] patch between any two documents.
+A function to /find/ that patch is simply ~diff~, which takes two documents and computes the patch between them, using the Wagner-Fischer algorithm
+[@WagnerFischer].
+
+#+BEGIN_SRC haskell 
+diff :: Eq a => Vector a -> Vector a -> Patch a
+#+END_SRC
+
+It's easy to come up with correctness properties for such a function, just by examining its interaction with the identity patch, the composition operator, and ~apply~:
+
+#+BEGIN_SRC haskell
+apply (diff d e) d == e
+
+diff d d == mempty
+
+apply (diff a b <> diff b c) a == apply (diff a c) a
+#+END_SRC
+
+** Our category is a groupoid
+
+As there exists a patch between any two documents, it follows that for every patch $p : X \rightarrow Y$ there exists an /inverse patch/ 
+$p^{-1} : Y \rightarrow X$ such that $p \circ p^{-1} = \mathit{id}_X$ and $p^{-1} \circ p = \mathit{id}_Y$. We define a function, ~inverse~, in Haskell:
+
+#+BEGIN_SRC haskell
+inverse :: Patch a -> Patch a
+#+END_SRC
+
+And we can check all the usual properties of inverses:
+
+#+BEGIN_SRC haskell
+forAll (patchesFrom d) $ \p -> p <> inverse p == mempty
+
+forAll (patchesFrom d) $ \p -> inverse p <> p == mempty
+
+forAll (patchesFrom d) $ \p -> inverse (inverse p) == p
+
+forAll (patchesFrom d) $ \p -> inverse mempty == mempty
+
+forAll (historyFrom d 2) $ \[p, q] ->
+  inverse (p <> q) == inverse q <> inverse p
+#+END_SRC
+
+We can also verify that the inverse patch is the same that we could have found by ~diff~:
+
+#+BEGIN_SRC haskell
+apply (diff d e) d == apply (inverse (diff e d)) d
+#+END_SRC
+
+A category that contains inverses for all morphisms is called a /groupoid/. All indiscrete categories (such as patches) are groupoids, as the inverse morphism is
+guaranteed to exist. Groupoids are very common, and can also be thought of as a group[fn:2] with a partial composition relation, but I find the categorical presentation cleaner.
+
+** Merges are pushouts
+
+So, we have now specified how to compute the unique patch between any two documents (~diff~), how to squash patches together into a single patch (composition),
+how to apply patches to a document (~apply~), and how to compute the inverse of a given patch (~inverse~). The only thing we're missing is the crown 
+jewel of patch theory, how to /merge/ patches when they diverge.
+
+I came to patch theory from concurrency control research, and not via the patch theory of Darcs [@DarcsPaper], so there are some differences in how
+I approached this problem compared to how Darcs does.
+
+In their seminal paper [@EllisGibbs] on the topic, Ellis and Gibbs define a function $t$ that, given a diverging pair of patches $p : X \rightarrow A$ 
+and $q : X \rightarrow B$, will produce new patches $p' : B \rightarrow Y$ and $q' : A \rightarrow Y$, such that the result of $p \circ q'$ and $q \circ p'$ is the same:
+
+$$
+\xymatrix{  & X \ar[dl]_{p}\ar[dr]^{q} & \\
+           A\ar[dr]_{q'} & & B\ar[dl]^{p'} \\
+            & Y & }
+$$
+
+They called this approach /operational transformation/, but category theory has a shorter name for it: a /pushout/. A /pushout/ of two morphisms $p : X \rightarrow A$ and $q : X \rightarrow B$
+consists of an object $Y$ and two morphisms $p' : B \rightarrow Y$ and $q' : A \rightarrow Y$ such that $p \circ q' \simeq q \circ p'$. The pushout must also be 
+/universal/, but as our category is indiscrete we know that this is the case without having to do anything. 
+
+We can use this pushout, which we call ~transform~, as a way to implement merges. Assuming a document history $d_1d_2d_3\dots d_n$ and an incoming patch from version $d_k$, where $k \le 1 < n$,
+we can simply ~transform~ the input patch $p$ against the composition of all the patches $d_k\dots d_n$, resulting in a new patch $p'$ that can be applied to the latest document $d_n$.
+
+Note that just specifying the ~transform~ function to be a pushout isn't quite sufficient: It would be perfectly possible to resolve two diverging patches $p$ and $q$ by using 
+patches $p^{-1}$ for $q'$ and $q^{-1}$ for $p'$, and they would resolve to the same document, but probably wouldn't be what the user intended.
+
+Instead, our ~transform~ function will attempt to incorporate the changes of $p$ into $p'$ and the changes of $q$ into $q'$, up to merge conflicts, which can be handled 
+by a function passed in as a parameter to ~transform~:
+
+#+BEGIN_SRC haskell
+transformWith :: (a -> a -> a) -> (Patch a, Patch a) -> (Patch a, Patch a)
+#+END_SRC
+
+Then we can add the pushout property as part of our QuickCheck specification:
+
+#+BEGIN_SRC haskell
+forAll (divergingPatchesFrom d) $ \(p,q) ->
+  let (p', q') = transformWith const p q 
+   in apply (p <> q') d == apply (q <> p') d
+#+END_SRC
+
+If the merge handler is commutative, then so is ~transformWith~:
+
+#+BEGIN_SRC haskell
+forAll (divergingPatchesFrom d) $ \(p,q) ->
+   let (p' , q' ) = transformWith (*) p q 
+       (q'', p'') = transformWith (*) q p 
+    in p' == p''
+    && q' == q''
+#+END_SRC
+
+We can also ensure that ~transformWith~ keeps the intention of the input patches by using $\mathit{id}$ as one of the diverging patches:
+
+#+BEGIN_SRC haskell
+forAll (patchesFrom d) $ \ p -> 
+  transformWith (*) mempty p == (mempty, p)
+forAll (patchesFrom d) $ \ p ->
+  transformWith (*) p mempty == (p, mempty)
+#+END_SRC
+
+** Coda
+
+And with that, we've specified ~patches-vector~. A patch theory is "just" a small, indiscrete groupoid with pushouts[fn:3]. We can theoretically
+account for all the usual patch operations: inversion, composition, merging, ~diff~, and ~apply~, and this gives rise to a spec that is rock
+solid and machine-checked by QuickCheck.
+
+The full code is available on [[https://github.com/liamoc/patches-vector][GitHub]] and [[http://hackage.haskell.org/package/patches-vector][Hackage]]. Please do try it out!
+
+I also wrote a library, ~composition-tree~ (also on [[http://hackage.haskell.org/package/composition-tree][Hackage]] and [[https://github.com/liamoc/composition-tree][GitHub]]), which is similarly thoroughly specified, and is a convenient way to store a series of patches in 
+a sequence, with good asymptotics for things like taking the ~mconcat~ of a sublist. I use these two libraries together with ~pandoc~, ~acid-state~ and ~servant~
+to make a basic wiki system with excellent support for concurrent edits, and edits to arbitrary versions. The wiki system is called ~dixi~ (also on [[https://github.com/liamoc/dixi][GitHub]] and [[http://hackage.haskell.org/package/dixi][Hackage]]).
+
+
+*** Acknowledgements and Related Work
+
+I independently invented this particular flavour of patch theory, but it's extremely similar to, for example, the patch theory underlying
+the [[https://pijul.org][pijul]] version control system [see @Mimram], which also uses pushouts to model merges.
+
+Another paper that is of interest is the recent work encoding patch theory inside Homotopy Type Theory using Higher Inductive Types [@HoTTP]. 
+HoTT is typically given semantics by ∞-groupoids, so it makes sense that patches would have a natural encoding, but I haven't read that paper yet. 
+
+Also, another paper [@SepLog] uses separation logic to describe the semantics of version control, which is another interesting take on patch theoretic
+concepts.
+
+**** References
+
+[fn:1] Up to $(\simeq)$, of course.
+[fn:2] A /group/ is a monoid with inverses.
+[fn:3] What's the problem?
