@@ -85,17 +85,33 @@ div.info {
 }
 
 @font-face {
-    font-family: 'Envy Code R';
-    src: url('/images/envy_code_r-webfont.eot');
-    src: url('/images/envy_code_r-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/images/envy_code_r-webfont.woff') format('woff'),
-         url('/images/envy_code_r-webfont.ttf') format('truetype'),
-         url('/images/envy_code_r-webfont.svg#envy_code_rregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+  font-family: 'Iosevka';
+  src: url('/images/Iosevka.eot?#iefix') format('embedded-opentype'), 
+       url('/images/Iosevka.woff') format('woff'), 
+       url('/images/Iosevka.ttf')  format('truetype'),
+       url('images/Iosevka.svg#Iosevka') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Iosevka';
+  src: url('/images/Iosevka-Bold.eot?#iefix') format('embedded-opentype'), 
+       url('/images/Iosevka-Bold.woff') format('woff'), 
+       url('/images/Iosevka-Bold.ttf')  format('truetype'),
+       url('images/Iosevka-Bold.svg#Iosevka') format('svg');
+  font-weight: bold;
+  font-style: normal;
 }
 
+@font-face {
+  font-family: 'Iosevka';
+  src: url('/images/Iosevka-Italic.eot?#iefix') format('embedded-opentype'), 
+       url('/images/Iosevka-Italic.woff') format('woff'), 
+       url('/images/Iosevka-Italic.ttf')  format('truetype'),
+       url('images/Iosevka-Italic.svg#Iosevka') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
 .math { }
 
 .display-math {
@@ -111,7 +127,7 @@ table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
 table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }       
-pre, code { background-color: #f8f8f8; font-family: 'Envy Code R', monospace; font-size:11pt }
+pre, code { background-color: #f8f8f8; font-family: 'Iosevka', monospace; font-size:11pt }
 code > span.kw { color: #204a87; font-weight: bold; }
 code > span.dt { color: #204a87; }
 code > span.dv { color: #0000cf; }
