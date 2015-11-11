@@ -1,0 +1,86 @@
+---
+title: Bits of Hackage for <tt>liamoc.net</tt>
+tags: hakyll, haskell, agda, blog, latex
+...
+
+#+BEGIN_QUOTE
+Work hard, boy, and you'll find,  \\
+One day you'll have  \\
+A blog like mine, blog like mine, \\
+A blog like mine. \\
+     -- Cat Stevens [Paraphrased]
+#+END_QUOTE
+
+Over the years many people have asked me to share with them how I
+developed this website, seeing as it has a variety of very nice features
+including:
+
+ - Embedded LaTeX math actually rendered with LaTeX and embedded in the
+   document. This means I can use LaTeX packages like ~tikz~ and ~xypic~
+   for diagrams, as well as well typeset formulas inline with other text
+   with baseline correction. An obligatory demonstration: For inline math,
+   $y = mx + b$, and for display math:
+
+   $$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
+   
+ - Literate Agda support, such as in [[http:/posts/2015-08-23-verified-compiler.html][this article]], with semantic highlighting
+   and hyperlinked jump-to-definition, even for the standard library imports.
+
+ - Citeproc based bibliography support, which reads BibTeX databases. Most of 
+   my technical articles make use of this, for example [[http:/posts/2015-11-10-patch-theory.html][this article]], and the
+   article linked above.
+
+ - Atom-based feed support (see the little button at the bottom of this page)
+
+ - Syntax highlighting for most other languages, such as Haskell, visible 
+   in [[http:/posts/2015-11-10-patch-theory.html][the same article linked above]].
+
+
+Up until recently, I was very reluctant to share the code for this website,
+because, among other things:
+
+ - LaTeX rendering was accomplished through the use of an ancient, barely working
+   piece of C code I cribbed from the GladTeX installation. It was very system 
+   dependent - it required ~latex~, ~dvips~ and ~gs~ to be in exactly the right places
+   to work correctly. The formulae were then embedded in the HTML document 
+   by _postprocessing_ the output of Pandoc with ~tagsoup~, and detecting any
+   equations in a very ad-hoc way. They were cached using a liberal mix of 
+   ~unsafePerformIO~ and hacks, which barely worked and typically caused problems
+   if the LaTeX failed to compile.
+
+ - The bibliography support relied on a hacky workaround I had written to provide ~Binary~
+   instances for an unexposed part of ~pandoc-citeproc~.
+
+ - The site would mysteriously corrupt its own Hakyll cache for no reason.
+
+ - The Literate Agda compiler was hardcoded against an old version of Agda and was pretty 
+   unmaintainable.
+
+However I am pleased to announce that now I have cleaned up all of these problems.
+The LaTeX rendering has been completely rewritten in Haskell, and is more configurable
+   and useful. It's provided in my ~latex-formulae~ suite of packages, available on [[https://github.com/liamoc/latex-formulae][GitHub]] 
+   and Hackage under the following three packages:
+
+   - ~latex-formulae-image~ - Basic support for rendering LaTeX formulae to images using
+     actual system LaTeX.
+
+   - ~latex-formulae-pandoc~ - Support for rendering LaTeX equations inside pandoc documents,
+     and a standalone executable that can be used as a Pandoc filter.
+
+   - ~latex-formulae-hakyll~ - A Hakyll compiler that uses ~latex-formulae-pandoc~, and adds
+     some useful caching for Hakyll ~watch~ servers.
+
+ The Agda code has been cleaned up and packaged into two useful Hackage packages, also
+   available on [[https://github.com/liamoc/agda-snippets][GitHub]]:
+
+   - ~agda-snippets~ - Support for preprocessing /any text/ document and replacing Agda code 
+     blocks with coloured, hyperlinked source in HTML. It leaves the rest of the text untouched,
+     so it's possible to then read the output with Pandoc.
+
+   - ~agda-snippets-hakyll~ - Adds some basic mechanisms to integrate ~agda-snippets~ with Hakyll
+     and Pandoc.
+
+ - The bibliography workaround is no longer necessary, due to fixes in upstream libraries.
+
+The other features (feeds, highlighting) are all just provided by Hakyll built-in. The source of
+this website itself is also available on [[https://github.com/liamoc/liamoc.net][GitHub]], in particular the [[https://github.com/liamoc/liamoc.net/blob/master/site.hs][Hakyll code]] for it may be of interest.
