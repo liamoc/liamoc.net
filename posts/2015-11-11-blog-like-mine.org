@@ -80,7 +80,7 @@ The LaTeX rendering has been completely rewritten in Haskell, and is more config
    - ~agda-snippets-hakyll~ - Adds some basic mechanisms to integrate ~agda-snippets~ with Hakyll
      and Pandoc.
 
- - The bibliography workaround is no longer necessary, due to fixes in upstream libraries.
+ The bibliography workaround is no longer necessary, due to fixes in upstream libraries.
 
 The other features (feeds, highlighting) are all just provided by Hakyll built-in. The source of
 this website itself is also available on [[https://github.com/liamoc/liamoc.net][GitHub]], in particular the [[https://github.com/liamoc/liamoc.net/blob/master/site.hs][Hakyll code]] for it may be of interest.
