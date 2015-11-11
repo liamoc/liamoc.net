@@ -6,3 +6,4 @@ agda-lib
 .stack-work
 *.agdai
 cites/auto
+cv.log
