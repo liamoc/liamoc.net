@@ -58,8 +58,8 @@ because, among other things:
 
 However I am pleased to announce that now I have cleaned up all of these problems.
 The LaTeX rendering has been completely rewritten in Haskell, and is more configurable
-   and useful. It's provided in my ~latex-formulae~ suite of packages, available on [[https://github.com/liamoc/latex-formulae][GitHub]] 
-   and Hackage under the following three packages:
+and useful. It's provided in my ~latex-formulae~ suite of packages, available on [[https://github.com/liamoc/latex-formulae][GitHub]] 
+and Hackage under the following three packages:
 
    - ~latex-formulae-image~ - Basic support for rendering LaTeX formulae to images using
      actual system LaTeX.
@@ -84,3 +84,4 @@ The LaTeX rendering has been completely rewritten in Haskell, and is more config
 
 The other features (feeds, highlighting) are all just provided by Hakyll built-in. The source of
 this website itself is also available on [[https://github.com/liamoc/liamoc.net][GitHub]], in particular the [[https://github.com/liamoc/liamoc.net/blob/master/site.hs][Hakyll code]] for it may be of interest.
+
