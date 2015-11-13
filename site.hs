@@ -112,7 +112,7 @@ main = do
         getResourceBody
           >>= readLiterateAgda agdaOpts agdaLibraryURI
           >>= defaultFileType Markdown readPandoc'
-          >>= renderEquations (formulaSettings pr)
+          >>= traverse (renderEquations (formulaSettings pr))
           >>= writePandoc'
           >>= loadAndApplyTemplate "templates/post.html"    (tagsCtx tags)
           >>= saveSnapshot "content"
