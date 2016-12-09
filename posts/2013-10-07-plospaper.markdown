@@ -1,13 +1,13 @@
 ---
 title: Trustworthy File Systems accepted to PLOS
-tags: nicta, verification, publication, plos, file-systems, cdsl
+tags: nicta, verification, publication, plos, file-systems, cogent
 ---
 
 The Trustworthy File Systems project has had a paper accepted into PLOS this year. I am one of
 the co-authors.
 
 I think it gives a good overview of our project, our research position, and what we are trying
-to achieve. It also gives a few tantalising details about the language I'm working on, CDSL.
+to achieve. It also gives a few tantalising details about the language I'm working on, CDSL (edit: now called Cogent).
 
 <small>Gabi Keller, Toby Murray, Sidney Amani, Liam O'Connor, Zilin Chen, Leonid Ryzhyk, Gerwin Klein and Gernot Heiser</small> \
 **File Systems Deserve Verification Too!** \

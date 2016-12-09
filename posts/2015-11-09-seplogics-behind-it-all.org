@@ -1,6 +1,6 @@
 ---
 title: Ad-hoc Frame Conditions are Logical, Separately
-tags: verification, types, semantics, linear-types, cdsl, separation-logic, imperative, functional
+tags: verification, types, semantics, linear-types, cogent, separation-logic, imperative, functional
 preamble: \usepackage{amsmath}\usepackage{amssymb}\usepackage{graphicx}\newcommand{\bigast}{\mathop{\!\,\scalebox{2}{$\ast$}}}
 ...
 

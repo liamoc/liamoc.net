@@ -1,0 +1,81 @@
+---
+title: Publications
+---
+
+** Cogent 
+
+A project at Data61 (CSIRO) aimed at using programming languages with interesting types to aid verification of low-level systems. More information is available at the [[http://ssrg.nicta.com.au/projects/TS/cogent.pml][Cogent website]].
+
+#+BEGIN_HTML
+<small>
+#+END_HTML
+Liam O'Connor, Zilin Chen, Christine Rizkallah, Sidney Amani, Japheth Lim, Toby Murray, Yutaka Nagashima, Thomas Sewell, Gerwin Klein \\
+*Refinement through Restraint: Bringing Down the Cost of Verification* \\
+To appear, /International Conference on Functional Programming (ICFP)/, Nara, Japan, September 2016. \\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/OConnor_CRALMNSK_16.abstract.pml][Available from CSIRO]]
+
+Christine Rizkallah, Japheth Lim, Yutaka Nagashima, Thomas Sewell, Zilin Chen, Liam O'Connor, Toby Murray, Gabriele Keller and Gerwin Klein \\
+*A Framework for the Automatic Formal Verification of Refinement From Cogent to C* \\
+To appear, /International Conference on Interactive Theorem Proving (ITP)/, Nancy, France, August 2016.\\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/Rizkallah_LNSCOMKK_16.abstract.pml][Available from CSIRO]]
+
+Sidney Amani, Alex Hixon, Zilin Chen, Christine Rizkallah, Peter Chubb, Liam O'Connor, Joel Beeren, Yutaka Nagashima, Japheth Lim, Thomas Sewell, Joseph Tuong, Gabriele Keller, Toby Murray, Gerwin Klein and Gernot Heiser \\
+*Cogent: Verifying High-assurance File System Implementations* \\
+/International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS)/, pp. 175-188, Atlanta, GA, USA, April 2016. \\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/Amani_HCRCOBNLSTKMKH_16.abstract.pml][Available from CSIRO]]
+
+Liam O'Connor, Gabriele Keller, Sidney Amani, Toby Murray, Gerwin Klein, Zilin Chen and Christine Rizkallah \\
+*CDSL Version 1: Simplifying Verification with Linear Types* \\
+/Technical Report/, NICTA, October, 2014. \\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/OConnorDavis_KAMKCR_14:tr.abstract.pml][Available from CSIRO]]
+
+Gabriele Keller, Toby Murray, Sidney Amani, Liam O'Connor, Zilin Chen, Leonid Ryzhyk, Gerwin Klein and Gernot Heiser \\
+*File Systems Deserve Verification Too!* \\
+/Workshop on Programming Languages and Operating Systems (PLOS)/, pp. 1-7, Farmington, Pennsylvania, USA, November, 2013 \\
+A revised version of this paper was published in /Operating Systems Review/, Volume 48, Issue 1, January 2014, pages 58-64.\\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/Keller_MAOCRKH_13.abstract.pml][Available from CSIRO]]
+#+BEGIN_HTML
+</small>
+#+END_HTML
+
+** Dependent types and type systems
+#+BEGIN_HTML
+<small>
+#+END_HTML
+
+Liam O'Connor\\
+*Applications of Applicative Proof Search*\\
+To appear, /Workshop on Type-Driven Development/, Nara, Japan, September, 2016.
+
+Liam O'Connor\\
+*Formalising GHC's Type System*\\
+/Undergraduate Thesis/, UNSW, 2012.\\
+[[https://my.cse.unsw.edu.au//uploads/thesis/1350389378_thesisB.pdf][Available from UNSW]]
+#+BEGIN_HTML
+</small>
+#+END_HTML
+
+** Miscellaneous
+
+#+BEGIN_HTML
+<small>
+#+END_HTML
+
+Yutaka Nagashima and Liam O'Connor\\
+*Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML*\\
+To appear, /Workshop on ML 2016/, Nara, Japan, September, 2016.\\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/Nagashima_OConnor_16.abstract.pml][Available from CSIRO]]
+
+Liam O'Connor\\
+*Gentzen: A Beginner's Proof Assistant based on Higher Order Logic* \\
+/Undergraduate Project/, UNSW, 2012\\
+[[./images/gentzen.pdf][Available here]]
+
+#+BEGIN_HTML
+</small>
+#+END_HTML
+
+
+
+
+

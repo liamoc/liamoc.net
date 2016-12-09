@@ -1,0 +1,38 @@
+---
+title: Trifecta at Nara
+tags: cogent, verification, agda, model-checking, types, semantics, compilers, standard-ml, ml-modules, testing
+preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}
+---
+
+[[/images/nara.png]]
+
+I have had considerable success at ICFP2016 and co-located events.
+I will be presenting two papers: one at ICFP, on the [[http://ssrg.nicta.com.au/projects/TS/cogent.pml][Cogent]] project; and one at TyDe, about my work on proof-automation combinators in Agda. I also co-authored a two page paper that was accepted to the ML workshop, also co-located with ICFP, but I will not be presenting the paper. Details of all three papers are presented below.
+
+Liam O'Connor, Zilin Chen, Christine Rizkallah, Sidney Amani, Japheth Lim, Toby Murray, Yutaka Nagashima, Thomas Sewell, Gerwin Klein \\
+*Refinement through Restraint: Bringing Down the Cost of Verification* \\
+/International Conference on Functional Programming (ICFP)/, Nara, Japan, September 2016. \\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/OConnor_CRALMNSK_16.abstract.pml][Available from CSIRO]]
+
+#+BEGIN_QUOTE
+We present a framework aimed at significantly reducing the cost of verifying certain classes of systems software, such as file systems. Our framework allows for equational reasoning about systems code written in our new language, Cogent. Cogent is a restricted, polymorphic, higher-order, and purely functional language with linear types and without the need for a trusted runtime or garbage collector. Linear types allow us to assign two semantics to the language: one imperative, suitable for efficient C code generation; and one functional, suitable for equational reasoning and verification. As Cogent is a restricted language, it is designed to easily interoperate with existing C functions and to connect to existing C verification frameworks. Our framework is based on certifying compilation: For a well-typed Cogent program, our compiler produces C code, a high-level shallow embedding of its semantics in Isabelle/HOL, and a proof that the C code correctly refines this embedding. Thus one can reason about the full semantics of real-world systems code productively and equationally, while retaining the interoperability and leanness of C. The compiler certificate is a series of language-level proofs and per-program translation validation phases, combined into one coherent top-level theorem in Isabelle/HOL.
+#+END_QUOTE
+
+
+Liam O'Connor\\
+*Applications of Applicative Proof Search*\\
+/Workshop on Type-Driven Development/, Nara, Japan, September, 2016.
+
+#+BEGIN_QUOTE
+In this paper, we develop a library of typed proof search procedures, and demonstrate their remarkable utility as a mechanism for proof-search and automation. We describe a framework for describing proof-search procedures in Agda, with a library of tactical combinators based on applicative functors. This framework is very general, so we demonstrate the approach with two common applications from the field of software verification: a library for property-based testing in the style of SmallCheck, and the embedding of a basic model checker inside our framework, which we use to verify the correctness of common concurrency algorithms. 
+#+END_QUOTE
+
+
+Yutaka Nagashima and Liam O'Connor\\
+*Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML*\\
+/Workshop on ML 2016/, Nara, Japan, September, 2016.\\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/Nagashima_OConnor_16.abstract.pml][Available from CSIRO]]
+
+#+BEGIN_QUOTE
+We implement a library for encoding constructor classes in Standard ML, including elaboration from minimal definitions, and automatic instantiation of superclasses.
+#+END_QUOTE

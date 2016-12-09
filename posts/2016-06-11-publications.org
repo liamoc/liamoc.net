@@ -1,0 +1,39 @@
+---
+title: Publication Storm for Cogent!
+tags: cogent, linear-types, verification, nicta, data61, publication, icfp, itp, asplos, file-systems
+preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}
+---
+
+[[/images/cogent.png]]
+
+The language I have been working on for the last couple of years with NICTA/Data61, called [[http://ssrg.nicta.com.au/projects/TS/cogent.pml][Cogent]], was recently accepted to ICFP 2016, topping off a string of publications at ITP 2016 and ASPLOS 2016. 
+
+The ICFP paper, entitled "Refinement Through Restraint: Bringing Down the Cost of Verification", outlines our approach to the language design, the implementation of its certifying compiler, and the various refinement proofs that it generates.
+
+[[http://ssrg.nicta.com.au/publications/nictaabstracts/OConnor_CARLSNMKHHT_16.abstract.pml][The paper will be available from NICTA]] after publication. 
+
+#+BEGIN_QUOTE
+We present a framework aimed at significantly reducing the cost of verifying certain classes of systems software, such as file systems. Our framework allows for equational reasoning about systems code written in our new language, Cogent. Cogent is a restricted, polymorphic, higher-order, and purely functional language with linear types and without the need for a trusted runtime or garbage collector. Linear types allow us to assign two semantics to the language: one imperative, suitable for efficient C code generation; and one functional, suitable for equational reasoning and verification. As Cogent is a restricted language, it is designed to easily interoperate with existing C functions and to connect to existing C verification frameworks. Our framework is based on certifying compilation: For a well-typed Cogent program, our compiler produces C code, a high-level shallow embedding of its semantics in Isabelle/HOL, and a proof that the C code correctly refines this embedding. Thus one can reason about the full semantics of real-world systems code productively and equationally, while retaining the interoperability and leanness of C. The compiler certificate is a series of language-level proofs and per-program translation validation phases, combined into one coherent top-level theorem in Isabelle/HOL.
+#+END_QUOTE
+
+We also were successful at ITP 2016 with our paper "A Framework for the Automatic Formal Verification of Refinement from Cogent to C",  where we present the details of our low-level translation validation refinement framework. This paper is [[http://ssrg.nicta.com.au/publications/nictaabstracts/Rizkallah_LNSCOMKK_16.abstract.pml][also available from NICTA]].
+
+#+BEGIN_QUOTE
+Our language Cogent simplifies verification of systems software using
+a certifying compiler, which produces a proof that the generated C code is
+a refinement of the original Cogent program. Despite the fact that Cogent itself
+contains a number of refinement layers, the semantic gap between even the lowest
+level of Cogent semantics and the generated C code remains large.
+In this paper we close this gap with an automated refinement framework which
+validates the compiler’s code generation phase. This framework makes use of
+existing C verification tools and introduces a new technique to relate the type
+systems of Cogent and C.
+#+END_QUOTE
+
+Lastly, Gernot Heiser recently presented (on behalf of Sidney Amani) our systems paper at ASPLOS 2016, where we outline the implementation, performance, and verification of two case study file systems using Cogent. This paper is available from NICTA [[http://ssrg.nicta.com.au/publications/nictaabstracts/Amani_HCRCOBNLSTKMKH_16.abstract.pml][here]].
+
+#+BEGIN_QUOTE
+We present an approach to writing and formally verifying high-assurance file-system code in a restricted language called Cogent, supported by a certifying compiler that produces C code, high-level specification of Cogent, and translation correctness proofs. The language is strongly typed and guarantees absence of a number of common file system implementation errors. We show how verification effort is drastically reduced for proving higher-level properties of the file system implementation by reasoning about the generated formal specification rather than its low-level C code. We use the framework to write two Linux file systems, and compare their performance with their native C implementations.
+#+END_QUOTE
+
+This concludes a string of publications for our project in the three main fields it intersects: programming languages (ICFP), systems (ASPLOS) and formal methods (ITP). Congratulations are due to everyone on who contributed.

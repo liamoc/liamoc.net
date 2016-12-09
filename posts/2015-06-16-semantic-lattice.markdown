@@ -1,6 +1,6 @@
 ---
 title: A Lattice of Languages is a Verification Buffet
-tags: verification, types, semantics, linear-types, cdsl, total, functional, edsls, reasoning
+tags: verification, types, semantics, linear-types, cogent, total, functional, edsls, reasoning
 preamble: \usepackage{amsmath}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}
 ---
 
