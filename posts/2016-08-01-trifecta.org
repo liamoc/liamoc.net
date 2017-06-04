@@ -1,10 +1,10 @@
 ---
 title: Trifecta at Nara
-tags: cogent, verification, agda, model-checking, types, semantics, compilers, standard-ml, ml-modules, testing
+tags: cogent, verification, agda, model-checking, types, semantics, compilers, standard-ml, ml-modules, testing, icfp, tyde, ml-workshop
 preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}
 ---
 
-[[/images/nara.png]]
+[[../images/nara.png]]
 
 I have had considerable success at ICFP2016 and co-located events.
 I will be presenting two papers: one at ICFP, on the [[http://ssrg.nicta.com.au/projects/TS/cogent.pml][Cogent]] project; and one at TyDe, about my work on proof-automation combinators in Agda. I also co-authored a two page paper that was accepted to the ML workshop, also co-located with ICFP, but I will not be presenting the paper. Details of all three papers are presented below.

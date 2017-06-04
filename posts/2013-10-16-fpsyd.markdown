@@ -1,6 +1,6 @@
 ---
 title: FP-Syd Talk on CDSL (and TFS)
-tags: fp-syd, slides, nicta, verification, linear-types, cogent
+tags: fp-syd, slides, data61, verification, linear-types, cogent
 ---
 
 Today I will be delivering a talk on the development and motivation behind the design of the

@@ -30,8 +30,9 @@ body {
     color: black;
     font-size: 16px;
     margin: 0px auto 0px auto;
-    width: 600px;
+    width: 720px;
     font-family: 'CMUConcreteRoman', serif;
+    background:#dfdfdf;
 }
 
 div#header {
@@ -54,13 +55,22 @@ div#header #navigation {
 
 div#header #navigation a {
     color: black;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
     margin-left: 12px;
+    position:relative;
+    top: 2px;
     text-decoration: none;
     text-transform: uppercase;
 }
-
+#everything{
+    border: solid;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-width:  1px 1px 1px 1px;
+    border-color: #aaaaaa;
+    padding: 25px 60px;
+    background: #fffffd;
+}
 div#footer {
     border-top: solid 2px black;
     color: #555;

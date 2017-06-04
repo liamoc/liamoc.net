@@ -11,12 +11,13 @@ A project at Data61 (CSIRO) aimed at using programming languages with interestin
 #+END_HTML
 Liam O'Connor, Zilin Chen, Christine Rizkallah, Sidney Amani, Japheth Lim, Toby Murray, Yutaka Nagashima, Thomas Sewell, Gerwin Klein \\
 *Refinement through Restraint: Bringing Down the Cost of Verification* \\
-To appear, /International Conference on Functional Programming (ICFP)/, Nara, Japan, September 2016. \\
+/International Conference on Functional Programming (ICFP)/, pp. 89-102, Nara, Japan, September 2016. \\
 [[http://ts.data61.csiro.au/publications/nictaabstracts/OConnor_CRALMNSK_16.abstract.pml][Available from CSIRO]]
+[[https://www.youtube.com/watch?v=sJwcm_worfM][Talk available on YouTube]]
 
 Christine Rizkallah, Japheth Lim, Yutaka Nagashima, Thomas Sewell, Zilin Chen, Liam O'Connor, Toby Murray, Gabriele Keller and Gerwin Klein \\
 *A Framework for the Automatic Formal Verification of Refinement From Cogent to C* \\
-To appear, /International Conference on Interactive Theorem Proving (ITP)/, Nancy, France, August 2016.\\
+/International Conference on Interactive Theorem Proving (ITP)/, LNCS v. 9087, pp. 323-340, Nancy, France, August 2016.\\
 [[http://ts.data61.csiro.au/publications/nictaabstracts/Rizkallah_LNSCOMKK_16.abstract.pml][Available from CSIRO]]
 
 Sidney Amani, Alex Hixon, Zilin Chen, Christine Rizkallah, Peter Chubb, Liam O'Connor, Joel Beeren, Yutaka Nagashima, Japheth Lim, Thomas Sewell, Joseph Tuong, Gabriele Keller, Toby Murray, Gerwin Klein and Gernot Heiser \\
@@ -45,7 +46,9 @@ A revised version of this paper was published in /Operating Systems Review/, Vol
 
 Liam O'Connor\\
 *Applications of Applicative Proof Search*\\
-To appear, /Workshop on Type-Driven Development/, Nara, Japan, September, 2016.
+/Workshop on Type-Driven Development (TyDe)/, pp. 43-55, Nara, Japan, September, 2016.\\
+[[http://dl.acm.org/authorize?N29492][Available from SIGPLAN OpenTOC]]
+[[https://www.youtube.com/watch?v=qiI3Avnp0XA][Talk available on YouTube]]
 
 Liam O'Connor\\
 *Formalising GHC's Type System*\\
@@ -63,8 +66,9 @@ Liam O'Connor\\
 
 Yutaka Nagashima and Liam O'Connor\\
 *Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML*\\
-To appear, /Workshop on ML 2016/, Nara, Japan, September, 2016.\\
+/Workshop on ML 2016/, Nara, Japan, September, 2016.\\
 [[http://ts.data61.csiro.au/publications/nictaabstracts/Nagashima_OConnor_16.abstract.pml][Available from CSIRO]]
+[[https://www.youtube.com/watch?v=A2BJ6HRPRyg][Talk available on YouTube]]
 
 Liam O'Connor\\
 *Gentzen: A Beginner's Proof Assistant based on Higher Order Logic* \\

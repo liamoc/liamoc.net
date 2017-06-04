@@ -1,10 +1,10 @@
 ---
 title: Publication Storm for Cogent!
-tags: cogent, linear-types, verification, nicta, data61, publication, icfp, itp, asplos, file-systems
+tags: cogent, linear-types, verification, data61, publication, icfp, itp, asplos, file-systems
 preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}
 ---
 
-[[/images/cogent.png]]
+[[../images/cogent.png]]
 
 The language I have been working on for the last couple of years with NICTA/Data61, called [[http://ssrg.nicta.com.au/projects/TS/cogent.pml][Cogent]], was recently accepted to ICFP 2016, topping off a string of publications at ITP 2016 and ASPLOS 2016. 
 

@@ -1,6 +1,6 @@
 ---
 title: Trustworthy File Systems accepted to PLOS
-tags: nicta, verification, publication, plos, file-systems, cogent
+tags: data61, verification, publication, plos, file-systems, cogent
 ---
 
 The Trustworthy File Systems project has had a paper accepted into PLOS this year. I am one of
