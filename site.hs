@@ -17,8 +17,11 @@ import Hakyll
 import Hakyll.Contrib.Agda
 import Hakyll.Contrib.LaTeX
 
+import qualified Data.HashMap.Lazy as HM
 import qualified Data.Map as M
 import qualified Data.Set as S
+import qualified Data.Text as T
+import qualified Data.Aeson as A
 
 agdaOpts :: CommandLineOptions
 agdaOpts = defaultOptions
@@ -36,7 +39,7 @@ writerSettings :: WriterOptions
 writerSettings = def { writerHighlight = True }
 
 defaultPreamble :: String
-defaultPreamble = ""
+defaultPreamble = "\\usepackage{ccfonts}\\usepackage{eulervm}"
 
 formulaSettings :: String -> PandocFormulaOptions
 formulaSettings pre
@@ -54,6 +57,9 @@ feedConfiguration = FeedConfiguration
     , feedRoot        = "http://liamoc.net"
     }
 
+convertValue :: A.Value -> String
+convertValue (A.String x) = T.unpack x
+convertValue y = show y
 --------------------------------------------------------------------------------
 main :: IO ()
 main = do
@@ -95,7 +101,7 @@ main = do
       route $ setExtension "html"
 
       compile $ do
-        pr <- fmap (fromMaybe defaultPreamble . M.lookup "preamble") (getMetadata =<< getUnderlying)
+        pr <- fmap (maybe defaultPreamble convertValue . HM.lookup "preamble" ) (getMetadata =<< getUnderlying)
         fp <- flip replaceExtension "bib" . flip replaceDirectory "cites/" <$> getResourceFilePath
 
         let readPandoc' i = do

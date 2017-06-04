@@ -1,18 +1,43 @@
-flags: {}
-extra-package-dbs: []
+# For more information, see: https://github.com/commercialhaskell/stack/blob/release/doc/yaml_configuration.md
+
+# Specifies the GHC version and set of packages available (e.g., lts-3.5, nightly-2015-09-21, ghc-7.10.2)
+resolver: lts-8.5
+
+# Local packages, usually specified by relative directory name
 packages:
 - '.'
-- ../langs/agda
-- ../Development/Projects/agda-snippets/agda-snippets
-- ../Development/Projects/agda-snippets/agda-snippets-hakyll
-- ../Development/Projects/latex-formulae/latex-formulae-pandoc
-- ../Development/Projects/latex-formulae/latex-formulae-image
-- ../Development/Projects/latex-formulae/latex-formulae-hakyll
+- '../agda-snippets/agda-snippets'
+- '../agda-snippets/agda-snippets-hakyll'
+- '../latex-formulae/latex-formulae-pandoc'
+- '../latex-formulae/latex-formulae-image'
+- '../latex-formulae/latex-formulae-hakyll'
+
+# Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
 extra-deps:
-- Agda-2.5.1
-- EdisonAPI-1.3
-- EdisonCore-1.3.1.1
-- QuickCheck-2.8.2
-- latex-formulae-hakyll-0.2.0.2
-- monadplus-1.4.2
-resolver: lts-5.8
+- latex-formulae-image-0.1.1.3
+- latex-formulae-pandoc-0.2.0.5
+- latex-formulae-hakyll-0.2.0.3
+- agda-snippets-2.5.2
+- agda-snippets-hakyll-0.1.2.2
+- regex-tdfa-text-1.0.0.3
+
+# Override default flag values for local packages and extra-deps
+flags: {}
+
+# Extra package databases containing global packages
+extra-package-dbs: []
+
+# Control whether we use the GHC we find on the path
+# system-ghc: true
+
+# Require a specific version of stack, using version ranges
+# require-stack-version: -any # Default
+# require-stack-version: >= 0.1.4.0
+
+# Override the architecture used by stack, especially useful on Windows
+# arch: i386
+# arch: x86_64
+
+# Extra directories used by stack for building
+# extra-include-dirs: [/path/to/dir]
+# extra-lib-dirs: [/path/to/dir]

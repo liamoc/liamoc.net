@@ -1,7 +1,7 @@
 ---
 title: A Lattice of Languages is a Verification Buffet
 tags: verification, types, semantics, linear-types, cogent, total, functional, edsls, reasoning
-preamble: \usepackage{amsmath}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}
+preamble: \usepackage{amsmath}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}\usepackage{ccfonts}\usepackage{eulervm}
 ---
 
 I have [written before](http://liamoc.net/posts/2013-11-13-imperativereasoning.html) about the use of total, purely functional languages to eliminate cumbersome low-level reasoning. By having a denotational semantics that are about as straightforward as highschool algebra,

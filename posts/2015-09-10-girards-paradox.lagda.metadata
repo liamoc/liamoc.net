@@ -1,3 +1,3 @@
 title: The Trouble with Typing Type as Type
 tags: agda, types, theorem-proving, type-theory, foundations, paradox
-preamble: \usepackage{amsmath}\usepackage{amssymb}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}
+preamble: \usepackage{amsmath}\usepackage{amssymb}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}\usepackage{ccfonts}\usepackage{eulervm}

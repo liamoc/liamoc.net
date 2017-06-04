@@ -1,7 +1,7 @@
 ---
 title: The Theory of <tt>patches-vector</tt>
 tags: category-theory, patch-theory, haskell, version-control, quickcheck
-preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}
+preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}\usepackage{ccfonts}\usepackage{eulervm}
 ---
 
 Recently I released the Haskell library [[https://github.com/liamoc/patches-vector#readme][patches-vector]], a library for simple, but theoretically-sound manipulation of /patches/, or diffs, on a

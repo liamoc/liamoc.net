@@ -1,7 +1,7 @@
 ---
 title: Imperative Reasoning is Hard
 tags: verification, reasoning, imperative, total, functional, monads, edsls
-preamble: \usepackage{amsmath}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}
+preamble: \usepackage{amsmath}\usepackage{amsfonts}\usepackage[all]{xy}\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}\usepackage{stmaryrd}\usepackage{ccfonts}\usepackage{eulervm}
 ---
 
 I believe that the set of languages which are easy to reason about formally and the set of languages in which it is easy to write correct programs intersect heavily. For this

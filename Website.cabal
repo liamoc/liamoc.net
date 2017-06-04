@@ -19,15 +19,18 @@ executable Website
   main-is:             site.hs
   other-modules:       
   other-extensions:   
-  build-depends:       base                  >= 4.8   && < 4.9
-                     , containers            >= 0.5   && < 0.6
-                     , directory             >= 1.2   && < 1.3
-                     , filepath              >= 1.3   && < 1.5
-                     , hakyll                >= 4.7   && < 4.9
-                     , pandoc                >= 1.15  && < 1.17
-                     , agda-snippets-hakyll  >= 0.1.1 && < 0.2
-                     , latex-formulae-image  >= 0.1.1 && < 0.2
-                     , latex-formulae-pandoc >= 0.2   && < 0.3
-                     , latex-formulae-hakyll >= 0.2   && < 0.3
-                     , network-uri           >= 2.6   && < 2.7
+  build-depends:       base                  >= 4.8   && < 4.10
+                     , containers            >= 0.5   && < 0.10
+                     , aeson                 >= 1.0   && < 1.1
+                     , text                  >= 1.2   && < 1.3
+                     , directory             >= 1.2   && < 1.4
+                     , filepath              >= 1.3   && < 1.6
+                     , hakyll                >= 4.7   && < 4.10
+                     , pandoc                >= 1.15  && < 1.20
+                     , agda-snippets-hakyll  >= 0.1.1 && < 0.3
+                     , latex-formulae-image  >= 0.1.1 && < 0.3
+                     , latex-formulae-pandoc >= 0.2   && < 0.4
+                     , latex-formulae-hakyll >= 0.2   && < 0.4
+                     , network-uri           >= 2.6   && < 2.8
+                     , unordered-containers  >= 0.2.7 && < 0.2.9
   default-language:    Haskell2010
