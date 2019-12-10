@@ -221,7 +221,7 @@ $$ \dfrac{}{ (\Sigma, \mathtt{Guard}\ \text{True}\ v) \leadsto (\Sigma, \mathtt{
 $\mathtt{Bind}$ statements execute the first action until it returns a result, and then use that result to determine the next action:
 
 $$ \dfrac{(\Sigma, a) \leadsto (\Sigma', a')}{ (\Sigma, \mathtt{Bind}\ a\ b) \leadsto (\Sigma', \mathtt{Bind}\ a'\ b)} 
-\quad \dfrac{(\Sigma, a) \leadsto (\Sigma', \mathtt{Return}\ v)}{ (\Sigma, \mathtt{Bind}\ a\ b) \leadsto (\Sigma', a\ v)}  $$
+\quad \dfrac{(\Sigma, a) \leadsto (\Sigma', \mathtt{Return}\ v)}{ (\Sigma, \mathtt{Bind}\ a\ b) \leadsto (\Sigma', b\ v)}  $$
 
 Nondeterministic choice is modelled by having two rules, both of which are equally applicable to a given state:
 
