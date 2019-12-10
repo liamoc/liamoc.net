@@ -580,10 +580,10 @@ it into our wellformed-by-construction `Term` type, which necessitates _scope-ch
 <div class=hidden>
 \begin{code}
 open import Data.Maybe
+import Data.Maybe.Categorical
 open import Category.Monad
-open import Category.Applicative
 import Level
-open RawMonad (monad {Level.zero})
+open RawMonadZero {Level.zero} Data.Maybe.Categorical.monadZero
 open import Relation.Nullary
 \end{code}
 </div>
