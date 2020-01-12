@@ -1,13 +1,11 @@
----
-title: Ad-hoc Frame Conditions are Logical, Separately
-tags: verification, types, semantics, linear-types, cogent, separation-logic, imperative, functional
-preamble: \usepackage{amsmath}\usepackage{amssymb}\usepackage{graphicx}\newcommand{\bigast}{\mathop{\!\,\scalebox{2}{$\ast$}}}\usepackage{ccfonts}\usepackage{eulervm}
-...
-
+#+TITLE: Ad-hoc Frame Conditions are Logical, Separately
+#+KEYWORDS: verification, types, semantics, linear-types, cogent, separation-logic, imperative, functional
+#+DATE: 9th November 2015
+#+TIME: 12:00
 
 The main direction of my research thus far has been to exploit linear types to make purely functional,
-equational reasoning possible for systems programming. I've talked about the [[http:/posts/2013-11-13-imperativereasoning.html][difficulty of verifying]] imperative
-programs before, but my past entries about [[http:/posts/2014-01-01-context-split.html][linear types]] did not discuss the advantages that they can bring
+equational reasoning possible for systems programming. I've talked about the [[http:/posts/2013-11-13-imperativereasoning][difficulty of verifying]] imperative
+programs before, but my past entries about [[http:/posts/2014-01-01-context-split][linear types]] did not discuss the advantages that they can bring
 to such a domain.
 
 Chiefly, they allow us to reason about our program as if all data structures are immutable, with all of the 

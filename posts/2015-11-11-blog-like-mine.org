@@ -1,7 +1,7 @@
----
-title: Bits of Hackage for <tt>liamoc.net</tt>
-tags: hakyll, haskell, agda, blog, latex
-...
+#+TITLE: Bits of Hackage for liamoc.net
+#+KEYWORDS: haskell, agda, blog, latex
+#+DATE: 11th November 2015
+#+TIME: 12:00
 
 #+BEGIN_QUOTE
 Work hard, boy, and you'll find,  \\
@@ -23,17 +23,17 @@ including:
 
    $$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
    
- - Literate Agda support, such as in [[http:/posts/2015-08-23-verified-compiler.html][this article]], with semantic highlighting
+ - Literate Agda support, such as in [[http:/posts/2015-08-23-verified-compiler][this article]], with semantic highlighting
    and hyperlinked jump-to-definition, even for the standard library imports.
 
  - Citeproc based bibliography support, which reads BibTeX databases. Most of 
-   my technical articles make use of this, for example [[http:/posts/2015-11-10-patch-theory.html][this article]], and the
+   my technical articles make use of this, for example [[http:/posts/2015-11-10-patch-theory][this article]], and the
    article linked above.
 
- - Atom-based feed support (see the little button at the bottom of this page)
+ - Atom-based feed support (see the little button at the top right)
 
  - Syntax highlighting for most other languages, such as Haskell, visible 
-   in [[http:/posts/2015-11-10-patch-theory.html][the same article linked above]].
+   in [[http:/posts/2015-11-10-patch-theory][the same article linked above]].
 
 
 Up until recently, I was very reluctant to share the code for this website,
@@ -71,7 +71,7 @@ and Hackage under the following three packages:
      some useful caching for Hakyll ~watch~ servers.
 
  The Agda code has been cleaned up and packaged into two useful Hackage packages, also
-   available on [[https://github.com/liamoc/agda-snippets][GitHub]]:
+   available on [[https://github.com/liamoc/agda-snippets][GitHub]] (EDIT: now deprecated as Agda can do this itself now):
 
    - ~agda-snippets~ - Support for preprocessing /any text/ document and replacing Agda code 
      blocks with coloured, hyperlinked source in HTML. It leaves the rest of the text untouched,
@@ -80,8 +80,10 @@ and Hackage under the following three packages:
    - ~agda-snippets-hakyll~ - Adds some basic mechanisms to integrate ~agda-snippets~ with Hakyll
      and Pandoc.
 
+
  The bibliography workaround is no longer necessary, due to fixes in upstream libraries.
 
+
 The other features (feeds, highlighting) are all just provided by Hakyll built-in. The source of
-this website itself is also available on [[https://github.com/liamoc/liamoc.net][GitHub]], in particular the [[https://github.com/liamoc/liamoc.net/blob/master/site.hs][Hakyll code]] for it may be of interest.
+this website itself is also available on [[https://github.com/liamoc/liamoc.net][GitHub]].
 

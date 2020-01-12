@@ -1,10 +1,9 @@
----
-title: Trifecta at Nara
-tags: cogent, verification, agda, model-checking, types, semantics, compilers, standard-ml, ml-modules, testing, icfp, tyde, ml-workshop
-preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}
----
+#+TITLE: Trifecta at Nara
+#+DATE: 1st August 2018
+#+TIME: 12:00
+#+KEYWORDS: cogent, verification, agda, model-checking, types, semantics, compilers, standard-ml, ml-modules, testing, icfp, tyde, ml-workshop
 
-[[../images/nara.png]]
+[[./images/nara.png]]
 
 I have had considerable success at ICFP2016 and co-located events.
 I will be presenting two papers: one at ICFP, on the [[http://ssrg.nicta.com.au/projects/TS/cogent.pml][Cogent]] project; and one at TyDe, about my work on proof-automation combinators in Agda. I also co-authored a two page paper that was accepted to the ML workshop, also co-located with ICFP, but I will not be presenting the paper. Details of all three papers are presented below.
@@ -20,7 +19,7 @@ We present a framework aimed at significantly reducing the cost of verifying cer
 
 
 Liam O'Connor\\
-*Applications of Applicative Proof Search*\\
+*Applications of Applicative Proof Search* \\
 /Workshop on Type-Driven Development/, Nara, Japan, September, 2016.
 
 #+BEGIN_QUOTE
@@ -29,7 +28,7 @@ In this paper, we develop a library of typed proof search procedures, and demons
 
 
 Yutaka Nagashima and Liam O'Connor\\
-*Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML*\\
+*Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML* \\
 /Workshop on ML 2016/, Nara, Japan, September, 2016.\\
 [[http://ts.data61.csiro.au/publications/nictaabstracts/Nagashima_OConnor_16.abstract.pml][Available from CSIRO]]
 

@@ -1,0 +1,754 @@
+#+TITLE: What is abstraction anyway?
+#+DATE: 8th July, 2017
+#+AUTHOR: Liam O'Connor
+#+KEYWORDS: verification,semantics, abstraction, refinement, types, comp2111, imperative, reasoning, non-determinism
+#+TIME: 12:00
+
+Abstraction is one of the most ubiquitous concepts in Computer Science, and yet
+it is also one of the most poorly taught[fn:1]. Programmers (and even computer
+scientists) often confuse /semantic/ notions of abstraction and refinement in
+terms of /models/ with the /syntactic/ notions of abstraction that exist within a
+particular programming language. In this post, I'll give an overview of these
+two different notions of abstraction, and how they might be related.
+
+Let's be clear: abstraction is not about indirection, nor is it the process of
+giving things names, nor is it even the packaging of code into reusable modules.
+Informally, abstraction is the merely the /elimination of detail/. 
+
+** Semantic Abstraction
+
+When we discuss the semantics of a particular program, we are really discussing
+what is called the semantic /model/ of a program. A model is a mathematical object
+that captures the interesting aspects of what the program /means/. While there are
+a variety of models for various domains, languages, and objectives, a common
+choice for a semantic model of an imperative program is some kind of /state
+transformer/, which describes the /transitions/ possible from a given initial state
+to some final state(s).
+
+To eliminate detail on a model such as this requires a way to be 
+imprecise about some aspects of a program -- usually, this
+takes the form of non-determinism. Non-determinism can be hard for beginners to
+grasp, but it typically has to be employed when modelling real programs. For
+example, suppose we had a greeting program that differed depending on the
+physical location
+of the computer[fn:2]:
+
+$$
+\begin{array}{l}
+\textsf{\textbf{if}}\ \mathit{currentLocation}() = \text{Korea}\ \textsf{\textbf{then}} \\
+\quad \textsf{\textbf{say}}\ \text{``안녕 하세요''} \\
+\textsf{\textbf{else}} \\
+\quad \textsf{\textbf{say}}\ \text{``Hello!''}\\
+\textsf{\textbf{fi}} 
+\end{array}
+$$
+
+If we wanted to mathematically model the behaviour of this program, it would be
+frightfully inconvenient to include the geography of Earth and the computer's
+physical location in our model. That's where non-determinism comes
+in. If we /abstract/ away from the geographical details, and instead regard the
+program as choosing between the two options based on some /unspecified criteria/,
+then we can get away with modelling less, at the cost of some detail:
+
+$$
+\begin{array}{l}
+\textsf{\textbf{if}}\ \mathit{???}\ \textsf{\textbf{then}} \\
+\quad \textsf{\textbf{say}}\ \text{``안녕 하세요''} \\
+\textsf{\textbf{else}} \\
+\quad \textsf{\textbf{say}}\ \text{``Hello!''}\\
+\textsf{\textbf{fi}} 
+\end{array}
+$$
+
+Such underspecified conditionals are usually called /non-deterministic choice/,
+where $\textsf{\textbf{if}}\ \mathit{???}\ \textsf{\textbf{then}}\ P\
+\textsf{\textbf{else}}\ Q\ \textsf{\textbf{fi}}$ is written simply as $P + Q$.
+
+While we tend to view our physical machines as deterministic automata, the
+state upon which each decision is deterministically made includes a number of
+external things which are tedious to model mathematically. We can also use
+non-determinism to ignore details that we don't care about for our particular
+domain -- a common example is memory allocation, where it is very convenient
+(for some programs) to think of memory as infinite, and allocation as an 
+operation that can potentially fail, without specifying exactly when and how
+this failure can occur. This is normally modelled as a non-deterministic choice
+between successful allocation and a failure state. 
+
+In a total, deterministic setting, we might model semantics of a program as 
+a total function -- given an initial state, there will be exactly one final state
+determined entirely by the initial state. But, with non-determinism, each use of
+the choice operator potentially doubles the number of final states[fn:3].
+So, with non-determinism in our language, the semantics of a program are given
+as a binary /relation/ on states: a mapping from initial states to /every possible/
+final state. For our purposes, we will define a /state/ as just a mapping from
+variable names to their values. We shall call the set of all states $\Sigma$.
+
+** A Toy Language
+
+
+Before we go any further, let's define a little language that we can use for our
+programs. For simplicity, we will assume that all our variables contain
+integers.
+First I'll introduce the syntax, and then I'll discuss the semantics
+of each form separately.
+
+$$
+\begin{array}{lclrrr}
+\mathcal{P} & ::= & x := e & \text{where}& e \in \mathcal{E} & \text{(assignment)} \\
+            & |   & P + Q &\text{where}& P, Q \in \mathcal{P} &\text{(nondeterministic choice)} \\
+            & |   & P;Q &\text{where}& P, Q \in \mathcal{P} & \text{(sequential composition)} \\
+            & |   & g &\text{where}& g \in \mathcal{B} & \text{(guard)} \\
+            & |   & P^\star &\text{where}& P \in \mathcal{P} & \text{(Kleene star)}
+\end{array}
+$$
+
+Here we use $\mathcal{B}$ and $\mathcal{E}$ to denote simple boolean
+propositions and arithmetic expressions respectively. These expressions may mention our program
+variables, so we will assume the existence of a simple semantics for
+them. For the arithmetic expressions, they are interpreted as a function that, given a state, will
+produce a resultant integer:
+
+$$
+\llbracket \cdot \rrbracket^\mathcal{E} : \mathcal{E} \rightarrow \Sigma \rightarrow \mathbb{Z}
+$$
+
+For boolean propositions, the semantics are simply the set of states where the proposition holds:
+
+$$
+\llbracket \cdot \rrbracket^\mathcal{B} : \mathcal{B} \rightarrow 2^\Sigma 
+$$
+
+
+As mentioned in the previous section, the semantics of a given program will be a
+binary /relation/ on states:
+
+$$
+\llbracket \cdot \rrbracket : \mathcal{P} \rightarrow 2^{\Sigma \times \Sigma}
+$$
+
+For an assignment statement, the final state is the same as the initial state,
+save that the updated variable is replaced with the result of evaluating the
+expression with respect to the initial state:
+
+$$
+\llbracket x := e \rrbracket = \left\{ (\sigma_i, \sigma_f)\ |\  \sigma_f =
+\sigma_i\left[x \mapsto \llbracket e \rrbracket^\mathcal{E}(\sigma_i)\right] \land \sigma_i
+\in \Sigma \land \sigma_f \in \Sigma \right\}
+$$
+
+For non-deterministic choice, seeing as $\llbracket P \rrbracket$ contains all the
+possible state transitions of $P$, and $\llbracket Q \rrbracket$ contains all the
+possible state transitions of $Q$, the semantics of $P + Q$ is just their
+union:
+
+$$
+\llbracket P + Q \rrbracket = \llbracket P \rrbracket \cup \llbracket Q \rrbracket 
+$$
+
+We also have a familiar /sequential composition/ operator, written as a semicolon
+as in $P;Q$, which behaves much like the semicolon in C and Pascal. First
+executing $P$, and then subsequently executing $Q$. Formally, this means that a
+transition can only be made through $P;Q$ if there exists an intermediate state
+resulting from $P$ that leads to the final state via $Q$:
+
+$$
+\llbracket P; Q \rrbracket = \llbracket P \rrbracket \fcmp \llbracket Q \rrbracket 
+$$
+
+Where $\fcmp$ is an operator for forward-composition of relations, defined as:
+
+$$
+X \fcmp Y = \big\{ (\sigma_i, \sigma_f)\ |\ \exists \sigma_m.\
+(\sigma_i,\sigma_m) \in X \land (\sigma_m,\sigma_f) \in Y \big\}
+$$
+
+We also have /guards/, which are programs that do not change the state, but only
+permit execution when the given boolean condition holds:
+
+$$
+\llbracket g \rrbracket = \big\{ (\sigma, \sigma)\ |\ \sigma \in \llbracket g \rrbracket^\mathcal{B} \big\}
+$$
+
+We can use the above building blocks to regain the familiar
+$\textbf{\textsf{if}}$ statement:
+
+$$
+\textbf{\textsf{if}}\ g\ \textbf{\textsf{then}}\ P\ \textbf{\textsf{else}}\ Q\
+\textbf{\textsf{fi}} \simeq (g; P) + (\neg g; Q)
+$$
+
+*Exercise*: Devise a direct semantic definition for $\textbf{\textsf{if}}$
+statements. Prove that your semantics are equivalent to that of the translation
+into non-deterministic choice and guards.
+
+Lastly, in any real programming language, we need some mechanism for loops or
+recursion. For our toy language, we add the very simple /Kleene star/, written
+$P^\star$, which runs $P$ a nondeterministic amount of times. A good intuition
+is to think of this recursive expansion[fn:4]:
+
+$$
+P^\star \simeq \textsf{\textbf{skip}} + (P;P^\star)
+$$
+
+Semantically, this is the /reflexive, transitive closure/ of the semantics of P:
+
+$$
+\llbracket P^\star \rrbracket = \bigcup_{i \in \mathbb{N}_0}
+\llbracket P \rrbracket^i
+$$
+
+Where superscripting a relation is self-composition:
+
+$$
+\begin{array}{lcl}
+R^0 &=& I\\
+R^{n+1} &=& R \fcmp R^n
+\end{array}
+$$
+
+Here $I$ is the identity relation, i.e. $\{(\sigma, \sigma)\ |\ \sigma \in \Sigma\}$.
+
+We can recover the traditional $\textbf{\textsf{while}}$ loop using our Kleene
+star and some carefully placed guards: One in the loop body, to ensure the loop
+is only run while the guard is true; and one after the loop, to ensure that the
+loop only finishes when the guard is false:
+
+$$
+\textbf{\textsf{while}}\ g\ \textbf{\textsf{do}}\ P\ \textbf{\textsf{od}} \simeq
+(g; P)^\star; \neg g
+$$
+
+*Exercise*: Devise a direct semantic definition for $\textbf{\textsf{while}}$
+loops. Prove that your semantics are equivalent to that of the translation
+into the Kleene star and guards.
+
+** Getting back to abstraction
+
+When we transformed our simple greeting program into a nondeterministic choice,
+we reduced the size of our state model, but doubled the number of possible outcomes for
+a given initial state. Instead of being able to determine which greeting would
+be printed, we must now account for both greetings. 
+
+This means that the more /abstract/ a program is, the /bigger/ the semantic relation
+is. We can say that a program $A$ is an /abstraction/ of a program $B$ iff:
+
+$$ \llbracket B \rrbracket \subseteq \llbracket A \rrbracket $$
+
+Equivalently, we also say that $B$ is a /refinement/ of $A$. Refinement is the 
+inverse of abstraction.
+
+Because refinement is just the subset relation on semantics, it forms a 
+bounded lattice, giving us a greatest and least element. The greatest element 
+is the relation that contains all state transitions:
+
+$$\top = \big\{ (\sigma_i, \sigma_f)\ |\ \sigma_i, \sigma_f \in \Sigma \big\} = \Sigma$$
+
+This greatest element $\top$ is an abstraction of every program, because it is
+so non-specific that it contains every possible outcome the program could produce.
+
+Conversely, the least element is the relation that does not contain any transitions --
+representable syntactically with the $\textsc{False}$ guard, or the infinite loop:
+
+$$\bot = \emptyset$$
+
+** Specifications as abstractions
+
+One common use for abstraction in computer programming is for the /specification/, /verification/ and
+/derivation/ of programs. 
+
+If we define a /specification/ of a program as a pair of a pre- and a
+post-condition, we could specify something like a factorial program as follows:
+
+$$ N \ge 0 \leadsto f = N! $$
+
+Here we are using /specification statements/ of the form $\varphi \leadsto \psi$,
+where $\varphi$, the pre-condition, and $\psi$, the post-condition, are referred to
+collectively as /assertions/. 
+
+The specification statement $\varphi \leadsto \psi$
+describes a program that, assuming that the pre-condition $\varphi$ is true of 
+the initial state, will ensure that the post-condition $\psi$ is true of the
+final state. Exactly /how/ the program gets from the initial state to the final
+state is left
+unspecified. We can make these specification statements bona-fide statements in our
+toy language, and give them a semantics:
+
+$$ \llbracket \varphi \leadsto \psi \rrbracket = \big\{ (\sigma_i, \sigma_f)\ |\
+\sigma_i \in \llbracket \varphi \rrbracket^\mathcal{B} \Rightarrow \sigma_f \in \llbracket
+\psi \rrbracket^\mathcal{B}\big\} $$
+
+Our semantics for a specification statement include every possible transition
+that satisfies the specification. Therefore, our specification is an /abstraction/
+of every possible /implementation/ of that specification.
+
+A common technique for the derivation of programs is to build a syntactic
+/refinement calculus/, allowing us to incrementally derive a program from its
+specification into a less and less abstract version, until we at last have a
+version suitable for implementation. This process proceeds via formally
+justified /refinement rules/. Because they are proven to be sound, a correct application of these rules
+from the specification yields a correct program by construction.
+
+Let us define a miniature refinement calculus for use with our toy language. For
+a calculus that is actually useful for more real-world programming scenarios, I
+recommend consulting Carroll Morgan's great book, /Programming from
+Specifications/, an online copy of which is available [[http://www.cse.unsw.edu.au/~carrollm/ProgrammingFromSpecifications.pdf][here]].
+
+To start with, we will define a syntactic abstraction relation, $\sqsubseteq$,
+which is defined like this[fn:5]:
+
+$$ P \sqsubseteq Q \Leftrightarrow \llbracket Q \rrbracket \subseteq \llbracket
+P \rrbracket $$
+
+Now, we can give rules for introducing each of our language constructs[fn:6]:
+
+$$
+\begin{array}{lcll}
+\varphi \leadsto \psi & \sqsubseteq & (\varphi \leadsto \psi) + (\varphi \leadsto \psi) & \textsc{Choice}\\
+\varphi \leadsto \psi & \sqsubseteq & (\varphi \leadsto \alpha);(\alpha \leadsto \psi) & \textsc{Seq}\\
+\varphi \leadsto \varphi & \sqsubseteq & (\varphi \leadsto \varphi)^\star & \textsc{Star}\\
+\varphi \leadsto \varphi \land g & \sqsubseteq & g & \textsc{Guard}\\
+\psi[\sfrac{e}{x}] \leadsto \psi & \sqsubseteq & x := e & \textsc{Assign}
+\end{array}
+$$
+
+*Exercise*: By translating the above rules into semantics, show that the rules are
+sound (that is, that the semantics of the RHS is a subset of the semantics of
+the LHS).
+
+We can also derive rules for our trusty $\textsf{\textbf{if}}$ statements and
+$\textsc{\textbf{while}}$ loops:
+
+$$
+\varphi \leadsto \psi \sqsubseteq \textsf{\textbf{if}}\ g\
+\textsf{\textbf{then}}\ (\varphi \land g \leadsto \psi)\ \textsf{\textbf{else}}\
+(\varphi \land \neg g \leadsto \psi)\ \textsf{\textbf{fi}}
+$$
+
+$$
+\varphi \leadsto \varphi \land \neg g \sqsubseteq \textsf{\textbf{while}}\ g\
+\textsf{\textbf{do}}\ (\varphi \land g \leadsto \varphi)\ \textsf{\textbf{od}}
+$$
+
+*Exercise*: Show that these rules are indeed derivable, using the translations
+provided in the previous section.
+
+Lastly, it is also sometimes necessary to apply logical reasoning to transform 
+assertions during the derivation process. The /consequence/ rule, given below,
+allows us to swap out our assertions for more convenient ones, provided they
+remain a refinement of the original assertions:
+
+$$
+\varphi \leadsto \psi \sqsubseteq \varphi' \leadsto \psi'\quad \text{if}\
+\varphi \Rightarrow \varphi' \land \psi' \Rightarrow \psi$$
+
+
+Using our refinement calculus, let's derive an implementation for our factorial
+specification:
+
+$$
+\begin{array}{lll}
+ & N \ge 0 \leadsto f = N!
+\end{array}
+$$
+
+Firstly, we have to split the code into two parts, firstly to initialise
+variables and establish the loop invariant ($f = i!$), and the second to actually contain
+the loop.
+
+$$
+\begin{array}{lll}
+& \textcolor{gray}{\textsc{(Seq)}}\\[0.5em]
+\sqsubseteq & (N \ge 0 \leadsto f = i!);\\
+ & (f = i! \leadsto f = N!) 
+\end{array}
+$$
+
+Next, we must use the consequence rule, to get the spec statement into the right
+form for using with the while loop rule. After introducing the loop, we can fill
+in the body a bit by incrementing the counter:
+
+$$
+\begin{array}{lll}& \textcolor{gray}{\textsc{(Con)}}\\[0.5em]
+\sqsubseteq & (N \ge 0 \leadsto f = i!);\\
+ & (f = i! \leadsto f = i! \land i = N) \\[0.5em]&\textcolor{gray}{\textsc{(While)}}\\[0.5em]
+\sqsubseteq & (N \ge 0 \leadsto f = i!);\\
+ & \textsf{\textbf{while}}\ i \neq N\ \textsf{\textbf{do}} \\
+ & \quad (f = i! \land i \neq N) \leadsto f = i! \\
+ & \textsf{\textbf{od}} \\[0.5em]&\textcolor{gray}{\textsc{(Seq)}}\\[0.5em]
+\sqsubseteq & (N \ge 0 \leadsto f = i!);\\
+ & \textsf{\textbf{while}}\ i \neq N\ \textsf{\textbf{do}} \\
+ & \quad (f = i! \land i \neq N) \leadsto f = (i + 1)! \\
+ & \quad f = (i + 1)! \leadsto f = i! \\
+ & \textsf{\textbf{od}} \\[0.5em]&\textcolor{gray}{\textsc{(Assign)}}\\[0.5em]
+\sqsubseteq & (N \ge 0 \leadsto f = i!);\\
+ & \textsf{\textbf{while}}\ i \neq N\ \textsf{\textbf{do}} \\
+ & \quad (f = i! \land i \neq N) \leadsto f = (i + 1)! \\
+ & \quad i := i + 1 \\
+ & \textsf{\textbf{od}}
+\end{array}
+$$
+
+Here we must use the consequence rule in order to get the meat of the loop body into the
+right form for the assignment rule.
+
+$$
+\begin{array}{lll}
+& \textcolor{gray}{\textsc{(Con)}}\\[0.5em]
+ \sqsubseteq & (N \ge 0 \leadsto f = i!);\\
+  & \textsf{\textbf{while}}\ i \neq N\ \textsf{\textbf{do}} \\
+  & \quad (f \times (i+1) = (i + 1)! \leadsto f = (i + 1)!) \\
+  & \quad i := i + 1 \\
+  & \textsf{\textbf{od}} \\[0.5em]&\textcolor{gray}{\textsc{(Assign)}}\\[0.5em]
+ \sqsubseteq & (N \ge 0 \leadsto f = i!);\\
+  & \textsf{\textbf{while}}\ i \neq N\ \textsf{\textbf{do}} \\
+  & \quad f := f \times (i + 1) \\
+  & \quad i := i + 1 \\
+  & \textsf{\textbf{od}} 
+\end{array}
+$$
+
+Lastly, we just initialise our variables in the obvious way to ensure the loop
+invariant holds initially:
+
+$$
+\begin{array}{lll}
+&\textcolor{gray}{\textsc{(Con, Seq, Assign)}}\\[0.5em]
+ \sqsubseteq & i := 0; f := 1; \\
+  & \textsf{\textbf{while}}\ i \neq N\ \textsf{\textbf{do}} \\
+  & \quad f := f \times (i + 1) \\
+  & \quad i := i + 1 \\
+  & \textsf{\textbf{od}} 
+\end{array}
+$$
+
+Treating specifications as abstractions of their implementations is a powerful
+idea. It gives a semantic framework for the gradual, step-by-step derivation of
+a correct program from its correctness definition. 
+
+Moreover, it shows that a common informal definition of abstraction that is
+bandied about by programmers -- the separation of
+a specification from an implementation -- is just an instance of the more
+general notion of semantic abstraction. If we were to interpret types as a
+particularly weak form of specification, then we can view type systems as an
+instance of this technique as well[fn:7]. 
+
+** Data Abstraction 
+
+One of the most common techniques for managing complexity in software
+engineering  is that of /data abstraction/.  Data abstraction is the process of /hiding/ some particular piece
+of state behind an /interface/ or /signature/ of abstract /operations/. This allows
+for a neat separation of concerns. For example, consider this program that
+only succeeds if a string $w$ of parentheses and brackets is balanced:
+
+$$
+\begin{array}{l}
+i := 0; \\
+s := \textsc{Empty}(); \\
+\textbf{\textsf{while}}\ i \neq \text{len}(w)\ \textbf{\textsf{do}} \\
+\quad \left({\begin{array}{ll}
+          & (w[i] \in \{ `\texttt{[}\textrm', `\texttt{(}\textrm' \}); \textsc{Push}(s, w[i])  \\
+        + & (w[i] = `\texttt{)}\textrm'); \neg \textsc{IsEmpty}(s); x := \textsc{Pop}(s); (x = `\texttt{(}\textrm') \\
+        + & (w[i] = `\texttt{]}\textrm'); \neg \textsc{IsEmpty}(s); x := \textsc{Pop}(s); (x = `\texttt{[}\textrm') \\
+      \end{array}}\right); \\
+\quad i := i + 1;\\
+\textbf{\textsf{od}}; \\
+(\textsc{IsEmpty}(s))
+\end{array}
+$$
+
+This version makes use of an abstract /stack/ type and four operations:
+$\textsc{Empty}$, an initialiser which sets up an empty stack;
+$\textsc{IsEmpty}$, a simple predicate which is true iff the stack is empty;
+$\textsc{Push}$, the familiar operation that adds a new element to the top of the
+stack; and $\textsc{Pop}$, the inverse of $\textsc{Push}$ which removes the top
+element from the stack and returns it. Certainly, the version making use of
+abstract operations is far more readable than the concrete alternative, swapping
+the abstract stack $s$ for an (infinite-sized) array $A$ and an index $t$ to
+the top of the stack[fn:8]:
+
+$$
+\begin{array}{l}
+i := 0; \\
+t := 0; \\
+\textbf{\textsf{while}}\ i \neq \text{len}(w)\ \textbf{\textsf{do}} \\
+\quad \left({\begin{array}{ll}
+          & (w[i] \in \{ `\texttt{[}\textrm', `\texttt{(}\textrm' \}); A[t] := w[i]; t := t + 1  \\
+        + & (w[i] = `\texttt{)}\textrm'); t > 0; t := t - 1; x := A[t]; (x = `\texttt{(}\textrm') \\
+        + & (w[i] = `\texttt{]}\textrm'); t > 0; t := t - 1; x := A[t]; (x = `\texttt{[}\textrm') \\
+      \end{array}}\right); \\
+\quad i := i + 1;\\
+\textbf{\textsf{od}}; \\
+(t = 0)
+\end{array}
+$$
+
+Mathematically justifying the above translation is a process called /data
+refinement/, and a variety of techniques exist. One of the simplest is Reynold's
+method. Starting with the abstract program, it proceeds in four steps:
+
+1. Add variables to represent the /concrete/ state (in this case $A$ and $t$)
+2. Define a /coupling invariant/ -- an assertion that relates the abstract and the
+   concrete variables. In our example, if we assume a stack model like the
+   following grammar:
+
+     $$ \mathcal{S} ::= \langle \rangle\ |\ \langle x , \mathcal{S} \rangle $$
+ 
+   Then the coupling invariant relating $s$ and $A, t$ can be defined as a recursive predicate $\mathcal{C}$
+   like so:
+
+     $$ \begin{array}{lcl}
+          \mathcal{C}(\langle \rangle, A, t) &=& (t = 0)\\
+          \mathcal{C}(\langle x, S \rangle, A, t) &=& (A[t - 1] = x) \land \mathcal{C}(S, A, t-1)\\
+        \end{array}
+     $$
+
+3. For each operation that /writes/ to abstract variables, such as $\textsc{Push}$,
+   /add/ code to perform the corresponding updates to the concrete variables, such
+   that the coupling invariant is re-established. This step can be formally
+   justified using a program logic such as Hoare logic, which is analogous to
+   the refinement calculus used above, except designed for post-hoc verification
+   rather than derivation of correct programs from specifications.
+4. Each operation that /reads/ from abstract variables, such as
+   $\textsc{IsEmpty}$, is /replaced/ with code that reads the same information
+   from the concrete variables. This step should be justified as a direct
+   consequence of the coupling invariant.
+
+   With all abstract read operations replaced with concrete ones, the abstract
+   write operations are now completely superfluous, and can be removed.
+
+Following the above steps with our original stack-based program will yield the
+concrete program we devised in terms of arrays. So the method appears to work,
+but what does data abstraction and data refinement have to do with the notions
+of abstraction we saw in the previous section? 
+
+*** Semantic Data Types
+
+To be able to talk about data abstraction in terms of semantics, we need a
+semantic model of a data type. Formally, we consider a data type $D$ to consist
+of:
+
+  - A set of /representation variables/, containing the data of the data type. We
+    write $\Sigma_D$ to represent the state space $\Sigma$ /extended/ with these
+    additional variables.
+  - An /initialiser/ (or a /constructor/ if you prefer), $D_I : 2^{\Sigma \times \Sigma_D}$, which augments the state
+    with a new instance of our data type, introducing our representation
+    variables.
+  - A /finaliser/ (or a /destructor/ if you prefer), $D_F : 2^{\Sigma_D \times
+    \Sigma}$, which eliminates our representation variables from the state.
+  - For each /operation name/ $j$, we have a relation $D_j : 2^{\Sigma_D \times
+    \Sigma_D}$ -- simply the semantics of the operation.
+
+Let's define data types for our abstract stack and our concrete implementation.
+To make specification easier, we annotate the names of the operations with the
+external variables they may touch. More elaborate refinement calculi include
+/frames/, which make this technique a good deal more rigorous.
+
+For our abstract stack, we never explicitly provide an implementation, merely
+providing specifications. Because, as we discussed before, specifications are in
+the same semantic domain as our programs, we can use them to provide our
+abstract data type.
+
+$$\begin{array}{lcl}
+A_I & = & \big\{ (\sigma, \sigma \cdot (s \mapsto \langle \rangle))\ |\
+\sigma \in \Sigma \big\} \\
+A_F & = & \big\{ (\sigma, \sigma \setminus \{s\})\ |\ \sigma \in \Sigma_A \big\}\\
+A_{\textsc{Pop}(x)} & = & \llbracket (s = \langle h , s' \rangle) \leadsto (s = s'
+\land x = h) \rrbracket \\
+A_{\textsc{Push}(x)} & = & \llbracket (s = s') \leadsto (s = \langle x, s'\rangle) \rrbracket \\
+A_{\textsc{IsEmpty}(x)} & = & \llbracket \text{True} \leadsto (x \Leftrightarrow (s = \langle \rangle)) \rrbracket \\
+\end{array}
+$$
+
+For the concrete data type, we just take the semantics of the code we use to
+implement each operation.
+
+$$\begin{array}{lcl}
+C_I & = & \big\{ (\sigma, \sigma \cdot (A \mapsto [\dots], t \mapsto 0))\ |\
+\sigma \in \Sigma \big\} \\
+C_F & = & \big\{ (\sigma, \sigma \setminus \{A, t\})\ |\ \sigma \in \Sigma_C \big\}\\
+C_{\textsc{Pop}(x)} & = & \llbracket t := t - 1; x := A[t] \rrbracket \\
+C_{\textsc{Push}(x)} & = & \llbracket A[t] := x; t := t + 1 \rrbracket \\
+C_{\textsc{IsEmpty}(x)} & = & \llbracket x := (t = 0) \rrbracket \\
+\end{array}
+$$
+
+With both data types, we can start to devise a definition of abstraction between
+data types.
+
+Any consumer of our data type, such as the bracket-matching program above, can be
+viewed as the sequential composition of the initialiser, some sequence of
+operations, followed by the finaliser. A data type is a /refinement/ of another if
+all such sequences are a refinement of the corresponding abstract sequence.
+
+Thus, to show refinement, we must show that, for any operation sequence $j_1,
+j_2, \dots, j_n$:
+
+$$
+(C_I \fcmp C_{j_1} \fcmp C_{j_2} \fcmp \dots \fcmp C_{j_n} \fcmp C_F) \subseteq
+(A_I \fcmp A_{j_1} \fcmp A_{j_2} \fcmp \dots \fcmp A_{j_n} \fcmp A_F) 
+$$
+
+$$
+\xymatrix{
+&\bullet\ar[r]_{A_{j_1}}&\bullet\ar[r]_{A_{j_2}}&\cdots\ar[r]_{A_{j_n}}&\bullet\ar[dr]_{A_F}&\\
+\bullet\ar[ur]_{A_I}\ar[dr]_{C_I}\ar@{}[rrrrr]|{{\text{\resizebox{0.5cm}{!}{$\subseteq$}}}} &&&&&\bullet\\
+&\bullet\ar[r]_{C_{j_1}}&\bullet\ar[r]_{C_{j_2}}&\cdots\ar[r]_{C_{j_n}}&\bullet\ar[ur]_{C_F}&\\
+}
+$$
+
+That is, data refinement is "just" program refinement, but for an /arbitrary/
+program. Next, we'll look at common ways to prove this statement, and how they
+generalise syntactic approaches such as Reynold's method. For a more detailed
+introduction to this model-oriented version of data refinement, and comparisons
+to many more refinement techniques, I recommend this
+[[https://www.maths.ox.ac.uk/node/4411][great book]] by W. P. de Roever and Kai Engelhardt (who was one of my teachers).
+
+*** Simulation
+   
+We would like to prove the above subset obligation using induction on the length
+of the sequence of operations, but the
+presence of the initialisers and finalisers makes the induction hypothesis
+useless, of the form $C_I \fcmp \dots \fcmp C_F \subseteq
+A_I \fcmp \dots \fcmp A_F$, which
+does not refer to a subexpression of our goal.
+
+One technique to resolve this is so-called /downward simulation/, where
+we define a /refinement relation/ $R : 2^{\Sigma_A \times \Sigma_C}$, and split
+the above obligation into three parts:
+
+1. The initialiser establishes the refinement relation:
+ 
+   $$
+   C_I \subseteq A_I \fcmp R
+   $$
+   
+   $$
+   \xymatrix{
+   &&\bullet\ar@{.>}^{R}[dd]\\
+   \bullet\ar[urr]^{A_I}\ar[drr]_{C_I}\ar@{}[rr]|{{\text{\resizebox{0.5cm}{!}{$\;\subseteq$}}}}
+   && \\
+   &&\bullet\\
+   }
+   $$
+
+2. Each operation $j$ preserves the refinement relation:
+
+   $$
+   R \fcmp C_j \subseteq A_j \fcmp R
+   $$
+   
+   $$
+   \xymatrix{
+   \bullet \ar[rr]^{A_j}\ar@{.>}^{R}[dd] && \bullet\ar@{.>}^{R}[dd] \\
+   \\
+   \bullet \ar[rr]^{C_j} && \bullet\ar@{}|{\text{\Large$\subseteq$}}[uull] \\ 
+   }
+   $$
+ 
+3. Finalisers will converge from $R$-related states:
+
+   $$
+   R \fcmp C_F \subseteq A_F
+   $$
+   
+   $$
+   \xymatrix{
+   \bullet\ar[drr]^{A_F}\ar@{.>}^{R}[dd]\\
+   & \text{\large$\subseteq$} & \bullet \\
+   \bullet\ar[urr]_{C_F}\\
+   }
+   $$
+
+The second part can be generalised into an analogous theorem about
+sequences, via a neat induction on the length of the sequence:
+
+$$
+   R \fcmp C_{j_1} \fcmp C_{j_2} \fcmp \dots \fcmp C_{j_n} \subseteq A_{j_1}
+   \fcmp A_{j_2} \fcmp \dots \fcmp A_{j_n} \fcmp R
+$$
+
+From here, one can straightforwardly use the first and third lemmas to show that $C$ is
+indeed a refinement of $A$. In this way, we remove those pesky initialisers and
+finalisers so that we can do induction, and then just
+tack them on again after the induction is complete.
+
+So, for our stack example, what would our refinement relation look like? It
+turns out to merely be a relational form of our coupling invariant from
+Reynold's method:
+
+$$ 
+  R = \big\{ (\sigma_A, \sigma_C)\ |\ \mathcal{C}(\sigma_A(s),\sigma_C(A),\sigma_C(t)) \big\}
+$$
+
+In fact, all of Reynold's method is just an instance of this downward simulation technique.
+
+It turns out that downward simulation, and thus Reynold's method, is not
+/complete/, in that one can construct a pair of data types where one refines
+another, but that a refinement relation cannot be constructed between them.
+/Upward simulation/, the mirror image of downward simulation, relies instead on an
+/abstraction relation/ $A : 2^{\Sigma_C\times\Sigma_A}$ and performs induction
+from the back of the sequence rather than the front. The combination of both
+upward and downward simulation /is/ complete. The proof of this is presented in de
+Roever and Engelhardt's book.
+
+** Syntactic Abstraction
+
+Many programming languages provide features that are commonly called
+/abstraction/. The most common is the /module/, consisting of one or more /types/
+(usually left /abstract/ in the sense that their implementations are hidden)
+coupled with /operations/ on those types. We can consider a module's /signature/ or
+interface to be an abstract data type in the semantic sense, where any
+type-correct implementation can be considered a refinement. In this sense,
+module systems in programming languages make it substantially easier to do the
+kind of data abstraction I discuss above, as both abstract and concrete versions
+are in a machine-readable structure. However, the presence of a module system is
+neither necessary nor sufficient for data abstraction to be possible.
+
+A perhaps more common use of the word /abstraction/ in the Haskell community
+refers to the \lambda-abstraction[fn:9]. Seeing as \lambda-calculus-based
+languages have a very different semantic domain, based on Scott domains, I can't
+directly relate the notion of \lambda-abstraction to the kind of semantic
+abstraction I present here. I'd be very interested to see some explanation to
+see if there is a solid connection between the very /syntactic/ notion of abstraction we see in
+functional languages, where "abstraction" essentially refers to /parameterisation/, and the
+kinds of semantic abstractions we see elsewhere. 
+
+If you enjoyed this article and you're a UNSW student, this article is a
+whirlwhind tour of the second-year [[http://www.handbook.unsw.edu.au/undergraduate/courses/2017/COMP2111.html][COMP2111]] course, taught by Kai Engelhardt
+along with yours truly. The course goes into substantially more detail on the
+/specification/ and /derivation/ components, including a detailed study of Hoare
+Logic and Carroll Morgan's refinement calculus. Feel free to enrol if you're interested[fn:10].
+
+[fn:1] In my undergraduate years, I remember thinking that data abstraction had
+something to do with header files or object-oriented programming. 
+ 
+[fn:2] Further internationalisation is left as an exercise.
+
+[fn:3] This is why deterministically simulating a non-deterministic program is
+exponential complexity in the worst-case.
+
+[fn:4] Here $\textbf{\textsf{skip}}$ is just sugar for the program that does not
+change the state and always executes successfully, equivalent to the trivially
+true guard, or an assignment $x := x$.
+
+[fn:5] Because all of the semantic relational operators ($\cup$, $\fcmp$ etc.)
+are $\subseteq$-monotone, this relation enjoys all the usual congruence
+properties. You can refine a small part of a program, and the resultant program will
+be a refinement of the original whole program.
+
+[fn:6] The notation $\psi[\sfrac{e}{x}]$ is a substitution, substituting the
+expression $e$ instead of the variable $x$.
+
+[fn:7] The view of types as abstract interpretations is expounded in great
+detail in [[https://www.irif.fr/~mellies/mpri/mpri-ens/articles/cousot-types-as-abstract-interpretations.pdf][Cousot's paper]].
+
+[fn:8] Doing the refinement to a dynamically-expanding array is too much pain
+for this article, but feel free to do it as an exercise.
+
+[fn:9] A lot of Haskell programmers don't seem to value semantic abstraction
+anyway. Perhaps this is a case of anti-modular language features such as type classes making
+real abstraction fall out of favour. Or perhaps Haskell is already so abstract
+there's not much point in further abstraction.
+
+[fn:10] Assuming UNSW hasn't gone to hell, the course isn't cancelled, and the
+teaching staff aren't driven out due to poor management -- a big assumption.

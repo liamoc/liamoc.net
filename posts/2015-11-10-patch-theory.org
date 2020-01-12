@@ -1,8 +1,7 @@
----
-title: The Theory of <tt>patches-vector</tt>
-tags: category-theory, patch-theory, haskell, version-control, quickcheck
-preamble: \usepackage{amsmath}\usepackage{xypic}\usepackage{amssymb}\usepackage{graphicx}\usepackage{ccfonts}\usepackage{eulervm}
----
+#+TITLE: The Theory of patches-vector
+#+KEYWORDS: category-theory, patch-theory, haskell, version-control, quickcheck
+#+DATE: 10th November 2015
+#+TIME: 12:00
 
 Recently I released the Haskell library [[https://github.com/liamoc/patches-vector#readme][patches-vector]], a library for simple, but theoretically-sound manipulation of /patches/, or diffs, on a
 "document", which in this case just consists of a ~Vector~ of arbitrary elements. 

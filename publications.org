@@ -1,6 +1,4 @@
----
-title: Publications
----
+#+TITLE: Publications
 
 ** Cogent 
 
@@ -9,6 +7,23 @@ A project at Data61 (CSIRO) aimed at using programming languages with interestin
 #+BEGIN_HTML
 <small>
 #+END_HTML
+
+Liam O'Connor, Zilin Chen, Partha Susarla, Christine Rizkallah, Gerwin Klein, Gabriele Keller \\
+*Bringing effortless refinement of data layouts to Cogent* \\
+/International Symposium On Leveraging Applications of Formal Methods, Verification and Validation (ISOLA), LNCS v. 11244, pp. 134-149, Limassol, Cyprus, November, 2018/ \\ 
+[[https://ts.data61.csiro.au/publications/csiroabstracts/OConnor_CSRKK_18.abstract.pml][Available from CSIRO]]
+
+Gerwin Klein, June Andronick, Gabriele Keller, Daniel Matichuk, Toby Murray, Liam O'Connor \\
+*Provably Trustworthy Systems* \\
+/Philosophical Transactions of the Royal Society A, Volume 375, Issue 2104./ \\
+[[http://rsta.royalsocietypublishing.org/content/375/2104/20150404.article-info][Available from the Royal Society]]
+
+Zilin Chen, Liam O'Connor, Gabriele Keller, Gerwin Klein and Gernot Heiser \\
+*The Cogent Case for Property-Based Testing* \\
+/Workshop on Programming Languages and Operating Systems (PLOS), pp. 1-7, Shanghai, China, October, 2017/ \\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/Chen_OKKH_17.abstract.pml][Available from CSIRO]]
+
+
 Liam O'Connor, Zilin Chen, Christine Rizkallah, Sidney Amani, Japheth Lim, Toby Murray, Yutaka Nagashima, Thomas Sewell, Gerwin Klein \\
 *Refinement through Restraint: Bringing Down the Cost of Verification* \\
 /International Conference on Functional Programming (ICFP)/, pp. 89-102, Nara, Japan, September 2016. \\
@@ -45,13 +60,13 @@ A revised version of this paper was published in /Operating Systems Review/, Vol
 #+END_HTML
 
 Liam O'Connor\\
-*Applications of Applicative Proof Search*\\
+*Applications of Applicative Proof Search* \\
 /Workshop on Type-Driven Development (TyDe)/, pp. 43-55, Nara, Japan, September, 2016.\\
-[[http://dl.acm.org/authorize?N29492][Available from SIGPLAN OpenTOC]]
+[[./images/applications.pdf][Available here]]
 [[https://www.youtube.com/watch?v=qiI3Avnp0XA][Talk available on YouTube]]
 
 Liam O'Connor\\
-*Formalising GHC's Type System*\\
+*Formalising GHC's Type System* \\
 /Undergraduate Thesis/, UNSW, 2012.\\
 [[https://my.cse.unsw.edu.au//uploads/thesis/1350389378_thesisB.pdf][Available from UNSW]]
 #+BEGIN_HTML
@@ -65,7 +80,7 @@ Liam O'Connor\\
 #+END_HTML
 
 Yutaka Nagashima and Liam O'Connor\\
-*Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML*\\
+*Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML* \\
 /Workshop on ML 2016/, Nara, Japan, September, 2016.\\
 [[http://ts.data61.csiro.au/publications/nictaabstracts/Nagashima_OConnor_16.abstract.pml][Available from CSIRO]]
 [[https://www.youtube.com/watch?v=A2BJ6HRPRyg][Talk available on YouTube]]

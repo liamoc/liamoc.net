@@ -1,0 +1,2 @@
+\usepackage{amsmath}\usepackage[color]{xypic}\usepackage{amssymb}\usepackage{graphicx}\usepackage{ccfonts}\usepackage{eulervm}\usepackage{kotex}\usepackage{stmaryrd}
+\usepackage{xcolor}\usepackage{xfrac}\def\fcmp{\mathbin{\raise 0.6ex\hbox{\oalign{\hfil$\scriptscriptstyle \mathrm{o}$\hfil\cr\hfil$\scriptscriptstyle\mathrm{9}$\hfil}‌​}}}

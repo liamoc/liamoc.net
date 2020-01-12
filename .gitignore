@@ -7,3 +7,9 @@ agda-lib
 *.agdai
 cites/auto
 cv.log
+/tags
+/tag_list
+/tag_cloud.html
+/post_list.md
+/out
+/dependencies
