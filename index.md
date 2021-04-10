@@ -33,7 +33,7 @@ the <a href="http://www.haskell.org/haskellwiki/GHC/Data_Parallel_Haskell">DPH</
 <a href="https://github.com/AccelerateHS/accelerate">Accelerate</a> projects as my PhD supervisor
 was <a href="https://www.uu.nl/medewerkers/GKKeller">Prof. Gabriele Keller</a>. 
 
-<p>This contains my <a href="/archive.html">blog</a> as well as a publication list, and other miscellany.
+<p>This contains my <a href="/posts/archive.html">blog</a> as well as a publication list, and other miscellany.
 
 <h2>Posts</h2>
 

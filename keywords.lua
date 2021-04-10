@@ -20,7 +20,9 @@ return {
     Pandoc = function(pdoc)
       entry = string.format(" - [%s](/%s/index.html) - %s\n", pandoc.utils.stringify(pdoc.meta.title), string.gsub(PANDOC_STATE.input_files[1],"%..*",""), pandoc.utils.stringify(pdoc.meta.date))
       for i,v in ipairs(pdoc.meta.keywords) do
-          tag = pandoc.utils.stringify(v[1])
+          ta = string.gsub(pandoc.utils.stringify(v),",","");
+          tag = string.gsub(ta," ","");
+          if tag ~= '' then
           if not file_exists("tags/" .. tag .. ".md") then 
              file = io.open("tags/" .. tag .. ".md","a")
              io.output(file)
@@ -31,6 +33,7 @@ return {
           io.output(file)
           io.write(entry)
           io.close(file)
+          end
       end
       return pandoc.Pandoc({})
     end,

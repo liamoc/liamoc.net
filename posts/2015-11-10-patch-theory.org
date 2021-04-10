@@ -209,7 +209,7 @@ HoTT is typically given semantics by ∞-groupoids, so it makes sense that patch
 Also, another paper [@SepLog] uses separation logic to describe the semantics of version control, which is another interesting take on patch theoretic
 concepts.
 
-**** References
+*** References
 
 [fn:1] Up to $(\simeq)$, of course.
 [fn:2] A /group/ is a monoid with inverses.

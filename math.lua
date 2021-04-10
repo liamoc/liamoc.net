@@ -25,7 +25,7 @@ end
 return {
   {
     Math = function(m)
-      out = splat_popen(m.text,"my-filter-exe", m.mathtype)
+      out = splat_popen(m.text,"my-filter", m.mathtype)
       return pandoc.RawInline("html", out)
     end,
   }

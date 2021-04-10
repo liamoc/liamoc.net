@@ -1,7 +1,7 @@
 #+TITLE: What is abstraction anyway?
 #+DATE: 8th July, 2017
 #+AUTHOR: Liam O'Connor
-#+KEYWORDS: verification,semantics, abstraction, refinement, types, comp2111, imperative, reasoning, non-determinism
+#+KEYWORDS: verification, semantics, abstraction, refinement, types, comp2111, imperative, reasoning, non-determinism
 #+TIME: 12:00
 
 Abstraction is one of the most ubiquitous concepts in Computer Science, and yet

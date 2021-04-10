@@ -1,6 +1,6 @@
 PANDOC=pandoc
 AGDA=agda
-RUNHASKELL=stack exec runhaskell
+RUNHASKELL=runhaskell
 
 
 start: all
@@ -93,7 +93,7 @@ post_list.md: $(POST_FILES)
 
 out/index.html: index.md post_list.md index_conclusion.md tag_cloud.html
 	@echo 'Generating $(BOLD)index.html$(SGR0)'
-	@mkdir -p $(@D) && cat post_list.md | tail -3 | head -6 \
+	@mkdir -p $(@D) && cat post_list.md | head -6 | tail -3 \
           | $(PANDOC) -s -T "liamoc.net" --data-dir=. -t html5 \
                       $< /dev/stdin index_conclusion.md tag_cloud.html -o $@ $(SUPPRESS)
 
@@ -153,7 +153,7 @@ out/posts/%/index.html: out/posts/%/index.md out/posts/%/cites.bib out/posts/%/p
 	@cd $(@D) \
         && $(PANDOC) -c "Agda.css" -s -T "liamoc.net" --lua-filter=../../../math.lua \
                      --data-dir=../../.. -t html5 --highlight-style=tango $(<F) \
-                     --bibliography cites.bib --csl ../../../association-for-computing-machinery.csl \
+                     --citeproc --bibliography cites.bib --csl ../../../cambridge-university-press-author-date.csl  \
                      -o $(@F) $(SUPPRESS)
 
 out/posts/%/index.html: out/posts/%/index.org out/posts/%/cites.bib out/posts/%/preamble
@@ -161,6 +161,6 @@ out/posts/%/index.html: out/posts/%/index.org out/posts/%/cites.bib out/posts/%/
 	@cd $(@D) \
         && $(PANDOC) -c "Agda.css" -s -T "liamoc.net" --lua-filter=../../../math.lua \
                      --data-dir=../../.. -t html5 --highlight-style=tango $(<F) \
-                     --bibliography cites.bib --csl ../../../association-for-computing-machinery.csl \
+                     --citeproc --bibliography cites.bib --csl ../../../cambridge-university-press-author-date.csl \
                      -o $(@F) $(SUPPRESS)
 
