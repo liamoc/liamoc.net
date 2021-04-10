@@ -18,6 +18,7 @@ BLUE=$(shell tput setaf 4)
 PALEBLUE=$(shell tput setaf 12)
 GREY=$(shell tput setaf 8)
 BOLD=$(shell tput bold)
+GREEN=$(shell tput setaf 10)
 YELLOW=$(shell tput setaf 3)
 PURPLE=$(shell tput setaf 5)
 SGR0=$(shell tput sgr0)
@@ -37,6 +38,10 @@ preview:
 
 clean:
 	@rm -rf tags out dependencies tag_list tag_cloud.html post_list.md
+
+publish:
+	@echo '$(BOLD)$(GREEN)Uploading to liamoc.net$(SGR0)'
+	@cd out && rsync -rv * liamoc.net:~/public_html	
 
 dependencies/%.d: posts/%.md dependencies.lua
 	@echo '$(BOLD)$(@F:%.d=%):$(SGR0) $(BLUE)Scanning for dependencies$(SGR0)'

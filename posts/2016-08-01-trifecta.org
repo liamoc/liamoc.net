@@ -1,7 +1,7 @@
 #+TITLE: Trifecta at Nara
 #+DATE: 1st August 2018
 #+TIME: 12:00
-#+KEYWORDS: cogent, verification, agda, model-checking, types, semantics, compilers, standard-ml, ml-modules, testing, icfp, tyde, ml-workshop
+#+KEYWORDS: cogent, verification, agda, model-checking, types, semantics, compilers, standard-ml, ml-modules, testing, icfp, tyde, ml-workshop, publication
 
 [[./images/nara.png]]
 

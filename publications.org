@@ -7,6 +7,10 @@ A project at Data61 (CSIRO) aimed at using programming languages with interestin
 #+BEGIN_HTML
 <small>
 #+END_HTML
+Liam O'Connor \\
+*Type Systems for Systems Types* \\
+/PhD Thesis, Computer Science and Engineering, Faculty of Engineering, University of New South Wales, 2019/ \\
+[[https://www.unsworks.unsw.edu.au/permalink/f/5gm2j3/unsworks_61747][Available from UNSWorks]].
 
 Liam O'Connor, Zilin Chen, Partha Susarla, Christine Rizkallah, Gerwin Klein, Gabriele Keller \\
 *Bringing effortless refinement of data layouts to Cogent* \\
@@ -60,6 +64,12 @@ A revised version of this paper was published in /Operating Systems Review/, Vol
 #+END_HTML
 
 Liam O'Connor\\
+*Deferring the Details and Deriving Programs* \\
+/Workshop on Type-Driven Development (TyDe)/, pp. 27-39, Berlin, Germany, August, 2019.\\
+[[./images/deferring.pdf][Available here]]
+[[https://www.youtube.com/watch?v=2euFCCeMZOM][Talk available on YouTube]]
+
+Liam O'Connor\\
 *Applications of Applicative Proof Search* \\
 /Workshop on Type-Driven Development (TyDe)/, pp. 43-55, Nara, Japan, September, 2016.\\
 [[./images/applications.pdf][Available here]]
@@ -68,7 +78,7 @@ Liam O'Connor\\
 Liam O'Connor\\
 *Formalising GHC's Type System* \\
 /Undergraduate Thesis/, UNSW, 2012.\\
-[[https://my.cse.unsw.edu.au//uploads/thesis/1350389378_thesisB.pdf][Available from UNSW]]
+[[./images/reportB.pdf][Available here]]
 #+BEGIN_HTML
 </small>
 #+END_HTML

@@ -1,28 +1,24 @@
 ---
-title: "Liam O'Connor"
-date: "21st November 2018"
+title: "Dr. Liam O'Connor"
+date: "4th October 2020"
 ---
-
 <h2>Welcome</h2>
 
-<img src="/images/me.jpg" class='portrait' />
 
-<p>I am Liam O'Connor, a computer science researcher, student and teacher, currently working at 
-<a href="http://www.unsw.edu.au">UNSW</a>. I specialise
-in programming languages and type systems, verification, formal methods, and concurrency.</p>
+I am Liam O'Connor, a a Lecturer
+in Programming Languages for Trustworthy Systems for <a href="http://web.inf.ed.ac.uk/lfcs">LFCS</a> at the <a href="http://inf.ed.ac.uk">University of Edinburgh School of Informatics</a>. I specialise
+in programming languages and type systems, verification, formal methods, and concurrency.
 
-I am responsible for teaching multiple theoretical courses, ranging from 
-<a href="http://www.cse.unsw.edu.au/~cs3161/18s2/">programming languages</a>
- to <a href="http://www.cse.unsw.edu.au/~cs2111">formal methods</a> to functional programming.  
-I am also involved in supervision of various undergraduates on various projects. 
+In my previous posting at the University of New South Wales I taught several courses ranging from 
+theory of programming languages to concurrency to formal methods. At Edinburgh, I am focusing primarily 
+on research work for the moment, although I am involved in supervisory duties for Informatics 1A on Functional Programming.
 
- I work
+I work
 regularly in and on the <a href="http://haskell.org">Haskell</a> programming language and the 
 <a href="http://wiki.portal.chalmers.se/agda/pmwiki.php">Agda</a> proof assistant. Much of my
-research work involves these languages.
+research work involves these languages. I am the Social Media Editor of the <a href="https://twitter.com/cup_jfp">Journal of Functional Programming</a>.
 
-<p>Originally part of my doctorate and now as ongoing research work, I designed the  
-<a href="https://ts.data61.csiro.au/projects/TS/cogent.pml">Cogent</a> programming language,
+Originally part of my doctorate and now as ongoing research work, I designed the <a href="https://ts.data61.csiro.au/projects/TS/cogent.pml">Cogent</a> programming language,
 and I remain a 
 contributor to its
 associated verification framework and compiler. This project is part of the long-term vision of the
@@ -33,7 +29,7 @@ the <a href="http://www.haskell.org/haskellwiki/GHC/Data_Parallel_Haskell">DPH</
 <a href="https://github.com/AccelerateHS/accelerate">Accelerate</a> projects as my PhD supervisor
 was <a href="https://www.uu.nl/medewerkers/GKKeller">Prof. Gabriele Keller</a>. 
 
-<p>This contains my <a href="/posts/archive.html">blog</a> as well as a publication list, and other miscellany.
+This contains my <a href="/posts/archive.html">blog</a> as well as a publication list, and other miscellany.
 
 <h2>Posts</h2>
 

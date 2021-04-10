@@ -82,8 +82,8 @@ $endfor$
                 <img class=lambda width=16px src="/images/logo-left.svg"/>
             <a href="/">Home</a> <span class=spacer> &nbsp;</span> 
             <a href="/contact.html">Contact</a> <span class=spacer> &nbsp;</span> 
-            <a href="/publications.html">Publications</a> <span class=spacer> &nbsp;</span> 
-            <a href="/posts/archive.html">Archive</a><span class=spacer> &nbsp;</span> 
+            <a href="/publications.html">Papers</a> <span class=spacer> &nbsp;</span> 
+            <a href="/posts/archive.html">Posts</a><span class=spacer> &nbsp;</span> 
            <div class=right-icons>
                <a href="/atom.xml"><img alt="Atom" src="/images/rss.svg"/></a>
            </div> 
