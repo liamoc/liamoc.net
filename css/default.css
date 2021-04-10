@@ -1,3 +1,7 @@
+blockquote {
+margin-inline-start: 2em;
+margin-inline-end: 2em;
+}
 @media print {
   nav {
     display:none;
@@ -12,6 +16,9 @@
   }
  
   
+}
+article img {
+    max-width:90%;
 }
 @media screen and (min-width: 800px) {
 body {
@@ -103,6 +110,7 @@ h2 {
     padding:7px!important;
     margin:17.5px!important;
     margin-left:52.5px!important;
+    float:right;
 }
 }
 details { display: block }
@@ -319,7 +327,7 @@ th{text-align: left;}
 body {
     padding: 0;
     margin: 0;
-    background: url(/images/background.png);
+    background: #AAAAAA;
 }
 img {
     image-rendering: auto!important;
@@ -451,9 +459,6 @@ p img {
     width:200px;
     border:1px solid black;
     padding:4px;
-    float:right;
-    margin:10px;
-    margin-left:30px;
 }
 
 a {

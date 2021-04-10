@@ -18,6 +18,7 @@ BLUE=$(shell tput setaf 4)
 PALEBLUE=$(shell tput setaf 12)
 GREY=$(shell tput setaf 8)
 BOLD=$(shell tput bold)
+GREEN=$(shell tput setaf 10)
 YELLOW=$(shell tput setaf 3)
 PURPLE=$(shell tput setaf 5)
 SGR0=$(shell tput sgr0)
@@ -37,6 +38,10 @@ preview:
 
 clean:
 	@rm -rf tags out dependencies tag_list tag_cloud.html post_list.md
+
+publish:
+	@echo '$(BOLD)$(GREEN)Uploading to liamoc.net$(SGR0)'
+	@cd out && rsync -rv * liamoc.net:~/public_html	
 
 dependencies/%.d: posts/%.md dependencies.lua
 	@echo '$(BOLD)$(@F:%.d=%):$(SGR0) $(BLUE)Scanning for dependencies$(SGR0)'
@@ -93,7 +98,7 @@ post_list.md: $(POST_FILES)
 
 out/index.html: index.md post_list.md index_conclusion.md tag_cloud.html
 	@echo 'Generating $(BOLD)index.html$(SGR0)'
-	@mkdir -p $(@D) && cat post_list.md | tail -3 | head -6 \
+	@mkdir -p $(@D) && cat post_list.md | head -6 | tail -3 \
           | $(PANDOC) -s -T "liamoc.net" --data-dir=. -t html5 \
                       $< /dev/stdin index_conclusion.md tag_cloud.html -o $@ $(SUPPRESS)
 

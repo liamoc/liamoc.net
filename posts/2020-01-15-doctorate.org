@@ -1,0 +1,56 @@
+#+TITLE: I'm a doctor now
+#+KEYWORDS: publication, cogent, tyde, icfp, isola, plos, agda, pbt, verification, refinement, dargent, data-description, unsw
+#+DATE: 15th January 2020
+#+TIME: 20:00
+
+[[./images/doctor.jpg]]
+
+After a surprisingly positive evaluation from my assessors and almost six years of work, I have been awarded my doctorate. You can read my thesis on [[https://www.unsworks.unsw.edu.au/permalink/f/5gm2j3/unsworks_61747][UNSWorks]].
+
+Note: If the above photo seems to have redder lighting than outdoor environments normally have, this is due to extensive smoke haze from the ongoing Australian bushfire disaster. If you are in a position to support our [[https://www.wwf.org.au/get-involved/bushfire-emergency][animal comrades]], please do so.
+
+Liam O'Connor\\
+*Type Systems for Systems Types* \\
+/PhD Thesis, Computer Science and Engineering, Faculty of Engineering, University of New South Wales, 2019/ \\
+
+#+BEGIN_QUOTE
+This thesis presents a framework aimed at significantly reducing the cost of proving functional correctness for low-level operating systems components, designed around a new programming language, Cogent. This language is total, polymorphic, higher-order, and purely functional, including features such as algebraic data types and type inference. Crucially, Cogent is equipped with a uniqueness type system, which eliminates the need for a trusted runtime or garbage collector, and allows us to assign two semantics to the language: one imperative, suitable for efficient C code generation; and one functional, suitable for equational reasoning and verification. We prove that the functional semantics is a valid abstraction of the imperative semantics for all well-typed programs. Cogent is designed to easily interoperate with existing C code, to enable Cogent software to interact with existing C systems, and also to provide an escape hatch of sorts, for when the restrictions of Cogent's type system are too onerous. This interoperability extends to Cogent's verification framework, which composes with existing C verification frameworks to enable whole systems to be verified.
+
+Cogent's verification framework is based on certifying compilation: For a well-typed Cogent program, the compiler produces C code, a high-level representation of its semantics in Isabelle/HOL, and a proof that the C code correctly refines this embedding. Thus one can reason about the full semantics of real-world systems code productively and equationally, while retaining the interoperability and leanness of C. The compiler certificate is a series of language-level proofs and per-program translation validation phases, combined into one coherent top-level theorem in Isabelle/HOL.
+
+To evaluate the effectiveness of this framework, two realistic file systems were implemented as a case study, and key operations for one file system were formally verified on top of Cogent specifications. These studies demonstrate that verification effort is drastically reduced for proving higher-level properties of file system implementations, by reasoning about the generated formal specification from Cogent, rather than low-level C code.
+#+END_QUOTE
+
+Since I last posted on this website, I've also had a few publications of interest, detailed below. Two are on Cogent-related topics, and one on dependently-typed programming in Agda. 
+
+
+Liam O'Connor\\
+*Deferring the Details and Deriving Programs* \\
+/Workshop on Type-Driven Development (TyDe)/, pp. 27-39, Berlin, Germany, August, 2019.\\
+[[http://liamoc.net/images/deferring.pdf][Available here]]
+[[https://www.youtube.com/watch?v=2euFCCeMZOM][Talk available on YouTube]]
+
+#+BEGIN_QUOTE
+A commonly-used technique in dependently-typed programming is to encode invariants about a data structure into its type, thus ensuring that the data structure is correct by construction. Unfortunately, this often necessitates the embedding of explicit proof terms within the data structure, which are not part of the structure conceptually, but merely supplied to ensure that the data invariants are maintained. As the complexity of the specifications in the types increases, these additional terms tend to clutter definitions, reducing readability. We introduce a technique where these proof terms can be supplied later, by constructing the data structure within a /proof delay/ applicative functor. We apply this technique to Trip, our new language for Hoare-logic verification of imperative programs embedded in Agda, where our applicative functor is used as the basis for a verification condition generator, turning the typed holes of Agda into a method for stepwise derivation of a program from its specification in the form of a Hoare triple.
+#+END_QUOTE
+
+Liam O'Connor, Zilin Chen, Partha Susarla, Christine Rizkallah, Gerwin Klein, Gabriele Keller \\
+*Bringing effortless refinement of data layouts to Cogent* \\
+/International Symposium On Leveraging Applications of Formal Methods, Verification and Validation (ISOLA), LNCS v. 11244, pp. 134-149, Limassol, Cyprus, November, 2018/ \\ 
+[[https://ts.data61.csiro.au/publications/csiroabstracts/OConnor_CSRKK_18.abstract.pml][Available from CSIRO]]
+
+#+BEGIN_QUOTE
+The language Cogent allows low-level operating system components to be modelled as pure mathematical functions operating on algebraic data types, which makes it highly suitable for verification in an interactive theorem prover. Furthermore, the Cogent compiler translates these models into imperative C programs, and provides a proof that this compilation is a refinement of the functional model. There remains a gap, however, between the C data structures used in the operating system, and the algebraic data types used by Cogent. This forces the programmer to write a large amount of boilerplate marshalling code to connect the two, which can lead to a significant runtime performance overhead due to excessive copying.
+
+In this paper, we outline our design for a data description language and data refinement framework, called Dargent, which provides the programmer with a means to specify how Cogent represents its algebraic data types. From this specification, the compiler can then generate the C code which manipulates the C data structures directly. Once fully realised, this extension will enable more code to be automatically verified by Cogent, smoother interoperability with C, and substantially improved performance of the generated code.
+#+END_QUOTE
+
+Zilin Chen, Liam O'Connor, Gabriele Keller, Gerwin Klein and Gernot Heiser \\
+*The Cogent Case for Property-Based Testing* \\
+/Workshop on Programming Languages and Operating Systems (PLOS), pp. 1-7, Shanghai, China, October, 2017/ \\
+[[http://ts.data61.csiro.au/publications/nictaabstracts/Chen_OKKH_17.abstract.pml][Available from CSIRO]]
+
+#+BEGIN_QUOTE
+Property-based testing can play an important role in reducing the cost of formal verification: It has been demonstrated to be effective at detecting bugs and finding inconsistencies in specifications, and thus can eliminate effort wasted on fruitless proof attempts. We argue that in addition, property-based testing enables an incremental approach to a fully verified system, by allowing replacement of automatically generated tests of properties stated in the specification by formal proofs. We demonstrate this approach on the verification of systems code, discuss the implications on systems design, and outline the integration of property-based testing into the Cogent framework.
+#+END_QUOTE
+
