@@ -1,0 +1,31 @@
+#+TITLE: Holbert and Cogent at SPLASH 
+#+KEYWORDS: publication, splash, hatra, pbt, cogent, verification, theorem-proving, testing, reasoning, sle, conference, holbert
+#+DATE: 15th December 2022
+#+TIME: 01:00
+
+[[./images/splash.png]]
+
+I recently returned from New Zealand, where I presented [[http://liamoc.net/holbert][Holbert]], the web-based proof assistant and document preparation tool that I have been developing with some brilliant students, specifically my now-PhD-student Rayhana Amjad who developed a lot of the mechanisms for equality and Chris Perceval-Maxwell who developed a lot of the mechanisms for induction. The demo definitely made an impression on the audience and several people told me they intend to make use of Holbert in their classrooms. Looking forward to it!
+
+The paper was presented at the Human Aspects of Types and Reasoning Assistants (HATRA) workshop, as part of SPLASH 2022. Interestingly, the [[http://liamoc.net/hatra-2022][paper itself is available as a Holbert document]].
+
+Liam O'Connor and Rayhana Amjad\\
+*Holbert: Reading, Writing, Proving and Learning in the Browser* \\
+/Human Aspects of Types and Reasoning Assistants (HATRA)/, Auckland, New Zealand, 2022.\\
+[[http://liamoc.net/hatra-2022][Live Version Here]] [[https://arxiv.org/abs/2210.11411][Available on arXiv]]
+
+#+BEGIN_QUOTE
+This paper presents Holbert: a work-in-progress pedagogical proof assistant and online textbook platform, aimed at the educational use-case, specifically for the teaching of programming language theory. Holbert allows proof exercises and rule definitions to be embedded directly in an online textbook, where proofs and rules can be manipulated using a graphical interface. We give an overview of the logical foundations of Holbert, examples of its use, and give an update as to its current implementation status.
+#+END_QUOTE
+
+Also, my colleague [[https://zilinc.github.io/][Zilin Chen]] presented our work on combining property-based testing and verification in the Cogent framework at the Conference on Software Language Engineering (SLE), also colocated with SPLASH. He polished the work so well that it won a distinguished artifact award!
+
+Zilin Chen, Christine Rizkallah, Liam O'Connor, Partha Susarla, Gerwin Klein, Gernot Heiser, Gabriele Keller\\
+*Property-Based Testing: Climbing the Stairway to Verification* \\
+/Software Language Engineering (SLE)/, pp. 84-97, Auckland, New Zealand, December 2022. \\
+Winner of Distinguished Artifact Award.\\
+[[https://trustworthy.systems/publications/papers/Chen_ROSKHK_22.abstract][Available from TS]]
+
+#+BEGIN_QUOTE
+Property-based testing (PBT) is a powerful tool that is widely available in modern programming languages. It has been used to reduce formal software verification effort. We demonstrate how PBT can be used in conjunction with formal verification to incrementally gain greater assurance in code correctness by integrating PBT into the verification framework of Cogent—a programming language equipped with a certifying compiler for developing high-assurance systems components. Specifically, for PBT and formal verification to work in tandem, we structure the tests to mirror the refinement proof that we used in Cogent's verification framework: The expected behaviour of the system under test is captured by a functional correctness specification, which mimics the formal specification of the system, and we test the refinement relation between the implementation and the specification. We exhibit the additional benefits that this mutualism brings to developers and demonstrate the techniques we used in this style of PBT, by studying two concrete examples.
+#+END_QUOTE

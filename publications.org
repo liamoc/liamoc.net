@@ -1,21 +1,65 @@
 #+TITLE: Publications
 
-** Cogent 
+** Quickstrom
 
-A project at Data61 (CSIRO) aimed at using programming languages with interesting types to aid verification of low-level systems. More information is available at the [[http://ssrg.nicta.com.au/projects/TS/cogent.pml][Cogent website]].
+A project with [[https://wickstrom.tech][Oskar Wickström]] bringing the power of property-based testing to web application interface testing. More information is 
+available at the [[https://quickstrom.io][Quickstrom website]].
 
 #+BEGIN_HTML
 <small>
 #+END_HTML
+
+Liam O'Connor, Oskar Wickström\\
+*Quickstrom: Property-based Acceptance Testing with LTL Specifications* \\
+/Programming Languages Design and Implementation (PLDI)/, pp. 1025-1038, San Diego, California, USA, June 2022. \\
+[[https://arxiv.org/abs/2203.11532][Available from arXiv]]
+[[https://www.youtube.com/watch?v=6t8emhea0pA][Talk available on YouTube]]
+
+#+BEGIN_HTML
+</small>
+#+END_HTML
+
+** Cogent 
+
+A project at the [[https://trustworthy.systems/][Trustworthy Systems Group]] aimed at using programming languages with interesting types to aid verification of low-level systems. More information is available at the [[https://trustworthy.systems/projects/TS/cogent.pml][Cogent website]].
+
+#+BEGIN_HTML
+<small>
+#+END_HTML
+
+Zilin Chen, Ambroise Lafont, Liam O'Connor, Gabriele Keller, Craig McLaughlin, Vincent Jackson, Christine Rizkallah\\
+*Dargent: A Silver Bullet for Verified Data Layout Refinement* \\
+/Principles of Programming Languages (POPL)/, Boston, Massachusetts, USA, 2023. \\
+Proceedings of the ACM on Programming Languages, Volume 7, January 2023, Article 47, pp 1369–1395 \\
+[[https://trustworthy.systems/publications/papers/Chen_LOKMJR_23.abstract][Available from TS]] 
+[[https://www.youtube.com/watch?v=IsHzO3F0dSI][Talk available on YouTube]]
+
+Zilin Chen, Christine Rizkallah, Liam O'Connor, Partha Susarla, Gerwin Klein, Gernot Heiser, Gabriele Keller\\
+*Property-Based Testing: Climbing the Stairway to Verification* \\
+/Software Language Engineering (SLE)/, pp. 84-97, Auckland, New Zealand, December 2022. \\
+Winner of Distinguished Artifact Award.\\
+[[https://trustworthy.systems/publications/papers/Chen_ROSKHK_22.abstract][Available from TS]]
+
+Louis Cheung, Liam O'Connor, Christine Rizkallah\\
+*Overcoming Restraint: Composing Verification of Foreign Functions with Cogent* \\
+/Certified Programs and Proofs (CPP)/, pp. 13-26, Philadelphia, Pennsylvania, USA, January 2022. \\
+[[https://arxiv.org/abs/2112.05964v2][Available from arXiv]]
+[[https://www.youtube.com/watch?v=0x5DYZcXJcc][Talk available on YouTube]]
+
+Liam O'Connor, Zilin Chen, Christine Rizkallah, Vincent Jackson, Sidney Amani, Gerwin Klein, Toby Murray, Thomas Sewell, Gabriele Keller\\
+*Cogent: Uniqueness types and Certifying Compilation* \\
+/Journal of Functional Programming, Volume 31, Issue on Secure Compilation, October 2021./ \\
+[[https://www.cambridge.org/core/journals/journal-of-functional-programming/article/cogent-uniqueness-types-and-certifying-compilation/47AC86F02534818B95A56FA1A283A0A6][Available from CUP]]
+
 Liam O'Connor \\
 *Type Systems for Systems Types* \\
 /PhD Thesis, Computer Science and Engineering, Faculty of Engineering, University of New South Wales, 2019/ \\
-[[https://www.unsworks.unsw.edu.au/permalink/f/5gm2j3/unsworks_61747][Available from UNSWorks]].
+[[https://www.unsworks.unsw.edu.au/permalink/f/5gm2j3/unsworks_61747][Available from UNSWorks]]
 
 Liam O'Connor, Zilin Chen, Partha Susarla, Christine Rizkallah, Gerwin Klein, Gabriele Keller \\
 *Bringing effortless refinement of data layouts to Cogent* \\
 /International Symposium On Leveraging Applications of Formal Methods, Verification and Validation (ISOLA), LNCS v. 11244, pp. 134-149, Limassol, Cyprus, November, 2018/ \\ 
-[[https://ts.data61.csiro.au/publications/csiroabstracts/OConnor_CSRKK_18.abstract.pml][Available from CSIRO]]
+[[https://trustworthy.systems/publications/csiroabstracts/OConnorDavis_CSRKK_18.abstract][Available from TS]]
 
 Gerwin Klein, June Andronick, Gabriele Keller, Daniel Matichuk, Toby Murray, Liam O'Connor \\
 *Provably Trustworthy Systems* \\
@@ -25,35 +69,34 @@ Gerwin Klein, June Andronick, Gabriele Keller, Daniel Matichuk, Toby Murray, Lia
 Zilin Chen, Liam O'Connor, Gabriele Keller, Gerwin Klein and Gernot Heiser \\
 *The Cogent Case for Property-Based Testing* \\
 /Workshop on Programming Languages and Operating Systems (PLOS), pp. 1-7, Shanghai, China, October, 2017/ \\
-[[http://ts.data61.csiro.au/publications/nictaabstracts/Chen_OKKH_17.abstract.pml][Available from CSIRO]]
-
+[[https://trustworthy.systems/publications/csiroabstracts/Chen_OKKH_17.abstract][Available from TS]]
 
 Liam O'Connor, Zilin Chen, Christine Rizkallah, Sidney Amani, Japheth Lim, Toby Murray, Yutaka Nagashima, Thomas Sewell, Gerwin Klein \\
 *Refinement through Restraint: Bringing Down the Cost of Verification* \\
 /International Conference on Functional Programming (ICFP)/, pp. 89-102, Nara, Japan, September 2016. \\
-[[http://ts.data61.csiro.au/publications/nictaabstracts/OConnor_CRALMNSK_16.abstract.pml][Available from CSIRO]]
+[[https://trustworthy.systems/publications/nictaabstracts/OConnor_CRALMNSK_16.abstract][Available from TS]]
 [[https://www.youtube.com/watch?v=sJwcm_worfM][Talk available on YouTube]]
 
 Christine Rizkallah, Japheth Lim, Yutaka Nagashima, Thomas Sewell, Zilin Chen, Liam O'Connor, Toby Murray, Gabriele Keller and Gerwin Klein \\
 *A Framework for the Automatic Formal Verification of Refinement From Cogent to C* \\
 /International Conference on Interactive Theorem Proving (ITP)/, LNCS v. 9087, pp. 323-340, Nancy, France, August 2016.\\
-[[http://ts.data61.csiro.au/publications/nictaabstracts/Rizkallah_LNSCOMKK_16.abstract.pml][Available from CSIRO]]
+[[https://trustworthy.systems/publications/nictaabstracts/Rizkallah_LNSCOMKK_16.abstract][Available from TS]]
 
 Sidney Amani, Alex Hixon, Zilin Chen, Christine Rizkallah, Peter Chubb, Liam O'Connor, Joel Beeren, Yutaka Nagashima, Japheth Lim, Thomas Sewell, Joseph Tuong, Gabriele Keller, Toby Murray, Gerwin Klein and Gernot Heiser \\
 *Cogent: Verifying High-assurance File System Implementations* \\
 /International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS)/, pp. 175-188, Atlanta, GA, USA, April 2016. \\
-[[http://ts.data61.csiro.au/publications/nictaabstracts/Amani_HCRCOBNLSTKMKH_16.abstract.pml][Available from CSIRO]]
+[[https://trustworthy.systems/publications/nictaabstracts/Amani_HCRCOBNLSTKMKH_16.abstract][Available from TS]]
 
 Liam O'Connor, Gabriele Keller, Sidney Amani, Toby Murray, Gerwin Klein, Zilin Chen and Christine Rizkallah \\
 *CDSL Version 1: Simplifying Verification with Linear Types* \\
 /Technical Report/, NICTA, October, 2014. \\
-[[http://ts.data61.csiro.au/publications/nictaabstracts/OConnorDavis_KAMKCR_14:tr.abstract.pml][Available from CSIRO]]
+[[https://trustworthy.systems/publications/nictaabstracts/OConnorDavis_KAMKCR_14:tr.abstract][Available from TS]]
 
 Gabriele Keller, Toby Murray, Sidney Amani, Liam O'Connor, Zilin Chen, Leonid Ryzhyk, Gerwin Klein and Gernot Heiser \\
 *File Systems Deserve Verification Too!* \\
 /Workshop on Programming Languages and Operating Systems (PLOS)/, pp. 1-7, Farmington, Pennsylvania, USA, November, 2013 \\
 A revised version of this paper was published in /Operating Systems Review/, Volume 48, Issue 1, January 2014, pages 58-64.\\
-[[http://ts.data61.csiro.au/publications/nictaabstracts/Keller_MAOCRKH_13.abstract.pml][Available from CSIRO]]
+[[https://trustworthy.systems/publications/nictaabstracts/Keller_MAOCRKH_13.abstract][Available from TS]]
 #+BEGIN_HTML
 </small>
 #+END_HTML
@@ -88,11 +131,26 @@ Liam O'Connor\\
 #+BEGIN_HTML
 <small>
 #+END_HTML
+Xueying Qin, Liam O'Connor, Rob van Glabbeek, Peter Höfner, Ohad Kammar and Michel Steuwer\\
+*Shoggoth: A Formal Foundation for Strategic Rewriting* \\
+/Principles of Programming Languages (POPL)/, London, UK, 2024. \\
+Proceedings of the ACM on Programming Languages, Volume 8, January 2024, Article 3, pp 61–89 \\
+[[https://dl.acm.org/doi/10.1145/3633211][Available from ACM]]
+
+Xueying Qin, Liam O'Connor and Michel Steuwer\\
+*Primrose: Selecting Container Data Types by Their Properties* \\
+/The Art, Science, and Engineering of Programming/, Vol. 7, Issue 3, Article 11, 2023\\
+[[https://programming-journal.org/2023/7/11/][Available from ‹Programming›]]
+
+Liam O'Connor and Rayhana Amjad\\
+*Holbert: Reading, Writing, Proving and Learning in the Browser* \\
+/Human Aspects of Types and Reasoning Assistants (HATRA)/, Auckland, New Zealand, 2022.\\
+[[http://liamoc.net/hatra-2022][Live Version Here]] [[https://arxiv.org/abs/2210.11411][Available on arXiv]] [[https://www.youtube.com/watch?v=Rdb7P5MJZLw][Talk available on YouTube]]
 
 Yutaka Nagashima and Liam O'Connor\\
 *Close Encounters of the Higher Kind: Emulating Constructor Classes in Standard ML* \\
 /Workshop on ML 2016/, Nara, Japan, September, 2016.\\
-[[http://ts.data61.csiro.au/publications/nictaabstracts/Nagashima_OConnor_16.abstract.pml][Available from CSIRO]]
+[[https://trustworthy.systems/publications/nictaabstracts/Nagashima_OConnor_16.abstract][Available from TS]]
 [[https://www.youtube.com/watch?v=A2BJ6HRPRyg][Talk available on YouTube]]
 
 Liam O'Connor\\

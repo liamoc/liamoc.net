@@ -1,0 +1,21 @@
+#+TITLE: Dargent (and Cogent) at POPL
+#+KEYWORDS: publication, popl, cogent, verification, theorem-proving, conference, dargent 
+#+DATE: 24th June 2023
+#+TIME: 01:00
+
+[[./images/popl2023.png]]
+
+I realised that I neglected to post a few months ago about our big publication on Dargent, the data description and refinement extension for Cogent, at POPL this year. The illustrious Ambroise Lafont presented the work. I didn't attend the conference, but I hear good things from those who attended. 
+
+Zilin Chen, Ambroise Lafont, Liam O'Connor, Gabriele Keller, Craig McLaughlin, Vincent Jackson, Christine Rizkallah\\
+*Dargent: A Silver Bullet for Verified Data Layout Refinement* \\
+/Principles of Programming Languages (POPL)/, Boston, Massachusetts, USA, 2023. \\
+Proceedings of the ACM on Programming Languages, Volume 7, January 2023, Article 47, pp 1369–1395 \\
+[[https://trustworthy.systems/publications/papers/Chen_LOKMJR_23.abstract][Available from TS]] 
+[[https://www.youtube.com/watch?v=IsHzO3F0dSI][Talk available on YouTube]]
+
+#+BEGIN_QUOTE
+Systems programmers need fine-grained control over the memory layout of data structures, both to produce performant code and to comply with well-defined interfaces imposed by existing code, standardised protocols or hardware. Code that manipulates these low-level representations in memory is hard to get right. Traditionally, this problem is addressed by the implementation of tedious marshalling code to convert between compiler-selected data representations and the desired compact data formats. Such marshalling code is error-prone and can lead to a significant runtime overhead due to excessive copying. While there are many languages and systems that address the correctness issue, by automating the generation and, in some cases, the verification of the marshalling code, the performance overhead introduced by the marshalling code remains. In particular for systems code, this overhead can be prohibitive. In this work, we address both the correctness and the performance problems.
+
+We present a data layout description language and data refinement framework, called Dargent, which allows programmers to declaratively specify how algebraic data types are laid out in memory. Our solution is applied to the Cogent language, but the general ideas behind our solution are applicable to other settings. The Dargent framework generates C code that manipulates data directly with the desired memory layout, while retaining the formal proof that this generated C code is correct with respect to the functional semantics. This added expressivity removes the need for implementing and verifying marshalling code, which eliminates copying, smoothens interoperability with surrounding systems, and increases the trustworthiness of the overall system.
+#+END_QUOTE

@@ -8,6 +8,7 @@ keywords: [ agda, term-representation, verification, types, semantics, compilers
 ```
 module 2015-08-23-verified-compiler where
 
+
 open import Data.Fin hiding (_+_; _≟_) renaming (#_ to i)
 open import Data.Nat hiding (_≟_)
 open import Data.Vec hiding (_>>=_; _⊛_)
@@ -248,7 +249,7 @@ $$
           → (n ∷ W) ∣ S ∣ push ↦ W ∣ (n ∷ S)
 ```
 
- - $\mathtt{pick}\ n$ (where $0 \le n < |\mathsf{S}|$ ), pushes the number at position $n$ from the top of $\mathsf{S}$ onto $\mathsf{W}$.
+ - $\mathtt{pick}\ n$ (where $0 \le n$ < $|\mathsf{S}|$ ), pushes the number at position $n$ from the top of $\mathsf{S}$ onto $\mathsf{W}$.
 
 $$
 \newcommand{\blktriangle}{\scriptstyle \blacktriangle}

@@ -1,0 +1,30 @@
+#+TITLE: The latest in Cogent publications
+#+KEYWORDS: jfp, cpp, verification, cogent, publication, refinement, ffi
+#+DATE: 18th August 2022
+#+TIME: 20:00
+
+[[./images/jfp.png]]
+
+In the last two years we've had two major publications about Cogent. The first, and most important, is the long-form JFP paper published at the special issue on secure compilation. This is essentially an abridged version of my PhD thesis:
+
+Liam O'Connor, Zilin Chen, Christine Rizkallah, Vincent Jackson, Sidney Amani, Gerwin Klein, Toby Murray, Thomas Sewell, Gabriele Keller\\
+*Cogent: Uniqueness types and Certifying Compilation* \\
+/Journal of Functional Programming, Volume 31, Issue on Secure Compilation, October 2021./ \\
+[[https://www.cambridge.org/core/journals/journal-of-functional-programming/article/cogent-uniqueness-types-and-certifying-compilation/47AC86F02534818B95A56FA1A283A0A6][Available from CUP]]
+
+#+BEGIN_QUOTE
+This paper presents a framework aimed at significantly reducing the cost of proving functional correctness for low-level operating systems components. The framework is designed around a new functional programming language, Cogent. A central aspect of the language is its uniqueness type system, which eliminates the need for a trusted runtime or garbage collector while still guaranteeing memory safety, a crucial property for safety and security. Moreover, it allows us to assign two semantics to the language: The first semantics is imperative, suitable for efficient C code generation, and the second is purely functional, providing a user-friendly interface for equational reasoning and verification of higher-level correctness properties. The refinement theorem connecting the two semantics allows the compiler to produce a proof via translation validation certifying the correctness of the generated C code with respect to the semantics of the Cogent source program. We have demonstrated the effectiveness of our framework for implementation and for verification through two file system implementations.
+#+END_QUOTE
+
+In addition, we published at CPP specifically on verifying software across Cogent's FFI, work led by my colleague Christine Rizkallah's student Louis Cheung. This paper includes very nice notation for the different semantic levels and refinement proofs involved:
+
+Louis Cheung, Liam O'Connor, Christine Rizkallah\\
+*Overcoming Restraint: Composing Verification of Foreign Functions with Cogent* \\
+/Certified Programs and Proofs (CPP)/, pp. 13-26, Philadelphia, Pennsylvania, USA, January 2022. \\
+[[https://arxiv.org/abs/2112.05964v2][Available from arXiv]]
+[[https://www.youtube.com/watch?v=0x5DYZcXJcc][Talk available on YouTube]]
+
+#+BEGIN_QUOTE
+Cogent is a restricted functional language designed to reduce the cost of developing verified systems code. Because of its sometimes-onerous restrictions, such as the lack of support for recursion and its strict uniqueness type system, Cogent provides an escape hatch in the form of a foreign function interface (FFI) to C code. This poses a problem when verifying Cogent programs, as imported C components do not enjoy the same level of static guarantees that Cogent does. Previous verification of file systems implemented in Cogent merely assumed that their C components were correct and that they preserved the invariants of Cogent's type system. In this paper, we instead prove such obligations. We demonstrate how they smoothly compose with existing Cogent theorems, and result in a correctness theorem of the overall Cogent-C system. The Cogent FFI constraints ensure that key invariants of Cogent's type system are maintained even when calling C code. We verify reusable higher-order and polymorphic functions including a generic loop combinator and array iterators and demonstrate their application to several examples including binary search and the BilbyFs file system. We demonstrate the feasibility of verification of mixed Cogent-C systems, and provide some insight into verification of software comprised of code in multiple languages with differing levels of static guarantees.
+#+END_QUOTE
+
