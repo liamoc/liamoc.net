@@ -20,7 +20,17 @@ margin-inline-end: 2em;
 article img {
     max-width:90%;
 }
+.computer {
+    width:250px;
+    border:1px solid;
+    padding:4px;
+    margin-bottom:20px;
+}
 @media screen and (min-width: 800px) {
+.computer {
+    margin-left:40px;
+    float:right;
+}
 body {
     background-size: 8px!important;
     image-rendering: pixelated!important;
@@ -39,6 +49,9 @@ margin-right:40px!important;
    #mobile-indicator {
         display: block !important;
     }
+article {
+    text-align:justify;
+}
    .box-top {
    }
 pre, code { font-size:15pt !important; }
@@ -439,7 +452,6 @@ article {
     font-family: Geneva;
     font-size:12px;
     padding:25px;
-    text-align:justify;
 }
 h1 {
     margin-top:4px;

@@ -1,0 +1,25 @@
+#+TITLE: Quickstrom at PLDI
+#+KEYWORDS: publication, pldi, pbt, ltl, quickstrom
+#+DATE: 18th August 2022
+#+TIME: 04:00
+
+[[./images/quickstrom.png]]
+
+I'm delighted to report that my newest research project, [[https://quickstrom.io][Quickstrom]], was accepted for publication at PLDI 2022.
+Quickstrom is an acceptance testing tool for web applications, that generates test cases based on formal specifications, as with QuickCheck or other property-based testing tools. The difference is that Quickstrom allows for testing reactive user interfaces using specifications written in Linear Temporal Logic.
+This project is joint work with [[https://wickstrom.tech/][Oskar Wickström]].
+
+I am also happy to announce that I have accepted a new PhD student on this project, Rayhana Amjad. The illustrious [[http://theory.stanford.edu/~rvg/][Rob van Glabbeek]] will serve as as secondary supervisor.
+
+
+Liam O'Connor, Oskar Wickström\\
+*Quickstrom: Property-based Acceptance Testing with LTL Specifications* \\
+/Programming Languages Design and Implementation (PLDI)/, pp. 1025-1038, San Diego, California, USA, June 2022. \\
+[[https://arxiv.org/abs/2203.11532][Available from arXiv]]
+[[https://www.youtube.com/watch?v=6t8emhea0pA][Talk available on YouTube]]
+
+#+BEGIN_QUOTE
+We present Quickstrom, a property-based testing system for acceptance testing of interactive applications. Using Quickstrom, programmers can specify the behaviour of web applications as properties in our testing-oriented dialect of Linear Temporal Logic (LTL) called QuickLTL, and then automatically test their application against the given specification with hundreds of automatically generated interactions. QuickLTL extends existing finite variants of LTL for the testing use-case, determining likely outcomes from partial traces whose minimum length is itself determined by the LTL formula. This temporal logic is embedded in our specification language, Specstrom, which is designed to be approachable to web programmers, expressive for writing specifications, and easy to analyse. Because Quickstrom tests only user-facing behaviour, it is agnostic to the implementation language of the system under test. We therefore formally specify and test many implementations of the popular TodoMVC benchmark, used for evaluation and comparison across various web frontend frameworks and languages. Our tests uncovered bugs in almost half of the available implementations.
+#+END_QUOTE
+
+

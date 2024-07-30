@@ -1,0 +1,20 @@
+#+TITLE: A status update, two years late.
+#+KEYWORDS: uoe, jfp, tyde, 
+#+DATE: 17th August 2022
+#+TIME: 20:00
+
+[[./images/uoe.jpg]]
+
+I have neglected this blog for far too long. Shortly after receiving my doctorate, I applied for and got a permanent position as *Lecturer in Programming Languages for Trustworthy Systems* at the [[http://web.inf.ed.ac.uk/lfcs][LFCS]] at the [[http://inf.ed.ac.uk][University of Edinburgh School of Informatics]]. Despite being in my fourth decade of life, this is the first permanent job I've ever had.
+
+I moved to Edinburgh in late 2020 and shortly afterward began research work. I was appointed as Social Media Editor of the [[https://twitter.com/cup_jfp][Journal of Functional Programming]], and now run [[https://twitter.com/CUP_JFP][its twitter account]]. I also recently joined the Steering Committee for the [[http://tydeworkshop.org/][Workshop on Type-Driven Development]]. I am secondary supervisor to two PhD students: Tudor Ferariu (whose primary supervisor is [[https://homepages.inf.ed.ac.uk/wadler/][Phil Wadler]]), working on verification of smart contracts, and Mathieu Fehr (whose primary supervisor is [[https://grosser.science/][Tobias Grosser]]), working on formalising compiler intermediate representations. 
+
+I also began some new projects. Mostly, my focus is on the [[https://quickstrom.io][Quickstrom]] testing tool for testing user interfaces using Linear Temporal Logic. I will write a separate post about this shortly. I've recently taken on a new PhD student, Rayhana Amjad, on this project. 
+
+Since [[https://www.zdnet.com/article/csiro-data61-bins-trustworthy-systems-team-behind-sel4/][my old group was defunded by CSIRO]], the illustrious [[http://theory.stanford.edu/~rvg/][Rob van Glabbeek]], expert on concurrency theory and process algebra, suddently became available. At my instigation, the School of Informatics here at Edinburgh successfully acquired a Wolfson Fellowship grant to bring him here, and we are now collaborating on several lines of research, including Quickstrom.
+
+I've also developed [[http://liamoc.net/holbert][Holbert]], a graphical proof assistant and online textbook platform for educational use. 
+
+Teaching-wise, I am developing a new course to teach alongside Rob, but am also lecturing the course Introduction to Theoretical Computer Science, a course about automata, computability, complexity and lambda calculus.
+
+I've also been publishing fairly actively about Cogent and similar. I will write a post shortly on my recent publications in this area.
