@@ -34,7 +34,7 @@ $(STATICS:%=out/%): out/%: %
 all: $(POSTS:%=out/posts/%/index.html) $(TAGS:%=out/tags/%.html) out/index.html out/contact.html out/publications.html out/posts/archive.html out/atom.xml $(STATICS:%=out/%)
 
 preview:
-	@cd out && python -m SimpleHTTPServer 8000
+	@cd out && python3 -m http.server
 
 clean:
 	@rm -rf tags out dependencies tag_list tag_cloud.html post_list.md

@@ -355,7 +355,7 @@ _derived automatically_.
 ```
 open import Data.Product
 open import Function
-open import Data.String
+open import Data.String hiding (tail;head)
 open import Data.String.Unsafe
 ```
 </div>
@@ -585,8 +585,8 @@ it into our wellformed-by-construction `Term` type, which necessitates _scope-ch
 ```
 open import Data.Maybe
 open import Data.Maybe.Categorical
-open import Category.Monad
-open import Category.Applicative
+open import Effect.Monad
+open import Effect.Applicative
 import Level
 open RawMonad (monad {Level.zero})
 open import Relation.Nullary
