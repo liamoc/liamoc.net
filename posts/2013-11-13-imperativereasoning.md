@@ -1,6 +1,6 @@
 ---
 title: Imperative Reasoning is Hard
-keywords: [ verification, reasoning, imperative, total, functional, monads, edsls ]
+keywords: verification, reasoning, imperative, total, functional, monads, edsls
 time: 12:00
 date: 13th November 2013
 ---

@@ -1,3 +1,4 @@
+
 function splat_popen(data,cmd, argt)
    temp = io.open("temp.tex","w")
    io.output(temp)

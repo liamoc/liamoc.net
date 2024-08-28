@@ -1,6 +1,6 @@
 ---
 title: Context splitting and substructural terms
-keywords: [ agda, term-representation, verification, types, semantics, linear-types, cogent ]
+keywords: agda, term-representation, verification, types, semantics, linear-types, cogent
 time: 12:00
 date: 1st January 2014
 ---

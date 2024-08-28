@@ -179,7 +179,7 @@ out/posts/%/index.html: out/posts/%/index.org out/posts/%/cites.bib out/posts/%/
 	@echo "$(BOLD)`basename $(@D)`:$(SGR0) Generating post html"
 	@cd $(@D) \
         && $(PANDOC) -c "Agda.css" -s -T "liamoc.net" --lua-filter=../../../math.lua \
-                     --data-dir=../../.. -t html5 --highlight-style=tango $(<F) \
+                     --data-dir=../../.. --to=html5 --highlight-style=tango $(<F) \
                      --citeproc --bibliography cites.bib --csl ../../../cambridge-university-press-author-date.csl \
                      -o $(@F) $(SUPPRESS)
 

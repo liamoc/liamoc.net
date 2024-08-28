@@ -1,6 +1,6 @@
 ---
 title: Trustworthy File Systems accepted to PLOS
-keywords: [ data61, verification, publication, plos, file-systems, cogent ]
+keywords: data61, verification, publication, plos, file-systems, cogent
 date: 7th October 2013
 time: 09:00
 ---

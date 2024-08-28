@@ -2,7 +2,7 @@
 title: Write your Compiler by Proving it Correct
 author: Liam O'Connor
 date: 23rd August, 2015
-keywords: [ agda, term-representation, verification, types, semantics, compilers, theorem-proving ]
+keywords: agda, term-representation, verification, types, semantics, compilers, theorem-proving
 ---
 <div class=hidden>
 ```

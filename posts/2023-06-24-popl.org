@@ -1,5 +1,5 @@
 #+TITLE: Dargent (and Cogent) at POPL
-#+KEYWORDS: publication, popl, cogent, verification, theorem-proving, conference, dargent 
+#+KEYWORDS: publication, popl, cogent, verification, theorem-proving, conference, dargent
 #+DATE: 24th June 2023
 #+TIME: 01:00
 

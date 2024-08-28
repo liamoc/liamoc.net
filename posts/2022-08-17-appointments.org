@@ -1,5 +1,5 @@
 #+TITLE: A status update, two years late.
-#+KEYWORDS: uoe, jfp, tyde, 
+#+KEYWORDS: uoe, jfp, tyde
 #+DATE: 17th August 2022
 #+TIME: 20:00
 

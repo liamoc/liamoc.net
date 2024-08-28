@@ -74,7 +74,7 @@ the other, starting at ~d~.
 
 In the case of patches and documents, they form what's called /indiscrete category/ or a /chaotic category/, as there exists a single, unique[fn:1] patch between any two documents.
 A function to /find/ that patch is simply ~diff~, which takes two documents and computes the patch between them, using the Wagner-Fischer algorithm
-[@WagnerFischer].
+[cite:@WagnerFischer].
 
 #+BEGIN_SRC haskell 
 diff :: Eq a => Vector a -> Vector a -> Patch a
@@ -129,10 +129,10 @@ So, we have now specified how to compute the unique patch between any two docume
 how to apply patches to a document (~apply~), and how to compute the inverse of a given patch (~inverse~). The only thing we're missing is the crown 
 jewel of patch theory, how to /merge/ patches when they diverge.
 
-I came to patch theory from concurrency control research, and not via the patch theory of Darcs [@DarcsPaper], so there are some differences in how
+I came to patch theory from concurrency control research, and not via the patch theory of Darcs [cite:@DarcsPaper], so there are some differences in how
 I approached this problem compared to how Darcs does.
 
-In their seminal paper [@EllisGibbs] on the topic, Ellis and Gibbs define a function $t$ that, given a diverging pair of patches $p : X \rightarrow A$ 
+In their seminal paper [cite:@EllisGibbs] on the topic, Ellis and Gibbs define a function $t$ that, given a diverging pair of patches $p : X \rightarrow A$ 
 and $q : X \rightarrow B$, will produce new patches $p' : B \rightarrow Y$ and $q' : A \rightarrow Y$, such that the result of $p ; q'$ and $q ; p'$ is the same:
 
 $$
@@ -201,12 +201,12 @@ to make a basic wiki system with excellent support for concurrent edits, and edi
 *** Acknowledgements and Related Work
 
 I independently invented this particular flavour of patch theory, but it's extremely similar to, for example, the patch theory underlying
-the [[https://pijul.org][pijul]] version control system [see @Mimram], which also uses pushouts to model merges.
+the [[https://pijul.org][pijul]] version control system [cite:see @Mimram], which also uses pushouts to model merges.
 
-Another paper that is of interest is the recent work encoding patch theory inside Homotopy Type Theory using Higher Inductive Types [@HoTTP]. 
+Another paper that is of interest is the recent work encoding patch theory inside Homotopy Type Theory using Higher Inductive Types [cite: @HoTTP]. 
 HoTT is typically given semantics by ∞-groupoids, so it makes sense that patches would have a natural encoding, but I haven't read that paper yet. 
 
-Also, another paper [@SepLog] uses separation logic to describe the semantics of version control, which is another interesting take on patch theoretic
+Also, another paper [cite: @SepLog] uses separation logic to describe the semantics of version control, which is another interesting take on patch theoretic
 concepts.
 
 *** References

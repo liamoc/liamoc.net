@@ -1,6 +1,6 @@
 ---
 title: The Trouble with Typing Type as Type
-keywords: [ agda, types, theorem-proving, type-theory, foundations, paradox ]
+keywords: agda, types, theorem-proving, type-theory, foundations, paradox
 time: 12:00
 date: 10th September 2015
 ---

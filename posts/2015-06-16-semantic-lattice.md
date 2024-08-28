@@ -2,7 +2,7 @@
 title: A Lattice of Languages is a Verification Buffet
 date: 16th June 2015
 time: 12:00
-keywords: [ verification, types, semantics, linear-types, cogent, total, functional, edsls, reasoning ]
+keywords: verification, types, semantics, linear-types, cogent, total, functional, edsls, reasoning
 ---
 
 I have [written before](/posts/2013-11-13-imperativereasoning) about the use of total, purely functional languages to eliminate cumbersome low-level reasoning. By having a denotational semantics that are about as straightforward as highschool algebra,

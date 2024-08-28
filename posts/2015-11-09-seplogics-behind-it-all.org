@@ -3,6 +3,7 @@
 #+DATE: 9th November 2015
 #+TIME: 12:00
 
+
 The main direction of my research thus far has been to exploit linear types to make purely functional,
 equational reasoning possible for systems programming. I've talked about the [[http:/posts/2013-11-13-imperativereasoning][difficulty of verifying]] imperative
 programs before, but my past entries about [[http:/posts/2014-01-01-context-split][linear types]] did not discuss the advantages that they can bring
@@ -158,10 +159,10 @@ I think this is a much cleaner and easier way to state the frame conditions.
 
 My next item to investigate is how I might integrate this into a seamless language and verification framework. My current thinking is to take a lambda calculus
 with linear types and refinement types, and augment it with an imperative embedded language, which allows several of the guarantees of the linear type system to
-be suspended. The imperative embedded language might resemble the Hoare-state monad [@Swierstra], only using Separation Logic rather than Hoare Logic, but I am 
+be suspended. The imperative embedded language might resemble the Hoare-state monad [cite:@Swierstra], only using Separation Logic rather than Hoare Logic, but I am 
 still figuring out all the details.
 
-**** References
+*** References
 
 [fn:1] The real formalisation is a bit more complicated, allowing nonlinear /read-only/ pointers as well as linear, writable ones.
 

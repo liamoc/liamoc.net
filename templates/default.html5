@@ -117,8 +117,20 @@ $table-of-contents$
 </nav>
 $endif$
 $body$
+<span id=keywords> </span>
 $for(keywords)$
-<a href="/tags/$keywords$.html">$keywords$</a>
+<script>
+var words = `$it$`.split(",");
+for (var i in words) {
+  words[i] = words[i].trim(); 
+  var elem = document.createElement('a');
+  var linkText = document.createTextNode(words[i]);
+  elem.appendChild(linkText);
+  elem.href = "/tags/" + words[i] + ".html";
+  document.getElementById('keywords').appendChild(elem);
+  document.getElementById('keywords').appendChild(document.createTextNode(" "));
+}
+</script>
 $endfor$
 </article>
 </div></div>
