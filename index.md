@@ -2,6 +2,8 @@
 title: "Dr. Liam O'Connor"
 date: "1st November 2023"
 ---
+<div class="infobox"> I am actively searching for PhD students with fully-funded scholarships available. </div>
+
 <h2>Welcome</h2>
 
 <img src="/images/me.jpeg" class='portrait' />

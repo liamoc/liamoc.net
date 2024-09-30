@@ -2,6 +2,15 @@ blockquote {
 margin-inline-start: 2em;
 margin-inline-end: 2em;
 }
+.infobox {
+    border: 2px solid black;
+    padding: 15px;
+    padding-left: 10px;
+    background: #FFCCCC;
+    margin-bottom: 40px;
+    margin-right: 15px;
+    font-family: 'Chicago';
+}
 @media print {
   nav {
     display:none;
