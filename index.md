@@ -1,8 +1,9 @@
 ---
 title: "Dr. Liam O'Connor"
-date: "1st November 2023"
+date: "1st October 2024"
 ---
-<div class="infobox"> I am actively searching for PhD students with fully-funded scholarships available. </div>
+<div class="infobox"> I am actively searching for PhD students with fully-funded scholarships available. 
+<a href="/work_with_me.html" class="infobutton">More Info</a> </div>
 
 <h2>Welcome</h2>
 
