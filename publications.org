@@ -1,20 +1,23 @@
 #+TITLE: Publications
 
-** Quickstrom
+** Quickstrom and LTL Testing
 
 A project with [[https://wickstrom.tech][Oskar Wickström]] bringing the power of property-based testing to web application interface testing. More information is 
-available at the [[https://quickstrom.io][Quickstrom website]].
+available at the [[https://quickstrom.io][Quickstrom website]]. This section also includes broader theoretical investigations into testing for linear temporal logics and related topics.
 
 #+BEGIN_HTML
 <small>
 #+END_HTML
-
 Liam O'Connor, Oskar Wickström\\
 *Quickstrom: Property-based Acceptance Testing with LTL Specifications* \\
 /Programming Languages Design and Implementation (PLDI)/, pp. 1025-1038, San Diego, California, USA, June 2022. \\
 [[https://arxiv.org/abs/2203.11532][Available from arXiv]]
 [[https://www.youtube.com/watch?v=6t8emhea0pA][Talk available on YouTube]]
 
+Rayhana Amjad, Rob van Glabbeek, Liam O'Connor\\
+*Semantics for Linear-time Temporal Logic with Finite Observations*
+/Expressiveness in Concurrency and Structural Operational Semantics (EXPRESS/SOS)/, pp. 35-50, Calgary, Canada, September 2024\\
+[[https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?EXPRESSSOS2024:8][Available from ETPCS]]
 #+BEGIN_HTML
 </small>
 #+END_HTML
