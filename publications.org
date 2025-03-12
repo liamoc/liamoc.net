@@ -18,6 +18,7 @@ Rayhana Amjad, Rob van Glabbeek, Liam O'Connor\\
 *Semantics for Linear-time Temporal Logic with Finite Observations*
 /Expressiveness in Concurrency and Structural Operational Semantics (EXPRESS/SOS)/, pp. 35-50, Calgary, Canada, September 2024\\
 [[https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?EXPRESSSOS2024:8][Available from ETPCS]]
+[[https://www.isa-afp.org/entries/LTL3_Semantics.html][Proofs on AFP]]
 #+BEGIN_HTML
 </small>
 #+END_HTML

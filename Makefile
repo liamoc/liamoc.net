@@ -38,7 +38,7 @@ $(STATICS:%=out/%): out/%: %
 	@echo '$(PALEBLUE)Copying static file $(BOLD)$<$(SGR0)'
 	@mkdir -p $(@D) && cp $< $@
 
-all: $(POSTS:%=out/posts/%/index.html) $(TAGS:%=out/tags/%.html) $(COMPUTERS:images/comp%=out/thumbnails/%) out/index.html out/computers.html out/work_with_me.html out/contact.html out/publications.html out/posts/archive.html out/atom.xml $(STATICS:%=out/%)
+all: $(POSTS:%=out/posts/%/index.html) $(TAGS:%=out/tags/%.html) $(COMPUTERS:images/comp%=out/thumbnails/%) out/index.html out/computers.html out/churchmusic.html out/work_with_me.html out/contact.html out/publications.html out/posts/archive.html out/atom.xml $(STATICS:%=out/%)
 
 preview:
 	@cd out && python3 -m http.server
@@ -110,6 +110,10 @@ out/index.html: index.md post_list.md index_conclusion.md tag_cloud.html
                       $< /dev/stdin index_conclusion.md tag_cloud.html -o $@ $(SUPPRESS)
 out/computers.html: computers.md
 	@echo 'Generating $(BOLD)computers.html$(SGR0)'
+	@mkdir -p $(@D) && $(PANDOC) -s -T "liamoc.net" --data-dir=. -t html5 $< -o $@ $(SUPPRESS)
+
+out/churchmusic.html: churchmusic.org
+	@echo 'Generating $(BOLD)churchmusic.html$(SGR0)'
 	@mkdir -p $(@D) && $(PANDOC) -s -T "liamoc.net" --data-dir=. -t html5 $< -o $@ $(SUPPRESS)
 
 out/work_with_me.html: work_with_me.md

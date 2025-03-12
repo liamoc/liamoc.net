@@ -24,7 +24,7 @@ return {
           tag = string.gsub(ta," ","");
           if tag ~= '' then
           if not file_exists("tags/" .. tag .. ".md") then 
-             file = io.open("tags/" .. tag .. ".md","a")
+             file = io.open("tags/" .. tag .. ".md","w")
              io.output(file)
              io.write("---\ntitle: \"Tag: " .. tag .. "\"\n---\n");
              io.close(file)

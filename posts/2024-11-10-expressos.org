@@ -1,9 +1,11 @@
 #+TITLE: LTL semantics at EXPRESS/SOS
 #+DATE: 10th Nov 2024
 #+TIME: 01:00
-#+KEYWORDS: publication, express/sos, concurrency, conference, quickstrom, ltl, testing, semantics
+#+KEYWORDS: publication, express-sos, concurrency, conference, quickstrom, ltl, testing, semantics
 
-Our student [[Rayhana][https://rayhana.dev/]] has published her first paper recently, presenting our work on LTL semantics with respect to finite partial traces. This work is a result of our trying to investigate the semantic properties of LTL when applied to testing in the context of the Quickstrom project. Congratulations to Rayhana and thanks also go to Rob van Glabbeek, her secondary supervisor and co-author of this work.
+[[./images/expresssos.png]]
+
+Our student [[https://rayhana.dev/][Rayhana Amjad]] has published her first paper recently, presenting our work on LTL semantics with respect to finite partial traces. This work is a result of our trying to investigate the semantic properties of LTL when applied to testing in the context of the Quickstrom project. Congratulations to Rayhana and thanks also go to Rob van Glabbeek, her secondary supervisor and co-author of this work.
 
 Rayhana Amjad, Rob van Glabbeek, Liam O'Connor\\
 *Semantics for Linear-time Temporal Logic with Finite Observations*

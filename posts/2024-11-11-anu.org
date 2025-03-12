@@ -1,0 +1,10 @@
+#+TITLE: New position at ANU
+#+KEYWORDS: anu, uoe
+#+DATE: 11th November 2024
+#+TIME: 01:00
+
+[[./images/anu.png]]
+
+I've not made a post formally announcing this yet, so to update: I have taken a Senior Lecturer position at the Foundations Cluster in the [[https://comp.anu.edu.au/][School of Computing]] at the Australian National University. I am also looking for PhD students to work with me! Please see the [[https://liamoc.net/work_with_me.html][advertisement]] for details.
+
+I still retain an Honorary Fellow position at the University of Edinburgh. While I will miss my Edinburgh colleagues, I am very excited for this new opportunity, and I am already adjusting to living in Canberra well. I think it is one of the nicest cities in Australia to live in.

@@ -1,6 +1,6 @@
 ---
 title: "Dr. Liam O'Connor"
-date: "1st October 2024"
+date: "12th March 2025"
 ---
 <div class="infobox"> I am actively searching for PhD students with fully-funded scholarships available. 
 <a href="/work_with_me.html" class="infobutton">More Info</a> </div>
@@ -25,10 +25,10 @@ I am also the lead researcher for the <a href="https://quickstrom.io">Quickstrom
 
 I am also co-supervising a PhD student, Tudor Ferariu, on verification of blockchain smart contracts with <a href="https://homepages.inf.ed.ac.uk/wadler/">Phil Wadler</a>. I am also second supervisor to Mathieu Fehr, whose primary supervisor is <a href="https://grosser.science/">Tobias Grosser</a>.
 
-Originally part of my doctorate and now as ongoing research work, I designed the <a href="https://trustworthy.systems/projects/TS/cogent.pml">Cogent</a> programming language,
-and I remain a
+Originally part of my doctorate and now as ongoing research work, I designed the <a href="https://trustworthy.systems/projects/OLD/cogent">Cogent</a> programming language,
+and I was for many years a
 contributor to its
-associated verification framework and compiler. This project is part of the long-term vision of the
+associated verification framework and compiler. This project was part of the long-term vision of the
 <a href="https://trustworthy.systems">Trustworthy Systems</a> team (formerly at CSIRO Data61), to reduce the cost and effort required to make formally verified systems.
 In the past I have also worked with the Trustworthy Systems team on the <a href="https://trustworthy.systems/projects/seL4-verification/">l4.verified</a> project and tools for the <a href="http://www.cl.cam.ac.uk/research/hvg/Isabelle/">Isabelle</a>
 theorem prover.</a> I have also been affiliated with
@@ -37,6 +37,8 @@ the <a href="http://www.haskell.org/haskellwiki/GHC/Data_Parallel_Haskell">DPH</
 was <a href="https://www.uu.nl/medewerkers/GKKeller">Gabriele Keller</a>.
 
 In my free time, I like to collect and tinker on <a href="/computers.html">old and obsolete computers</a>. Please get in touch with me if you want to collaborate on retro computing projects, donate a computer, or visit to see my collection of old computers.
+
+I am also an <a href="/churchmusic.html">experienced liturgical singer</a> and have extensively studied early church music from the middle ages. 
 
 This contains my <a href="/posts/archive.html">blog</a> as well as a publication list, and other miscellany.
 
