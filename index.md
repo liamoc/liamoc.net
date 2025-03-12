@@ -25,7 +25,7 @@ I am also the lead researcher for the <a href="https://quickstrom.io">Quickstrom
 
 I am also co-supervising a PhD student, Tudor Ferariu, on verification of blockchain smart contracts with <a href="https://homepages.inf.ed.ac.uk/wadler/">Phil Wadler</a>. I am also second supervisor to Mathieu Fehr, whose primary supervisor is <a href="https://grosser.science/">Tobias Grosser</a>.
 
-Originally part of my doctorate and now as ongoing research work, I designed the <a href="https://trustworthy.systems/projects/OLD/cogent">Cogent</a> programming language,
+Originally part of my doctorate and, for a time, as ongoing research work, I designed the <a href="https://trustworthy.systems/projects/OLD/cogent">Cogent</a> programming language,
 and I was for many years a
 contributor to its
 associated verification framework and compiler. This project was part of the long-term vision of the
